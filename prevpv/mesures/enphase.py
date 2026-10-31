@@ -92,6 +92,8 @@ def diagnostic(sid: str) -> None:
     brut = os.environ.get("ENPHASE_API_KEY", "")
     journal(f"    clé API : {len(cle)} caractères, espaces ou retours à la ligne autour : {'oui' if brut != brut.strip() else 'non'}, "
             f"identique au Client ID : {'OUI' if cle == cid else 'non'}, identique au Client Secret : {'OUI' if cle == csec else 'non'}")
+    import hashlib
+    journal(f"    empreinte de la clé API : {hashlib.sha256(cle.encode()).hexdigest()[:8]}")
     journal(f"    jeton d'accès : {_jeton.get('infos')}")
     try:
         j = _get("/systems", {})
