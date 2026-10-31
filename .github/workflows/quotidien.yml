@@ -57,6 +57,8 @@ jobs:
           if gh secret set ENPHASE_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$f" 2> "$RUNNER_TEMP/gh_err"; then
             echo "Jeton Enphase : renouvelé et réenregistré." | tee -a data/journal_dernier_calcul.log
           else
+            vu=$(gh api "repos/$GITHUB_REPOSITORY" -q .full_name 2>&1 | head -c 200)
+            echo "SECRETS_PAT voit le dépôt : $vu" | tee -a data/journal_dernier_calcul.log
             echo "Jeton Enphase : ÉCHEC du réenregistrement ($(head -c 300 "$RUNNER_TEMP/gh_err")). Vérifier SECRETS_PAT (droit Secrets : Read and write sur ce dépôt)." | tee -a data/journal_dernier_calcul.log
             exit 1
           fi

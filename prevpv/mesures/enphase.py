@@ -41,6 +41,7 @@ def _jeton_acces() -> str:
         raise EnphaseErreur(f"rafraîchissement du jeton refusé ({r.status_code}) : {r.text[:200]}")
     j = r.json()
     _jeton["acces"] = j["access_token"]
+    _jeton["infos"] = {k: j.get(k) for k in ("scope", "token_type", "expires_in", "is_internal_app")}
     nouveau = j.get("refresh_token")
     sortie = os.environ.get("ENPHASE_REFRESH_TOKEN_SORTIE")
     if nouveau and nouveau != rt and sortie:
@@ -87,6 +88,11 @@ def diagnostic(sid: str) -> None:
         return
     _diagnostic_fait.add(sid)
     journal("  Diagnostic Enphase :")
+    cle, cid, csec = (secret(n) or "" for n in ("ENPHASE_API_KEY", "ENPHASE_CLIENT_ID", "ENPHASE_CLIENT_SECRET"))
+    brut = os.environ.get("ENPHASE_API_KEY", "")
+    journal(f"    clé API : {len(cle)} caractères, espaces ou retours à la ligne autour : {'oui' if brut != brut.strip() else 'non'}, "
+            f"identique au Client ID : {'OUI' if cle == cid else 'non'}, identique au Client Secret : {'OUI' if cle == csec else 'non'}")
+    journal(f"    jeton d'accès : {_jeton.get('infos')}")
     try:
         j = _get("/systems", {})
         for sy in j.get("systems", []):
