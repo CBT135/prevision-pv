@@ -47,11 +47,18 @@ def _get(url: str, params: dict) -> dict:
     cle = secret("OPEN_METEO_API_KEY")
     if cle:
         params = dict(params, apikey=cle)
-    for essai in range(3):
-        r = requests.get(url, params=params, timeout=60)
+    for essai in range(4):
+        try:
+            r = requests.get(url, params=params, timeout=90)
+        except requests.RequestException as e:
+            if essai < 3:
+                journal(f"  Open-Meteo injoignable ({type(e).__name__}), nouvel essai")
+                time.sleep(15 * (essai + 1))
+                continue
+            raise
         if r.status_code == 200:
             return r.json()
-        if r.status_code in (429, 500, 502, 503, 504) and essai < 2:
+        if r.status_code in (429, 500, 502, 503, 504) and essai < 3:
             time.sleep(10 * (essai + 1))
             continue
         raise RuntimeError(f"Open-Meteo {r.status_code} : {r.text[:300]}")

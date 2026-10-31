@@ -161,7 +161,7 @@ def historique(sites: list[dict], jours: int) -> None:
             if mes is None or mes.empty:
                 journal("  aucune mesure disponible")
                 continue
-            d = debut
+            d = max(debut, (mes.index.min() - pd.Timedelta(minutes=15)).tz_convert(TZ).date())
             while d <= fin:
                 f = min(d + timedelta(days=27), fin)
                 idx = pd.date_range(index_journee(d)[0], index_journee(f)[-1], freq="15min")
