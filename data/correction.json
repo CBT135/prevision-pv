@@ -32,12 +32,12 @@
   ]
  },
  "site-hjl27et": {
-  "jours": 26,
-  "global": 0.734,
+  "jours": 29,
+  "global": 0.7106,
   "tranches": [
-   0.5943,
-   0.5431,
-   0.7451
+   0.5825,
+   0.6031,
+   0.7176
   ],
   "actif": true,
   "quarts_arret_exclus": 5,
