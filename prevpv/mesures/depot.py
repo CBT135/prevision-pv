@@ -61,6 +61,18 @@ def _lire_xlsx(chemin: Path) -> pd.Series:
     return _au_quart_d_heure(s)
 
 
+def _somme_w(r: list, cols: list) -> float:
+    """Somme des colonnes en W ; une valeur absente (« x », vide) rend le total inconnu (NaN)."""
+    total = 0.0
+    for c in cols:
+        v = r[c].strip().replace(",", ".")
+        try:
+            total += float(v)
+        except ValueError:
+            return float("nan")
+    return total
+
+
 def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
     import csv
     import re
@@ -83,11 +95,13 @@ def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
             jour = jour + pd.Timedelta(days=1)
         prec = h
         debuts.append(jour + h)
-        vals.append(sum(float(r[c].replace(",", ".") or 0) for c in cols) / 1000.0)
+        vals.append(_somme_w(r, cols) / 1000.0)
     debut = pd.Series(pd.DatetimeIndex(debuts))
     pas = debut.diff().median()
     s = pd.Series(vals, index=_localiser(debut + pas))
     s = s[s.index.notna()].sort_index()
+    if s.isna().any():
+        journal(f"  {chemin.name} : {int(s.isna().sum())} valeurs absentes (« x »), non comptées")
     journal(f"  {chemin.name} : export GridVis, {len(s)} valeurs au pas de {int(pas.total_seconds() // 60)} min"
             + (f", somme de {len(cols)} colonnes" if len(cols) > 1 else ""))
     return _au_quart_d_heure(s)
