@@ -2,9 +2,9 @@ name: Calcul quotidien
 
 on:
   schedule:
-    # Heures en UTC. Hiver : 6h40 et 13h40 à Paris ; été : 7h40 et 14h40.
+    # Heures en UTC. Hiver : 6h40 et 16h20 à Paris ; été : 7h40 et 17h20.
     - cron: "40 5 * * *"   # mesures de la veille + prévision J+1 sur la météo du matin
-    - cron: "40 12 * * *"  # après publication des prix day-ahead (~13h) : prévision J+1 valorisée
+    - cron: "20 15 * * *"  # après le run AROME de 12 h UTC et les prix day-ahead : prévision J+1 finale valorisée
   workflow_dispatch:
 
 permissions:

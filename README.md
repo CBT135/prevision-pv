@@ -9,11 +9,11 @@ Tout tourne sur GitHub : un calcul automatique deux fois par jour (GitHub Action
 
 ## Fonctionnement
 
-Chaque jour, à 6 h 40 et 13 h 40 (heure d'hiver ; 7 h 40 et 14 h 40 en été) :
+Chaque jour, à 6 h 40 et 16 h 20 (heure d'hiver ; 7 h 40 et 17 h 20 en été), le second passage utilisant le run AROME de 12 h UTC :
 
 1. **Réalisé** : récupération des mesures des jours précédents (API Enphase ou CSV déposés), comparaison avec la prévision émise la veille, calcul du CA réalisé.
 2. **Correction** : mise à jour, pour chaque site, du facteur de correction appris sur les 30 derniers jours (par tranche d'élévation solaire).
-3. **Prix** : prix day-ahead France au pas 15 min de J+1 (ENTSO-E), disponibles après l'enchère de 13 h. Le passage du matin calcule la production sans les prix.
+3. **Prix** : prix day-ahead France au pas 15 min de J+1 (ENTSO-E), publiés vers 13 h. Le passage du matin calcule la production sans les prix.
 4. **Prévision J+1** : météo Open-Meteo (Météo-France AROME / ARPEGE), modèle physique pvlib, correction, valorisation.
 5. Publication des résultats dans `docs/data/`, lus par le tableau de bord.
 
