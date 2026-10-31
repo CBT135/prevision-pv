@@ -1,10 +1,8 @@
-[16:03:38] Reprise d'historique CB_QBase — installation personnelle du 2026-08-02 au 2026-10-30
-[16:03:38]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
-[16:05:18]   2026-08-02 → 2026-08-29 : 2688 quarts d'heure
-[16:05:20]   2026-08-30 → 2026-09-26 : 2688 quarts d'heure
-[16:05:21]   2026-09-27 → 2026-10-24 : 2688 quarts d'heure
-[16:05:22]   2026-10-25 → 2026-10-30 : 580 quarts d'heure
-[16:05:22] Reprise d'historique Vouzance du 2026-08-02 au 2026-10-30
-[16:05:22]   aucune mesure disponible
-[16:05:22]   correction CB_QBase — installation personnelle : {'jours': 29, 'global': np.float64(0.7566), 'tranches': [0.6, np.float64(0.7728), np.float64(0.7826)], 'actif': True}
-[16:05:22]   correction Vouzance : {'jours': 0, 'global': 1.0, 'tranches': [1.0, 1.0, 1.0], 'actif': False}
+[16:43:12] Reprise d'historique CB_QBase — installation personnelle du 2026-10-29 au 2026-10-30
+[16:43:13]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
+[16:43:14]   2026-10-29 → 2026-10-30 : 192 quarts d'heure
+[16:43:14] Reprise d'historique Vouzance du 2026-10-29 au 2026-10-30
+[16:43:14]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:43:14]   2026-10-29 → 2026-10-30 : 96 quarts d'heure
+[16:43:14]   correction CB_QBase — installation personnelle : {'jours': 29, 'global': np.float64(0.7566), 'tranches': [0.6, np.float64(0.7728), np.float64(0.7826)], 'actif': True}
+[16:43:14]   correction Vouzance : {'jours': 1, 'global': 1.0, 'tranches': [1.0, 1.0, 1.0], 'actif': False}
