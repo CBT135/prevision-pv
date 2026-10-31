@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-10-31T14:54:17.733Z",
+  "mis_a_jour": "2026-10-31T15:08:48.672Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -73,24 +73,24 @@
         {
           "nom": "Tables fixes",
           "pc_kwc": 12000,
-          "inclinaison": 20,
+          "inclinaison": 25,
           "azimut": 0,
           "suivi": "fixe",
           "rotation_max": null
         }
       ],
       "modules": {
-        "gamma_pct": -0.29,
+        "gamma_pct": -0.41,
         "pose": "sol"
       },
       "onduleur": {
-        "type": "central",
-        "pac_kva": 10000,
+        "type": "string",
+        "pac_kva": 10560,
         "rendement_pct": 98.4
       },
-      "pertes_dc_pct": 20,
-      "albedo": 0.2,
-      "limitation_kva": 10000,
+      "pertes_dc_pct": 24.5,
+      "albedo": 0.17,
+      "limitation_kva": 12000,
       "masque": {
         "fichier": "exemple_horizon.csv",
         "importe_le": "2026-10-30",
