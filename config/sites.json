@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "mis_a_jour": "2026-10-30T18:45:00+01:00",
+  "conventions": {
+    "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
+    "masque": "[azimut PVsyst °, hauteur °]"
+  },
+  "sites": [
+    {
+      "id": "site-cbqbase",
+      "actif": true,
+      "nom": "CB_QBase — installation personnelle",
+      "type": "residentiel",
+      "lat": null,
+      "lon": null,
+      "altitude": null,
+      "pans": [
+        {
+          "nom": "Toiture",
+          "pc_kwc": 1.8,
+          "inclinaison": null,
+          "azimut": null,
+          "suivi": "fixe",
+          "rotation_max": null
+        }
+      ],
+      "modules": {
+        "gamma_pct": -0.35,
+        "pose": "surimpose"
+      },
+      "onduleur": {
+        "type": "micro",
+        "pac_kva": null,
+        "rendement_pct": 96.5
+      },
+      "pertes_dc_pct": 3,
+      "albedo": 0.2,
+      "limitation_kva": null,
+      "masque": null,
+      "mesures": {
+        "source": "enphase",
+        "enphase_system_id": "113437",
+        "prm_production": ""
+      },
+      "valorisation": {
+        "mode": "autoconso_surplus",
+        "prix_achat_eur_kwh": null,
+        "tarif_surplus_eur_kwh": null,
+        "tarif_vente_eur_mwh": null,
+        "conso": {
+          "source": "enedis",
+          "prm": "",
+          "annuelle_kwh": null
+        },
+        "spot": {
+          "decote_eur_mwh": null,
+          "prix_negatif": "arret",
+          "complement": false,
+          "prix_reference_eur_mwh": null
+        }
+      },
+      "notes": "Compléter localisation, orientation, puissance AC et tarifs dans la base de données des sites."
+    }
+  ]
+}

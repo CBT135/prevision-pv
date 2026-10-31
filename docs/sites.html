@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Base de données des sites PV</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout : outil mobile d'abord — liste de sites, puis éditeur en sections empilées, barre d'actions collante en bas */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --sunk:#e3e8ee; --line:#cfd7e0;
+  --fg:#16202b; --muted:#5a6878; --accent:#c26a00; --accent-ink:#ffffff; --accent-soft:#fbe9d2;
+  --ok:#1f7a4d; --ok-soft:#dcf1e5; --warn:#a15c00; --warn-soft:#fdeccc; --bad:#b3261e; --bad-soft:#f9dedc;
+  --mask:#3d5a80; --mask-fill:rgba(61,90,128,.22);
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f151c; --surface:#17202a; --sunk:#1e2935; --line:#2c3a49;
+  --fg:#e6edf4; --muted:#93a3b5; --accent:#f0a040; --accent-ink:#1a1206; --accent-soft:#3a2a14;
+  --ok:#5fcf93; --ok-soft:#173326; --warn:#f2b45a; --warn-soft:#3a2b12; --bad:#f2948d; --bad-soft:#3d1a18;
+  --mask:#8fb3e0; --mask-fill:rgba(143,179,224,.22); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f151c; --surface:#17202a; --sunk:#1e2935; --line:#2c3a49;
+  --fg:#e6edf4; --muted:#93a3b5; --accent:#f0a040; --accent-ink:#1a1206; --accent-soft:#3a2a14;
+  --ok:#5fcf93; --ok-soft:#173326; --warn:#f2b45a; --warn-soft:#3a2b12; --bad:#f2948d; --bad-soft:#3d1a18;
+  --mask:#8fb3e0; --mask-fill:rgba(143,179,224,.22); color-scheme:dark}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+a{color:var(--accent)}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 96px}
+.wrap{max-width:760px;margin:0 auto}
+header.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-block:18px 10px}
+h1{font-family:var(--f-display);font-weight:700;font-size:1.55rem;letter-spacing:-.01em;margin:0}
+h2{font-family:var(--f-display);font-weight:600;font-size:1.05rem;margin:0;text-wrap:balance}
+.sub{color:var(--muted);font-size:.86rem;margin:2px 0 0}
+.mono,.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.chip.ok{background:var(--ok-soft);color:var(--ok)} .chip.warn{background:var(--warn-soft);color:var(--warn)} .chip.bad{background:var(--bad-soft);color:var(--bad)}
+.chip.plain::before{display:none}
+button,.btn{font:inherit;font-weight:600;font-size:.9rem;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:9px 14px;cursor:pointer;min-height:40px}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button.ghost{background:transparent;border-color:transparent;color:var(--muted);padding-inline:8px}
+button.danger{color:var(--bad);border-color:var(--bad-soft)}
+button.danger.armed{background:var(--bad);color:#fff;border-color:var(--bad)}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.msg{margin:8px 0 0;padding:9px 12px;border-radius:8px;font-size:.88rem;background:var(--sunk)}
+.msg.ok{background:var(--ok-soft);color:var(--ok)} .msg.bad{background:var(--bad-soft);color:var(--bad)} .msg.warn{background:var(--warn-soft);color:var(--warn)}
+
+/* liste */
+.list{display:grid;gap:10px;margin-top:14px}
+.site{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;text-align:left;width:100%;cursor:pointer;min-height:0}
+.site:hover{border-color:var(--accent)}
+.site .name{font-family:var(--f-display);font-weight:600;font-size:1.02rem;min-width:0;overflow-wrap:anywhere}
+.site .meta{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-size:.84rem}
+.site.inactive{opacity:.6}
+.empty{padding:28px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r)}
+
+/* éditeur */
+.ed-head{display:flex;align-items:center;gap:8px;padding-block:16px 6px}
+.ed-head h1{font-size:1.3rem;min-width:0;overflow-wrap:anywhere}
+details.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-top:12px}
+details.card>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 14px;cursor:pointer}
+details.card>summary h2{flex:1;min-width:0}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-right:4px;flex:none}
+details.card[open]>summary::after{transform:rotate(-135deg)}
+.body{padding:2px 14px 16px;display:grid;gap:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+label.f{display:grid;gap:4px;font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.01em;min-width:0}
+label.f .u{font-weight:400;font-family:var(--f-mono);font-size:.74rem}
+input,select,textarea{font:inherit;font-size:.95rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:9px 10px;width:100%;min-width:0}
+input.num{font-family:var(--f-mono)}
+input.invalid{border-color:var(--bad);background:var(--bad-soft)}
+textarea{font-family:var(--f-mono);font-size:.8rem;min-height:110px;resize:vertical}
+.hint{font-size:.8rem;color:var(--muted);margin:0}
+.pan{border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:10px;background:var(--bg)}
+.pan-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pan-h strong{font-family:var(--f-display);font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px}
+.seg label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:10px;cursor:pointer;font-size:.88rem;background:var(--bg)}
+.seg input{width:auto;margin-top:3px;accent-color:var(--accent)}
+.seg label.on{border-color:var(--accent);background:var(--accent-soft)}
+.seg small{display:block;color:var(--muted);font-size:.76rem;margin-top:2px}
+.formula{font-family:var(--f-mono);font-size:.78rem;background:var(--sunk);border-radius:7px;padding:8px 10px;color:var(--fg);overflow-x:auto}
+.chk{display:flex;gap:8px;align-items:center;font-size:.9rem}
+.chk input{width:auto;accent-color:var(--accent)}
+.maskbox{overflow-x:auto}
+.maskbox svg{display:block;width:100%;max-width:560px;height:auto}
+.maskbox text{fill:var(--muted);font-family:var(--f-mono);font-size:10px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);z-index:5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px calc(10px + env(safe-area-inset-bottom,0px))}
+.bar .wrap{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.bar .grow{flex:1;min-width:0;font-size:.82rem;color:var(--muted)}
+details.tools{margin-top:22px}
+details.tools>summary{cursor:pointer;color:var(--muted);font-size:.88rem;font-weight:600}
+.tools .body{padding:12px 0 0}
+@media (prefers-reduced-motion:no-preference){.site,button{transition:border-color .15s,background .15s}}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="app"></div>
+<div class="bar" id="bar" hidden><div class="wrap" id="barInner"></div></div>
+
+<script>
+(function(){
+"use strict";
+const LS_CFG="pvsites.cfg", LS_DRAFT="pvsites.draft";
+const lsGet=k=>{try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid=()=>"site-"+Math.random().toString(36).slice(2,9);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const fmt=n=>n==null||n===""?"":String(n).replace(".",",");
+const parseNum=v=>{if(v==null)return null;const s=String(v).trim().replace(/\s/g,"").replace(",",".");if(s==="")return null;const n=Number(s);return Number.isFinite(n)?n:NaN};
+
+/* ---------- modèle ---------- */
+const MODES={
+  autoconso_sans_surplus:{lbl:"Autoconsommation sans vente du surplus",short:"Autoconso totale",help:"Valeur = énergie autoconsommée × prix d'achat évité. Le surplus est perdu (ou bridé)."},
+  autoconso_surplus:{lbl:"Autoconsommation avec vente du surplus",short:"Autoconso + surplus",help:"Valeur = autoconsommé × prix évité + surplus injecté × tarif de rachat."},
+  vente_totale:{lbl:"Vente totale à tarif",short:"Vente totale",help:"Valeur = production injectée × tarif de vente."},
+  spot:{lbl:"Vente au prix spot",short:"Prix spot",help:"Valeur = Σ production¼h × (prix day-ahead¼h − décote), avec règle des prix négatifs et complément éventuel."}
+};
+const TYPES={residentiel:"Résidentiel",toiture:"Toiture tertiaire / industrielle",ombriere:"Ombrière",sol:"Centrale au sol"};
+const POSES={integre:"Intégré au bâti (peu ventilé)",surimpose:"Surimposé (toiture ventilée)",sol:"Au sol / ombrière (libre)"};
+
+function newSite(){return{
+  id:uid(),actif:true,nom:"",type:"toiture",lat:null,lon:null,altitude:null,
+  pans:[newPan()],
+  modules:{gamma_pct:-0.35,pose:"surimpose"},
+  onduleur:{type:"string",pac_kva:null,rendement_pct:97.5},
+  pertes_dc_pct:3,albedo:0.2,limitation_kva:null,
+  masque:null,
+  mesures:{source:"csv",enphase_system_id:"",prm_production:""},
+  valorisation:{mode:"vente_totale",prix_achat_eur_kwh:null,tarif_surplus_eur_kwh:null,tarif_vente_eur_mwh:null,
+    conso:{source:"enedis",prm:"",annuelle_kwh:null},
+    spot:{decote_eur_mwh:null,prix_negatif:"arret",complement:false,prix_reference_eur_mwh:null}},
+  notes:""}}
+function newPan(){return{nom:"",pc_kwc:null,inclinaison:null,azimut:null,suivi:"fixe",rotation_max:null}}
+
+function seeds(){
+  const a=newSite();
+  Object.assign(a,{nom:"CB_QBase — installation personnelle",type:"residentiel",notes:"Compléter localisation, orientation, puissance AC et tarifs."});
+  a.pans=[{nom:"Toiture",pc_kwc:1.8,inclinaison:null,azimut:null,suivi:"fixe",rotation_max:null}];
+  a.onduleur={type:"micro",pac_kva:null,rendement_pct:96.5};
+  a.mesures={source:"enphase",enphase_system_id:"113437",prm_production:""};
+  a.valorisation.mode="autoconso_surplus";
+  const b=newSite();
+  Object.assign(b,{nom:"Exemple — centrale au sol 12 MWc",type:"sol",lat:45.52,lon:4.87,altitude:180,actif:false,
+    notes:"Site fictif pour illustrer la saisie. À supprimer."});
+  b.pans=[{nom:"Tables fixes",pc_kwc:12000,inclinaison:20,azimut:0,suivi:"fixe",rotation_max:null}];
+  b.modules={gamma_pct:-0.29,pose:"sol"};
+  b.onduleur={type:"central",pac_kva:10000,rendement_pct:98.4};
+  b.limitation_kva=10000;
+  b.masque={fichier:"exemple_horizon.csv",importe_le:"2026-10-30",convention:"pvsyst_sud0",
+    points:[[-180,3],[-150,4],[-120,9],[-100,14],[-80,12],[-60,6],[-30,2],[0,1],[30,2],[60,4],[90,5],[120,4],[150,3],[180,3]]};
+  b.mesures={source:"csv",enphase_system_id:"",prm_production:""};
+  b.valorisation.mode="spot";
+  b.valorisation.spot={decote_eur_mwh:3,prix_negatif:"arret",complement:true,prix_reference_eur_mwh:78};
+  return[a,b];
+}
+
+function issues(s){
+  const out=[];const bad=v=>v==null||Number.isNaN(v);
+  if(!s.nom.trim())out.push("nom");
+  if(bad(s.lat)||s.lat<-90||s.lat>90)out.push("latitude");
+  if(bad(s.lon)||s.lon<-180||s.lon>180)out.push("longitude");
+  s.pans.forEach((p,i)=>{const n=s.pans.length>1?` (champ ${i+1})`:"";
+    if(bad(p.pc_kwc)||p.pc_kwc<=0)out.push("puissance crête"+n);
+    if(p.suivi==="fixe"){if(bad(p.inclinaison)||p.inclinaison<0||p.inclinaison>90)out.push("inclinaison"+n);}
+    if(bad(p.azimut)||p.azimut<-180||p.azimut>180)out.push("azimut"+n);});
+  if(bad(s.onduleur.pac_kva)||s.onduleur.pac_kva<=0)out.push("puissance AC onduleurs");
+  const v=s.valorisation;
+  if(v.mode.startsWith("autoconso")){
+    if(bad(v.prix_achat_eur_kwh))out.push("prix d'achat évité");
+    if(v.conso.source==="enedis"&&!String(v.conso.prm).trim())out.push("PRM de consommation");
+    if(v.conso.source==="profil"&&bad(v.conso.annuelle_kwh))out.push("consommation annuelle");
+  }
+  if(v.mode==="autoconso_surplus"&&bad(v.tarif_surplus_eur_kwh))out.push("tarif du surplus");
+  if(v.mode==="vente_totale"&&bad(v.tarif_vente_eur_mwh))out.push("tarif de vente");
+  if(v.mode==="spot"&&v.spot.complement&&bad(v.spot.prix_reference_eur_mwh))out.push("tarif de référence");
+  if(s.mesures.source==="enphase"&&!String(s.mesures.enphase_system_id).trim())out.push("identifiant Enphase");
+  return out;
+}
+const kwc=s=>s.pans.reduce((t,p)=>t+(Number(p.pc_kwc)||0),0);
+const fmtP=k=>k>=1000?fmt(+(k/1000).toFixed(2))+" MWc":fmt(+k.toFixed(2))+" kWc";
+
+/* ---------- état ---------- */
+const st={sites:[],sha:null,dirty:false,view:"list",ed:null,edIdx:-1,cfg:Object.assign({owner:"cbt135",repo:"prevision-pv",branch:"main",path:"config/sites.json",token:""},lsGet(LS_CFG)||{}),msg:null,busy:false,armDel:false};
+if(!lsGet(LS_CFG)&&/\.github\.io$/.test(location.hostname)){st.cfg.owner=location.hostname.split(".")[0];const seg=location.pathname.split("/").filter(Boolean);if(seg.length&&!seg[0].endsWith(".html"))st.cfg.repo=seg[0]}
+const draft=lsGet(LS_DRAFT);
+if(draft&&Array.isArray(draft.sites)){st.sites=draft.sites;st.sha=draft.sha||null;st.dirty=!!draft.dirty}else st.sites=seeds();
+const persistDraft=()=>lsSet(LS_DRAFT,{sites:st.sites,sha:st.sha,dirty:st.dirty});
+
+/* ---------- GitHub ---------- */
+const b64e=s=>btoa(unescape(encodeURIComponent(s)));
+const b64d=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,""))));
+function apiUrl(){const c=st.cfg;return`https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}/contents/${c.path.split("/").map(encodeURIComponent).join("/")}`}
+function ghHeaders(){return{"Accept":"application/vnd.github+json","Authorization":"Bearer "+st.cfg.token,"X-GitHub-Api-Version":"2022-11-28"}}
+function ghError(r,txt){
+  if(r.status===401)return"Jeton refusé (401). Vérifiez qu'il n'a pas expiré.";
+  if(r.status===403)return"Accès refusé (403). Le jeton doit avoir le droit « Contents : Read and write » sur ce dépôt.";
+  if(r.status===404)return"Dépôt ou branche introuvable (404). Vérifiez le propriétaire, le nom du dépôt et la branche.";
+  if(r.status===409||r.status===422)return"Le fichier a changé sur GitHub depuis le dernier chargement. Rechargez, puis refaites vos modifications.";
+  return`Erreur GitHub ${r.status}. ${txt.slice(0,140)}`;
+}
+async function ghLoad(){
+  if(!st.cfg.token){say("warn","Renseignez d'abord le jeton GitHub dans « Dépôt GitHub ».");return}
+  st.busy=true;render();
+  try{
+    const r=await fetch(apiUrl()+"?ref="+encodeURIComponent(st.cfg.branch),{headers:ghHeaders()});
+    if(r.status===404){
+      const rr=await fetch(`https://api.github.com/repos/${encodeURIComponent(st.cfg.owner)}/${encodeURIComponent(st.cfg.repo)}`,{headers:ghHeaders()});
+      if(rr.ok){st.sha=null;st.dirty=true;persistDraft();say("warn",`Le fichier ${st.cfg.path} n'existe pas encore. Il sera créé au premier enregistrement.`)}
+      else say("bad",ghError(rr,await rr.text()));
+    }else if(!r.ok){say("bad",ghError(r,await r.text()))}
+    else{const j=await r.json();const data=JSON.parse(b64d(j.content));
+      st.sites=Array.isArray(data.sites)?data.sites:[];st.sha=j.sha;st.dirty=false;persistDraft();
+      say("ok",`${st.sites.length} site${st.sites.length>1?"s":""} chargé${st.sites.length>1?"s":""} depuis GitHub.`)}
+  }catch(e){say("bad","Connexion à GitHub impossible. Vérifiez votre réseau et réessayez.")}
+  st.busy=false;render();
+}
+async function ghSave(){
+  if(!st.cfg.token){say("warn","Renseignez d'abord le jeton GitHub dans « Dépôt GitHub ».");return}
+  st.busy=true;render();
+  const payload={version:1,mis_a_jour:new Date().toISOString(),conventions:{azimut:"PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",masque:"[azimut PVsyst °, hauteur °]"},sites:st.sites};
+  const body={message:`Sites PV : mise à jour (${st.sites.length} site${st.sites.length>1?"s":""})`,content:b64e(JSON.stringify(payload,null,2)+"\n"),branch:st.cfg.branch};
+  if(st.sha)body.sha=st.sha;
+  try{
+    const r=await fetch(apiUrl(),{method:"PUT",headers:Object.assign({"Content-Type":"application/json"},ghHeaders()),body:JSON.stringify(body)});
+    if(!r.ok)say("bad",ghError(r,await r.text()));
+    else{const j=await r.json();st.sha=j.content.sha;st.dirty=false;persistDraft();say("ok","Enregistré sur GitHub.")}
+  }catch(e){say("bad","Connexion à GitHub impossible. Vos modifications restent dans ce navigateur.")}
+  st.busy=false;render();
+}
+function say(kind,text){st.msg={kind,text}}
+
+/* ---------- masque PVsyst ---------- */
+function parseHorizon(text,conv){
+  const pts=[];
+  for(const raw of text.split(/\r?\n/)){
+    const line=raw.trim();if(!line)continue;
+    let parts;
+    if(line.includes(";"))parts=line.split(";");
+    else if(line.includes("\t"))parts=line.split("\t");
+    else parts=line.split(",");
+    parts=parts.map(p=>p.trim()).filter(p=>p!=="");
+    if(parts.length<2)continue;
+    const sepComma=line.includes(";")||line.includes("\t");
+    const n=parts.slice(0,2).map(p=>Number(sepComma?p.replace(",","."):p));
+    if(n.some(x=>!Number.isFinite(x)))continue;
+    pts.push(n);
+  }
+  if(pts.length<3)return{error:"Aucun profil lisible : il faut au moins 3 lignes « azimut ; hauteur »."};
+  let used=conv;
+  if(conv==="auto"){const mn=Math.min(...pts.map(p=>p[0])),mx=Math.max(...pts.map(p=>p[0]));used=mn<0?"pvsyst_sud0":(mx>180?"nord0":"pvsyst_sud0")}
+  let out=pts.map(([a,h])=>{let az=used==="nord0"?a-180:a;while(az>180)az-=360;while(az<-180)az+=360;return[+az.toFixed(2),+Math.max(0,h).toFixed(2)]});
+  out.sort((x,y)=>x[0]-y[0]);
+  out=out.filter((p,i)=>i===0||p[0]!==out[i-1][0]);
+  if(out.some(p=>p[1]>90))return{error:"Hauteur supérieure à 90° détectée : les colonnes sont peut-être inversées."};
+  return{points:out,convention:used};
+}
+function maskSvg(points){
+  const W=360,H=150,x0=34,x1=350,y0=124,y1=12;
+  const hmax=Math.max(20,Math.ceil(Math.max(...points.map(p=>p[1]))/10)*10);
+  const X=a=>x0+(a+180)/360*(x1-x0),Y=h=>y0-h/hmax*(y0-y1);
+  let pts=points.slice();
+  if(pts[0][0]>-180)pts.unshift([-180,pts[pts.length-1][1]]);
+  if(pts[pts.length-1][0]<180)pts.push([180,pts[0][1]]);
+  const line=pts.map(p=>`${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(" ");
+  const area=`${X(-180)},${y0} ${line} ${X(180)},${y0}`;
+  let g="";
+  for(const v of [0,hmax/2,hmax]){g+=`<line x1="${x0}" x2="${x1}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${x0-6}" y="${Y(v)+3.5}" text-anchor="end">${fmt(v)}°</text>`}
+  for(const [a,l] of [[-180,"N"],[-90,"E"],[0,"S"],[90,"O"],[180,"N"]]){g+=`<line x1="${X(a)}" x2="${X(a)}" y1="${y0}" y2="${y0+4}" stroke="var(--muted)"/><text x="${X(a)}" y="${y0+16}" text-anchor="middle">${l} ${a}°</text>`}
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Profil du masque d'horizon"><rect x="0" y="0" width="${W}" height="${H}" fill="none"/>${g}<polygon points="${area}" fill="var(--mask-fill)"/><polyline points="${line}" fill="none" stroke="var(--mask)" stroke-width="1.6"/></svg>`;
+}
+
+/* ---------- rendu ---------- */
+const app=document.getElementById("app"),bar=document.getElementById("bar"),barInner=document.getElementById("barInner");
+function syncChip(){
+  if(!st.cfg.token)return`<span class="chip warn">Mode local</span>`;
+  if(st.dirty)return`<span class="chip warn">Non enregistré sur GitHub</span>`;
+  if(st.sha)return`<span class="chip ok">À jour sur GitHub</span>`;
+  return`<span class="chip">Non chargé</span>`;
+}
+function msgHtml(){return st.msg?`<p class="msg ${st.msg.kind}" role="status">${esc(st.msg.text)}</p>`:""}
+
+function render(){
+  if(st.view==="edit")return renderEdit();
+  const items=st.sites.map((s,i)=>{const iss=issues(s);
+    return`<button class="site${s.actif?"":" inactive"}" data-open="${i}">
+      <span class="name">${esc(s.nom||"Site sans nom")}</span>
+      ${iss.length?`<span class="chip warn">À compléter · ${iss.length}</span>`:`<span class="chip ok">Complet</span>`}
+      <span class="meta"><span class="num">${fmtP(kwc(s))}</span><span>${esc(TYPES[s.type]||"")}</span><span>${esc(MODES[s.valorisation.mode].short)}</span>${s.masque?"<span>Masque importé</span>":""}${s.actif?"":"<span>Désactivé</span>"}</span>
+    </button>`}).join("");
+  app.innerHTML=`
+  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a></p></div>${syncChip()}</header>
+  ${msgHtml()}
+  <div class="list">${items||`<div class="empty">Aucun site. Ajoutez le premier avec « Nouveau site ».</div>`}</div>
+  <details class="tools" id="tGit"><summary>Dépôt GitHub</summary><div class="body">
+    <p class="hint">Les sites sont enregistrés dans un fichier JSON du dépôt, lu chaque jour par le calcul de prévision. Le jeton reste dans ce navigateur.</p>
+    <div class="grid">
+      <label class="f">Propriétaire<input id="cOwner" value="${esc(st.cfg.owner)}" autocapitalize="off" spellcheck="false"></label>
+      <label class="f">Dépôt<input id="cRepo" value="${esc(st.cfg.repo)}" autocapitalize="off" spellcheck="false"></label>
+      <label class="f">Branche<input id="cBranch" value="${esc(st.cfg.branch)}" autocapitalize="off" spellcheck="false"></label>
+      <label class="f">Fichier<input id="cPath" value="${esc(st.cfg.path)}" autocapitalize="off" spellcheck="false"></label>
+    </div>
+    <label class="f">Jeton d'accès (fine-grained, ce dépôt seulement, Contents : read and write)<input id="cToken" type="password" value="${esc(st.cfg.token)}" autocomplete="off" spellcheck="false"></label>
+    <div class="row"><button id="cSave">Enregistrer les réglages et charger</button><button class="ghost" id="cForget">Effacer le jeton</button></div>
+  </div></details>
+  <details class="tools" id="tJson"><summary>Exporter / importer en JSON</summary><div class="body">
+    <label class="f">Contenu actuel (copiez-le pour une sauvegarde)<textarea id="jOut" readonly>${esc(JSON.stringify({version:1,sites:st.sites},null,2))}</textarea></label>
+    <div class="row"><button id="jCopy">Copier</button></div>
+    <label class="f">Coller un JSON à importer<textarea id="jIn" placeholder='{"version":1,"sites":[…]}'></textarea></label>
+    <div class="row"><button id="jImport">Remplacer les sites par ce JSON</button></div>
+  </div></details>`;
+  bar.hidden=false;
+  barInner.innerHTML=`<span class="grow">${st.sites.length} site${st.sites.length>1?"s":""} · ${fmtP(st.sites.filter(s=>s.actif).reduce((t,s)=>t+kwc(s),0))} actifs</span>
+    <button id="bNew">Nouveau site</button>
+    <button id="bLoad" ${st.busy?"disabled":""}>Recharger</button>
+    <button class="primary" id="bPush" ${st.busy?"disabled":""}>Enregistrer sur GitHub</button>`;
+  app.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openEdit(+b.dataset.open));
+  document.getElementById("bNew").onclick=()=>openEdit(-1);
+  document.getElementById("bLoad").onclick=ghLoad;
+  document.getElementById("bPush").onclick=ghSave;
+  document.getElementById("cSave").onclick=()=>{["Owner","Repo","Branch","Path","Token"].forEach(k=>st.cfg[k.toLowerCase()]=document.getElementById("c"+k).value.trim());lsSet(LS_CFG,st.cfg);ghLoad()};
+  document.getElementById("cForget").onclick=()=>{st.cfg.token="";lsSet(LS_CFG,st.cfg);say("ok","Jeton effacé de ce navigateur.");render()};
+  document.getElementById("jCopy").onclick=()=>{const t=document.getElementById("jOut");navigator.clipboard.writeText(t.value).then(()=>{say("ok","JSON copié.");render()},()=>{t.focus();t.select()})};
+  document.getElementById("jImport").onclick=()=>{try{const d=JSON.parse(document.getElementById("jIn").value);const arr=Array.isArray(d)?d:d.sites;if(!Array.isArray(arr))throw 0;st.sites=arr.map(s=>Object.assign(newSite(),s));st.dirty=true;persistDraft();say("ok",`${arr.length} site(s) importé(s). Enregistrez sur GitHub pour les conserver.`)}catch(e){say("bad","JSON illisible : il doit contenir une liste « sites ».")}render()};
+}
+
+function openEdit(i){st.edIdx=i;st.ed=i<0?newSite():Object.assign(newSite(),clone(st.sites[i]));st.view="edit";st.msg=null;st.armDel=false;st.open=null;render();window.scrollTo(0,0)}
+
+/* champs */
+function num(path,label,unit,opt={}){const v=get(path);const bad=Number.isNaN(v);
+  return`<label class="f">${label}${unit?` <span class="u">${unit}</span>`:""}<input class="num${bad?" invalid":""}" inputmode="decimal" data-num="${path}" value="${esc(bad?"":fmt(v))}" placeholder="${esc(opt.ph||"")}"></label>`}
+function txt(path,label,opt={}){return`<label class="f">${label}<input data-txt="${path}" value="${esc(get(path))}" placeholder="${esc(opt.ph||"")}" ${opt.mono?'class="num" autocapitalize="off" spellcheck="false"':""}></label>`}
+function sel(path,label,opts){const v=get(path);return`<label class="f">${label}<select data-sel="${path}">${Object.entries(opts).map(([k,l])=>`<option value="${k}"${k===v?" selected":""}>${esc(l)}</option>`).join("")}</select></label>`}
+function get(path){return path.split(".").reduce((o,k)=>o==null?o:o[k],st.ed)}
+function set(path,val){const ks=path.split(".");let o=st.ed;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=val}
+
+function sec(id,title,badge,inner,open){return`<details class="card" id="s-${id}" ${open?"open":""}><summary><h2>${title}</h2>${badge||""}</summary><div class="body">${inner}</div></details>`}
+
+function renderEdit(){
+  const s=st.ed,v=s.valorisation,iss=issues(s);
+  const openSet=st.open||new Set(["loc","pans","valo"]);st.open=openSet;
+  const pans=s.pans.map((p,i)=>`<div class="pan">
+    <div class="pan-h"><strong>Champ ${i+1}</strong>${s.pans.length>1?`<button class="ghost" data-delpan="${i}">Retirer</button>`:""}</div>
+    <div class="grid">${txt(`pans.${i}.nom`,"Nom",{ph:"ex. Pan sud-ouest"})}${num(`pans.${i}.pc_kwc`,"Puissance crête","kWc")}
+    ${sel(`pans.${i}.suivi`,"Structure",{fixe:"Fixe",tracker_1axe:"Tracker 1 axe N-S"})}
+    ${p.suivi==="fixe"?num(`pans.${i}.inclinaison`,"Inclinaison","°",{ph:"0 à 90"}):num(`pans.${i}.rotation_max`,"Rotation max","± °",{ph:"ex. 55"})}
+    ${num(`pans.${i}.azimut`,p.suivi==="fixe"?"Azimut":"Azimut de l'axe","° PVsyst",{ph:"Sud 0 · Est −90 · Ouest +90"})}</div></div>`).join("");
+
+  const m=s.masque;
+  const maskInner=`${m?`<div class="maskbox">${maskSvg(m.points)}</div>
+    <p class="hint">${esc(m.fichier)} · ${m.points.length} points · importé le ${esc(m.importe_le)} · hauteur max <span class="num">${fmt(Math.max(...m.points.map(p=>p[1])))}°</span></p>`
+    :`<p class="hint">Aucun masque. Sans masque, l'horizon est supposé dégagé.</p>`}
+    <div class="grid">${`<label class="f">Convention des azimuts du fichier<select id="mConv"><option value="auto">Détection automatique</option><option value="pvsyst_sud0">PVsyst : Sud = 0°, Est négatif</option><option value="nord0">Nord = 0°, Sud = 180°</option></select></label>`}
+    <label class="f">Fichier CSV exporté de PVsyst<input type="file" id="mFile" accept=".csv,.hor,.txt,text/csv,text/plain"></label></div>
+    <p class="hint">Format attendu : une ligne par point, « azimut ; hauteur » en degrés. Les lignes d'en-tête sont ignorées, la virgule décimale est acceptée.</p>
+    ${m?`<div class="row"><button class="danger" id="mDel">Supprimer le masque</button></div>`:""}`;
+
+  const modeRadios=Object.entries(MODES).map(([k,o])=>`<label class="${v.mode===k?"on":""}"><input type="radio" name="mode" value="${k}" ${v.mode===k?"checked":""}><span>${esc(o.lbl)}</span></label>`).join("");
+  let valoFields="";
+  if(v.mode.startsWith("autoconso")){
+    valoFields+=`<div class="grid">${num("valorisation.prix_achat_eur_kwh","Prix d'achat évité","€/kWh TTC",{ph:"ex. 0,2016"})}
+      ${v.mode==="autoconso_surplus"?num("valorisation.tarif_surplus_eur_kwh","Tarif de rachat du surplus","€/kWh",{ph:"ex. 0,04"}):""}
+      ${sel("valorisation.conso.source","Consommation du site",{enedis:"Courbe de charge Enedis",profil:"Profil type (conso annuelle)"})}
+      ${v.conso.source==="enedis"?txt("valorisation.conso.prm","PRM de consommation",{ph:"14 chiffres",mono:true}):num("valorisation.conso.annuelle_kwh","Consommation annuelle","kWh/an")}</div>`;
+  }
+  if(v.mode==="vente_totale")valoFields+=`<div class="grid">${num("valorisation.tarif_vente_eur_mwh","Tarif de vente","€/MWh",{ph:"ex. 105"})}</div>`;
+  if(v.mode==="spot")valoFields+=`<div class="grid">${num("valorisation.spot.decote_eur_mwh","Décote agrégateur","€/MWh",{ph:"ex. 3"})}
+      ${sel("valorisation.spot.prix_negatif","Quarts d'heure à prix négatif",{arret:"Arrêt de l'injection",injection:"Injection maintenue"})}</div>
+      <label class="chk"><input type="checkbox" id="vComp" ${v.spot.complement?"checked":""}> Complément de rémunération</label>
+      ${v.spot.complement?`<div class="grid">${num("valorisation.spot.prix_reference_eur_mwh","Tarif de référence","€/MWh",{ph:"ex. 78"})}</div>
+      <p class="hint">Le complément est estimé sur la journée : (tarif de référence − prix spot pondéré par la production) × énergie. Le calcul réglementaire mensuel, avec son M0, reste à confirmer selon votre contrat.</p>`:""}`;
+
+  app.innerHTML=`
+  <div class="ed-head"><button class="ghost" id="eBack" aria-label="Retour à la liste">← Sites</button></div>
+  <h1>${esc(s.nom||"Nouveau site")}</h1>
+  ${iss.length?`<p class="msg warn">À compléter : ${esc(iss.join(", "))}.</p>`:`<p class="msg ok">Paramètres complets : le site peut être calculé.</p>`}
+  ${msgHtml()}
+  ${sec("loc","Site et localisation","",`<div class="grid">${txt("nom","Nom du site",{ph:"ex. Centrale de Saint-Priest"})}${sel("type","Type",TYPES)}</div>
+    <label class="f">Coordonnées GPS (coller « lat, lon » remplit les deux champs)<input id="eCoord" class="num" inputmode="decimal" placeholder="45.7640, 4.8357" autocapitalize="off"></label>
+    <div class="grid">${num("lat","Latitude","°",{ph:"ex. 45,764"})}${num("lon","Longitude","°",{ph:"ex. 4,836"})}${num("altitude","Altitude","m",{ph:"facultatif"})}</div>
+    ${Number.isFinite(s.lat)&&Number.isFinite(s.lon)?`<p class="hint"><a href="https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lon}#map=17/${s.lat}/${s.lon}" target="_blank" rel="noopener">Vérifier l'emplacement sur la carte ↗</a></p>`:""}
+    <label class="chk"><input type="checkbox" id="eActif" ${s.actif?"checked":""}> Site actif (inclus dans le calcul quotidien)</label>`,openSet.has("loc"))}
+  ${sec("pans","Champs PV",`<span class="chip plain num">${fmtP(kwc(s))}</span>`,`${pans}<div class="row"><button id="eAddPan">Ajouter un champ (autre orientation)</button></div>`,openSet.has("pans"))}
+  ${sec("tech","Modules, onduleurs et pertes","",`<div class="grid">${num("modules.gamma_pct","Coeff. température Pmax","%/°C",{ph:"ex. −0,35"})}${sel("modules.pose","Mode de pose",POSES)}
+    ${sel("onduleur.type","Onduleurs",{micro:"Micro-onduleurs",string:"Onduleurs string",central:"Onduleurs centraux"})}${num("onduleur.pac_kva","Puissance AC totale","kVA")}
+    ${num("onduleur.rendement_pct","Rendement européen","%")}${num("pertes_dc_pct","Pertes DC (câbles, mismatch, salissure)","%")}
+    ${num("albedo","Albédo","0 – 1",{ph:"0,2"})}${num("limitation_kva","Limitation d'injection","kVA",{ph:"facultatif"})}</div>
+    <p class="hint">Le mode de pose fixe le modèle thermique des cellules (température et vent prévus).</p>`,openSet.has("tech"))}
+  ${sec("mask","Masque d'horizon",m?`<span class="chip ok">Importé</span>`:`<span class="chip">Aucun</span>`,maskInner,openSet.has("mask"))}
+  ${sec("mes","Données mesurées","",`<div class="grid">${sel("mesures.source","Source des mesures J+1",{enphase:"API Enphase",csv:"Fichier compteur déposé (CSV)",supervision:"Supervision (API à définir)"})}
+    ${s.mesures.source==="enphase"?txt("mesures.enphase_system_id","Identifiant système Enphase",{mono:true}):""}
+    ${txt("mesures.prm_production","PRM de production",{ph:"facultatif",mono:true})}</div>
+    <p class="hint">Les identifiants d'accès (clés API, jetons) ne se saisissent pas ici : ils vont dans les secrets du dépôt GitHub.</p>`,openSet.has("mes"))}
+  ${sec("valo","Valorisation de l'énergie","",`<div class="seg" role="radiogroup">${modeRadios}</div><p class="formula">${esc(MODES[v.mode].help)}</p>${valoFields}`,openSet.has("valo"))}
+  ${sec("notes","Notes","",`<label class="f">Notes internes<textarea id="eNotes" style="font-family:var(--f-body);font-size:.92rem;min-height:80px">${esc(s.notes)}</textarea></label>`,openSet.has("notes"))}`;
+
+  bar.hidden=false;
+  barInner.innerHTML=`${st.edIdx>=0?`<button class="danger${st.armDel?" armed":""}" id="eDel">${st.armDel?"Confirmer la suppression":"Supprimer"}</button>`:""}
+    <span class="grow"></span><button id="eCancel">Annuler</button><button class="primary" id="eOk">Valider le site</button>`;
+  bindEdit();
+}
+
+function bindEdit(){
+  const s=st.ed;
+  app.querySelectorAll("details.card").forEach(d=>d.addEventListener("toggle",()=>{const id=d.id.slice(2);d.open?st.open.add(id):st.open.delete(id)}));
+  app.querySelectorAll("[data-num]").forEach(el=>el.addEventListener("input",()=>{const n=parseNum(el.value);set(el.dataset.num,n);el.classList.toggle("invalid",Number.isNaN(n))}));
+  app.querySelectorAll("[data-num]").forEach(el=>el.addEventListener("change",()=>rerender()));
+  app.querySelectorAll("[data-txt]").forEach(el=>el.addEventListener("input",()=>set(el.dataset.txt,el.value)));
+  app.querySelectorAll("[data-txt]").forEach(el=>el.addEventListener("change",()=>rerender()));
+  app.querySelectorAll("[data-sel]").forEach(el=>el.addEventListener("change",()=>{set(el.dataset.sel,el.value);rerender()}));
+  app.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener("change",()=>{s.valorisation.mode=el.value;rerender()}));
+  app.querySelectorAll("[data-delpan]").forEach(b=>b.onclick=()=>{s.pans.splice(+b.dataset.delpan,1);rerender()});
+  const on=(id,ev,fn)=>{const el=document.getElementById(id);if(el)el.addEventListener(ev,fn)};
+  on("eAddPan","click",()=>{s.pans.push(newPan());rerender()});
+  on("eActif","change",e=>{s.actif=e.target.checked;rerender()});
+  on("vComp","change",e=>{s.valorisation.spot.complement=e.target.checked;rerender()});
+  on("eNotes","input",e=>{s.notes=e.target.value});
+  on("eCoord","change",e=>{const m=e.target.value.match(/(-?\d+(?:[.,]\d+)?)\s*[,; ]\s*(-?\d+(?:[.,]\d+)?)/);
+    if(m){s.lat=parseNum(m[1]);s.lon=parseNum(m[2]);rerender()}else{say("bad","Coordonnées non reconnues. Exemple : 45.7640, 4.8357");rerender()}});
+  on("mFile","change",e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const conv=document.getElementById("mConv").value;
+    const rd=new FileReader();rd.onload=()=>{let t=String(rd.result);if(t.includes("\uFFFD")){/* relire en Windows-1252 */const r2=new FileReader();r2.onload=()=>finish(String(r2.result));r2.readAsText(f,"windows-1252")}else finish(t)};
+    function finish(text){const res=parseHorizon(text,conv);
+      if(res.error)say("bad",res.error);
+      else{s.masque={fichier:f.name,importe_le:new Date().toISOString().slice(0,10),convention:res.convention,points:res.points};
+        say("ok",`Masque importé : ${res.points.length} points (convention ${res.convention==="nord0"?"Nord = 0°, convertie":"PVsyst"}).`)}
+      st.open.add("mask");rerender()}
+    rd.readAsText(f,"utf-8")});
+  on("mDel","click",()=>{s.masque=null;rerender()});
+  on("eBack","click",closeEdit);on("eCancel","click",closeEdit);
+  on("eOk","click",()=>{if(!s.nom.trim())s.nom="Site sans nom";
+    if(st.edIdx<0)st.sites.push(s);else st.sites[st.edIdx]=s;
+    st.dirty=true;persistDraft();const n=issues(s).length;
+    say(n?"warn":"ok",n?`Site validé, ${n} paramètre(s) encore à compléter. Pensez à enregistrer sur GitHub.`:"Site validé. Pensez à enregistrer sur GitHub.");
+    st.view="list";render();window.scrollTo(0,0)});
+  on("eDel","click",()=>{if(!st.armDel){st.armDel=true;rerender();return}
+    st.sites.splice(st.edIdx,1);st.dirty=true;persistDraft();say("ok","Site supprimé. Enregistrez sur GitHub pour confirmer.");st.view="list";render()});
+}
+function rerender(){const y=window.scrollY;render();window.scrollTo(0,y)}
+function closeEdit(){st.view="list";st.msg=null;render();window.scrollTo(0,0)}
+
+render();
+if(st.cfg.token&&!st.dirty)ghLoad();
+})();
+</script>
+
+</body>
+</html>
