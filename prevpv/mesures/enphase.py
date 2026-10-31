@@ -74,12 +74,14 @@ def _intervalles(system_id: str, debut_jour: date, granularite: str) -> pd.Serie
     if not iv:
         return pd.Series(dtype=float)
     idx = pd.to_datetime([i["end_at"] for i in iv], unit="s", utc=True)
-    # enwh = énergie du quart d'heure (Wh) -> puissance moyenne en kW
-    val = [(i.get("enwh") if i.get("enwh") is not None else (i.get("powr") or 0) / 4) / 250.0 for i in iv]
-    return pd.Series(val, index=idx, dtype=float)
-
-
-_diagnostic_fait = set()
+    # Les micro-onduleurs remontent au pas de 5 min : énergie (Wh) cumulée par quart d'heure, puis kW moyen.
+    if all(i.get("enwh") is not None for i in iv):
+        wh = pd.Series([float(i["enwh"]) for i in iv], index=idx)
+    else:
+        pas_h = pd.Series(idx, index=idx).diff().dt.total_seconds().fillna(300).to_numpy() / 3600
+        wh = pd.Series([float(i.get("powr") or 0) for i in iv], index=idx) * pas_h
+    wh15 = wh.resample("15min", closed="right", label="right").sum(min_count=1)
+    return (wh15 * 4 / 1000.0).dropna()
 
 
 def diagnostic(sid: str) -> None:
