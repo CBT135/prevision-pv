@@ -1,5 +1,5 @@
 {
- "mis_a_jour": "2026-10-31T16:06+01:00",
+ "mis_a_jour": "2026-10-31T16:21+01:00",
  "previsions": [
   "2026-11-01"
  ],
@@ -22,7 +22,7 @@
    "nom": "Vouzance",
    "type": "sol",
    "pc_kwc": 12000.0,
-   "pac_kva": 10000.0,
+   "pac_kva": 10560.0,
    "mode": "vente_totale"
   }
  ]

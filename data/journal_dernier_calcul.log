@@ -1,15 +1,7 @@
-[16:05:57] Réalisé du 2026-10-28
-[16:05:58]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
-[16:05:58]   CB_QBase — installation personnelle : pas de prévision archivée pour cette journée
-[16:05:58]   CB_QBase — installation personnelle : mesuré 6.0 kWh
-[16:05:58] Réalisé du 2026-10-29
-[16:05:58]   CB_QBase — installation personnelle : pas de prévision archivée pour cette journée
-[16:05:58]   CB_QBase — installation personnelle : mesuré 4.0 kWh
-[16:05:58] Réalisé du 2026-10-30
-[16:05:59]   CB_QBase — installation personnelle : pas de prévision archivée pour cette journée
-[16:05:59]   CB_QBase — installation personnelle : mesuré 1.4 kWh
-[16:05:59] Prévision du 2026-11-01
-[16:05:59]   prix : secret ENTSOE_TOKEN absent, valorisation spot non calculée
-[16:05:59]   CB_QBase — installation personnelle : 4.2 kWh, CA None €
-[16:06:00]   Vouzance : 38887.1 kWh, CA 3508.4 €
-Jeton Enphase : renouvelé et réenregistré.
+[16:21:37] Réalisé du 2026-10-28
+[16:21:37] Réalisé du 2026-10-29
+[16:21:37] Réalisé du 2026-10-30
+[16:21:37] Prévision du 2026-11-01
+[16:21:37]   prix : secret ENTSOE_TOKEN absent, valorisation spot non calculée
+[16:21:37]   CB_QBase — installation personnelle : 4.2 kWh, CA 0.68 €
+[16:21:38]   Vouzance : 39383.8 kWh, CA 3553.2 €
