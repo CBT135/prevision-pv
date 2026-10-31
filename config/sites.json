@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-10-31T14:20:17.524Z",
+  "mis_a_jour": "2026-10-31T14:53:31.437Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -63,7 +63,7 @@
     },
     {
       "id": "site-d513nkp",
-      "actif": false,
+      "actif": true,
       "nom": "Vouzance",
       "type": "sol",
       "lat": 46.412275,
