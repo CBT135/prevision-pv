@@ -1,5 +1,15 @@
 {
  "site-3o1hxnm": {
+  "jours": 12,
+  "global": 0.6,
+  "tranches": [
+   0.6,
+   0.6,
+   0.6
+  ],
+  "actif": true
+ },
+ "site-d513nkp": {
   "jours": 0,
   "global": 1.0,
   "tranches": [
