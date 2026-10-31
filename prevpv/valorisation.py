@@ -50,8 +50,13 @@ def calculer(site: dict, prod_kw: pd.Series, prix: pd.Series | None, conso_kw: p
 
     if mode.startswith("autoconso"):
         prix_achat = num(v.get("prix_achat_eur_kwh"))
-        if conso_kw is None or prix_achat is None:
-            r["detail"]["manque"] = "consommation ou prix d'achat évité"
+        manque = []
+        if prix_achat is None:
+            manque.append("prix d'achat évité")
+        if conso_kw is None:
+            manque.append("courbe de consommation (CSV Enedis dans data/conso/<id du site>/ ou consommation annuelle)")
+        if manque:
+            r["detail"]["manque"] = " et ".join(manque)
             return r
         c = conso_kw.reindex(prod_kw.index).fillna(0).clip(lower=0) * 0.25
         auto = pd.concat([e, c], axis=1).min(axis=1)
