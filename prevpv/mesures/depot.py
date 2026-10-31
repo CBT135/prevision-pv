@@ -3,10 +3,12 @@
 Production :   data/mesures_depot/<id_site>/*.csv
 Consommation : data/conso/<id_site>/*.csv   (pour les modes autoconsommation)
 
-Formats acceptés (séparateur ; ou , — virgule décimale acceptée) :
+Formats acceptés (CSV : séparateur ; ou , — virgule décimale acceptée) :
 1. Format du projet : colonnes « horodatage » (fin d'intervalle, heure de Paris ou ISO avec fuseau)
    et « puissance_kw » (puissance moyenne sur l'intervalle).
 2. Export de courbe de charge Enedis : colonnes « Horodate » (fin d'intervalle) et « Valeur » en W.
+3. Export Excel de l'espace client Enedis (.xlsx, onglet « Puissance moyenne soutirée » ou
+   « injectée ») : colonnes « Début », « Fin », « Valeur (en kW) », heure de Paris.
 Les pas de 30 ou 60 min sont ramenés au quart d'heure (puissance constante sur l'intervalle).
 """
 from __future__ import annotations
@@ -19,7 +21,45 @@ import pandas as pd
 from ..commun import DOSSIER_CONSO, DOSSIER_DEPOT, TZ, journal
 
 
+def _localiser(temps: pd.Series) -> pd.DatetimeIndex:
+    if temps.dt.tz is None:
+        try:
+            temps = temps.dt.tz_localize(TZ, ambiguous="infer", nonexistent="NaT")
+        except Exception:
+            temps = temps.dt.tz_localize(TZ, ambiguous="NaT", nonexistent="NaT")
+    return pd.DatetimeIndex(temps.dt.tz_convert("UTC"))
+
+
+def _lire_xlsx(chemin: Path) -> pd.Series:
+    import openpyxl
+    wb = openpyxl.load_workbook(chemin, read_only=True, data_only=True)
+    fins, vals = [], []
+    for ws in wb.worksheets:
+        col = None
+        for r in ws.iter_rows(values_only=True):
+            cellules = [str(c).strip().lower() if c is not None else "" for c in r]
+            if col is None:
+                if "fin" in cellules and any(c.startswith("valeur") for c in cellules):
+                    col = (cellules.index("fin"), next(i for i, c in enumerate(cellules) if c.startswith("valeur")))
+                continue
+            f, v = r[col[0]], r[col[1]]
+            if f is None or v is None:
+                continue
+            fins.append(f)
+            vals.append(v)
+    if not fins:
+        journal(f"  ! {chemin.name} : aucune colonne « Fin » / « Valeur » trouvée")
+        return pd.Series(dtype=float)
+    temps = pd.Series(pd.to_datetime(pd.Series(fins).astype(str), dayfirst=True, errors="coerce", format="mixed"))
+    val = pd.to_numeric(pd.Series(vals).astype(str).str.replace(",", ".", regex=False), errors="coerce")
+    s = pd.Series(val.to_numpy(), index=_localiser(temps)).dropna()
+    s = s[s.index.notna()].sort_index()
+    return _au_quart_d_heure(s)
+
+
 def _lire(chemin: Path) -> pd.Series:
+    if chemin.suffix.lower() == ".xlsx":
+        return _lire_xlsx(chemin)
     brut = chemin.read_text(encoding="utf-8-sig", errors="replace")
     sep = ";" if brut.count(";") >= brut.count(",") else ","
     df = pd.read_csv(chemin, sep=sep, dtype=str, encoding="utf-8-sig", encoding_errors="replace")
@@ -32,11 +72,8 @@ def _lire(chemin: Path) -> pd.Series:
         journal(f"  ! {chemin.name} : colonnes non reconnues {list(df.columns)}")
         return pd.Series(dtype=float)
     temps = pd.to_datetime(df[t], utc=False, errors="coerce", format="mixed")
-    if temps.dt.tz is None:
-        temps = temps.dt.tz_localize(TZ, ambiguous="NaT", nonexistent="NaT")
-    temps = temps.dt.tz_convert("UTC")
     val = pd.to_numeric(df[v].str.replace(",", ".", regex=False).str.strip(), errors="coerce") * facteur
-    s = pd.Series(val.to_numpy(), index=pd.DatetimeIndex(temps)).dropna()
+    s = pd.Series(val.to_numpy(), index=_localiser(temps)).dropna()
     s = s[s.index.notna()].sort_index()
     return _au_quart_d_heure(s)
 
@@ -55,7 +92,7 @@ def _au_quart_d_heure(s: pd.Series) -> pd.Series:
 
 def _dossier(base: Path, site_id: str) -> pd.Series | None:
     d = base / site_id
-    fichiers = sorted(d.glob("*.csv")) if d.exists() else []
+    fichiers = sorted([*d.glob("*.csv"), *d.glob("*.xlsx")]) if d.exists() else []
     if not fichiers:
         return None
     s = pd.concat([_lire(f) for f in fichiers])

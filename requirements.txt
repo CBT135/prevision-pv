@@ -2,3 +2,4 @@ pvlib==0.16.1
 pandas==3.0.5
 numpy>=2.0
 requests>=2.31
+openpyxl>=3.1
