@@ -38,7 +38,10 @@ jobs:
           ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
           ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
           OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
-        run: python -m prevpv.run quotidien
+        run: |
+          set -o pipefail
+          mkdir -p data
+          python -m prevpv.run quotidien 2>&1 | tee data/journal_dernier_calcul.log
 
       - name: Réenregistrer le jeton Enphase s'il a changé
         if: always()
@@ -51,8 +54,12 @@ jobs:
             echo "::warning::Enphase a fourni un nouveau jeton mais le secret SECRETS_PAT est absent : il faudra refaire l'initialisation Enphase."
             exit 0
           fi
-          gh secret set ENPHASE_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$f"
-          echo "Jeton de rafraîchissement Enphase mis à jour."
+          if gh secret set ENPHASE_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$f" 2> "$RUNNER_TEMP/gh_err"; then
+            echo "Jeton Enphase : renouvelé et réenregistré." | tee -a data/journal_dernier_calcul.log
+          else
+            echo "Jeton Enphase : ÉCHEC du réenregistrement ($(head -c 300 "$RUNNER_TEMP/gh_err")). Vérifier SECRETS_PAT (droit Secrets : Read and write sur ce dépôt)." | tee -a data/journal_dernier_calcul.log
+            exit 1
+          fi
 
       - name: Publier les résultats
         if: always()
