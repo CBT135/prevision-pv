@@ -227,16 +227,18 @@ async function afficherReal(date){
   if(!sites.length)return`<p class="msg">Pas de réalisé pour ce projet à cette date.</p>`;
   const comp=sites.filter(s=>s.energie_prevue_kwh!=null);
   const ePrev=somme(comp.map(s=>s.energie_prevue_kwh)),eMes=somme(sites.map(s=>s.energie_mesuree_kwh));
+  const eMesComp=somme(comp.map(s=>s.energie_mesuree_kwh));
   const caR=sites.map(s=>s.valorisation_realisee&&s.valorisation_realisee.ca_eur).filter(v=>v!=null);
   let h=`<div class="tiles">${tile("Produit (mesuré)",energie(eMes),`${sites.length} site(s)`)}
-    ${tile(sites.some(s=>s.prevision_reconstituee)?"Prévu (reconstitué)":"Prévu la veille",comp.length?energie(ePrev):"–",comp.length&&eMes?`écart ${nf((ePrev-eMes)/eMes*100,1)} %`:"")}
+    ${tile(sites.some(s=>s.prevision_reconstituee)?"Prévu (reconstitué)":"Prévu la veille",comp.length?energie(ePrev):"–",comp.length&&ePrev?`mesuré/prévu ${eMesComp/ePrev>=1?"+":""}${nf((eMesComp/ePrev-1)*100,1)} %`:"")}
     ${tile("CA réalisé",caR.length?euro(somme(caR)):"–","")}</div>`;
   for(const s of sites){
     const series=[];
     if(s.p_prevue_kw)series.push({v:s.p_prevue_kw,c:"var(--prod)",area:true,fill:"var(--prod-fill)"});
     series.push({v:s.p_mesure_kw,c:"var(--mes)",w:1.8});
     if(s.conso_totale_kw)series.push({v:s.conso_totale_kw,c:"var(--conso)",w:1.4,dash:!s.conso_totale_mesuree});
-    const ec=s.ecart_energie_pct;
+    // écart = mesuré / prévu − 1 (négatif : production inférieure à la prévision), recalculé pour tous les fichiers
+    const ec=s.energie_prevue_kwh>0?(s.energie_mesuree_kwh/s.energie_prevue_kwh-1)*100:null;
     h+=`<article class="site"><div class="site-h"><h2>${esc(s.nom)}</h2><div class="chips">
       ${ec==null?`<span class="chip">Pas de prévision archivée</span>`:`<span class="chip ${Math.abs(ec)<=10?"ok":Math.abs(ec)<=25?"warn":"bad"}">Écart ${ec>0?"+":""}${nf(ec,1)} %</span>`}${s.prevision_reconstituee?`<span class="chip" title="Calculée après coup à partir des prévisions météo archivées">Prévision reconstituée</span>`:""}</div></div>
       <dl class="kv"><div><dt>Mesuré</dt><dd>${energie(s.energie_mesuree_kwh)}</dd></div><div><dt>Prévu</dt><dd>${energie(s.energie_prevue_kwh)}</dd></div>

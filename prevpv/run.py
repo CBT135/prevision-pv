@@ -152,8 +152,9 @@ def realise(sites: list[dict], d: date, fournis: dict | None = None) -> None:
                 res.update({
                     "p_prevue_kw": serie_vers_liste(p_prev),
                     "energie_prevue_kwh": round(e_prev, 3),
-                    "ecart_energie_pct": round((e_prev - val_r["energie_kwh"]) / val_r["energie_kwh"] * 100, 1)
-                    if val_r["energie_kwh"] > 0 else None,
+                    # écart = mesuré / prévu − 1 : négatif quand la production est inférieure à la prévision
+                    "ecart_energie_pct": round((val_r["energie_kwh"] / e_prev - 1) * 100, 1)
+                    if e_prev > 0 else None,
                     "mae_kw": round(float((p_prev - mes)[jour].abs().mean()), 4),
                     "nmae_pct": round(float((p_prev - mes)[jour].abs().mean()) / pac * 100, 2),
                     "ca_prevu_eur": ps.get("valorisation", {}).get("ca_eur"),
