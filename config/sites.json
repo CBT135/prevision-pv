@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-10-31T15:08:48.672Z",
+  "mis_a_jour": "2026-10-31T15:46:57.294Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -177,6 +177,61 @@
         }
       },
       "notes": "Site fictif pour illustrer la saisie. À supprimer."
+    },
+    {
+      "id": "site-hjl27et",
+      "actif": true,
+      "nom": "LM11",
+      "type": "sol",
+      "lat": 44.0136,
+      "lon": 6.025402,
+      "altitude": 810,
+      "pans": [
+        {
+          "nom": "Champ PV",
+          "pc_kwc": 2296.8,
+          "inclinaison": 25,
+          "azimut": 0,
+          "suivi": "fixe",
+          "rotation_max": null
+        }
+      ],
+      "modules": {
+        "gamma_pct": -0.47,
+        "pose": "sol"
+      },
+      "onduleur": {
+        "type": "central",
+        "pac_kva": 2000,
+        "rendement_pct": 98.4
+      },
+      "pertes_dc_pct": 18.18,
+      "albedo": 0.17,
+      "limitation_kva": null,
+      "masque": null,
+      "mesures": {
+        "source": "csv",
+        "enphase_system_id": "",
+        "prm_production": ""
+      },
+      "valorisation": {
+        "mode": "vente_totale",
+        "prix_achat_eur_kwh": null,
+        "tarif_surplus_eur_kwh": null,
+        "tarif_vente_eur_mwh": 412.04,
+        "conso": {
+          "source": "enedis",
+          "prm": "",
+          "annuelle_kwh": null
+        },
+        "spot": {
+          "decote_eur_mwh": null,
+          "prix_negatif": "arret",
+          "complement": false,
+          "prix_reference_eur_mwh": null
+        }
+      },
+      "notes": ""
     }
   ]
 }
