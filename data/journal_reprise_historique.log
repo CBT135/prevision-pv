@@ -1,8 +1,31 @@
-[16:43:12] Reprise d'historique CB_QBase — installation personnelle du 2026-10-29 au 2026-10-30
-[16:43:13]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
-[16:43:14]   2026-10-29 → 2026-10-30 : 192 quarts d'heure
-[16:43:14] Reprise d'historique Vouzance du 2026-10-29 au 2026-10-30
-[16:43:14]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
-[16:43:14]   2026-10-29 → 2026-10-30 : 96 quarts d'heure
-[16:43:14]   correction CB_QBase — installation personnelle : {'jours': 29, 'global': np.float64(0.7566), 'tranches': [0.6, np.float64(0.7728), np.float64(0.7826)], 'actif': True}
-[16:43:14]   correction Vouzance : {'jours': 1, 'global': 1.0, 'tranches': [1.0, 1.0, 1.0], 'actif': False}
+[16:51:36] Reprise d'historique CB_QBase — installation personnelle du 2026-10-10 au 2026-10-30
+[16:51:37]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
+[16:52:02]   2026-10-10 → 2026-10-30 : 2016 quarts d'heure
+[16:52:02] Reprise d'historique Vouzance du 2026-10-10 au 2026-10-30
+[16:52:02]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:02]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[16:52:07]   2026-10-10 → 2026-10-30 : 2013 quarts d'heure
+[16:52:07] Reprise d'historique LM11 du 2026-10-10 au 2026-10-30
+[16:52:07]   aucune mesure disponible
+[16:52:07]   correction CB_QBase — installation personnelle : {'jours': 29, 'global': np.float64(0.7566), 'tranches': [0.6, np.float64(0.7728), np.float64(0.7826)], 'actif': True, 'quarts_arret_exclus': 0}
+[16:52:07]   correction Vouzance : {'jours': 21, 'global': np.float64(0.6675), 'tranches': [np.float64(0.6566), np.float64(0.6694), np.float64(0.6675)], 'actif': True, 'quarts_arret_exclus': 19}
+[16:52:07]   correction LM11 : {'jours': 0, 'global': 1.0, 'tranches': [1.0, 1.0, 1.0], 'actif': False}

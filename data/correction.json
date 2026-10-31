@@ -7,10 +7,22 @@
    0.7728,
    0.7826
   ],
-  "actif": true
+  "actif": true,
+  "quarts_arret_exclus": 0
  },
  "site-d513nkp": {
-  "jours": 1,
+  "jours": 21,
+  "global": 0.6675,
+  "tranches": [
+   0.6566,
+   0.6694,
+   0.6675
+  ],
+  "actif": true,
+  "quarts_arret_exclus": 19
+ },
+ "site-hjl27et": {
+  "jours": 0,
   "global": 1.0,
   "tranches": [
    1.0,
