@@ -1,0 +1,38 @@
+name: Initialisation Enphase
+
+# Échange le code d'autorisation Enphase (obtenu une seule fois dans le navigateur, voir README)
+# contre un jeton de rafraîchissement, enregistré directement dans le secret ENPHASE_REFRESH_TOKEN.
+on:
+  workflow_dispatch:
+    inputs:
+      code:
+        description: "Code d'autorisation affiché par Enphase (valable quelques minutes, usage unique)"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Échanger le code contre un jeton
+        env:
+          CID: ${{ secrets.ENPHASE_CLIENT_ID }}
+          CSEC: ${{ secrets.ENPHASE_CLIENT_SECRET }}
+          CODE: ${{ inputs.code }}
+          GH_TOKEN: ${{ secrets.SECRETS_PAT }}
+        run: |
+          echo "::add-mask::$CODE"
+          if [ -z "$CID" ] || [ -z "$CSEC" ] || [ -z "$GH_TOKEN" ]; then
+            echo "::error::Secrets ENPHASE_CLIENT_ID, ENPHASE_CLIENT_SECRET et SECRETS_PAT requis."; exit 1
+          fi
+          rep=$(curl -s -X POST -u "$CID:$CSEC" \
+            "https://api.enphaseenergy.com/oauth/token?grant_type=authorization_code&redirect_uri=https://api.enphaseenergy.com/oauth/redirect_uri&code=$CODE")
+          rt=$(printf '%s' "$rep" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("refresh_token",""))' 2>/dev/null || true)
+          if [ -z "$rt" ]; then
+            echo "::error::Enphase a refusé le code (expiré ou déjà utilisé ?). Réponse : $(printf '%s' "$rep" | head -c 300)"; exit 1
+          fi
+          echo "::add-mask::$rt"
+          printf '%s' "$rt" | gh secret set ENPHASE_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY"
+          echo "Jeton enregistré dans le secret ENPHASE_REFRESH_TOKEN."

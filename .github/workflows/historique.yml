@@ -1,0 +1,57 @@
+name: Reprise d'historique
+
+# À lancer une fois à la mise en service d'un site (onglet Actions > Reprise d'historique > Run workflow).
+# Reconstitue le modèle à partir des prévisions météo archivées et le compare aux mesures,
+# pour que la correction soit active dès le premier jour.
+on:
+  workflow_dispatch:
+    inputs:
+      jours:
+        description: "Nombre de jours à reprendre (365 max conseillé)"
+        default: "90"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: prevision-pv
+  cancel-in-progress: false
+
+jobs:
+  historique:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Reprise
+        env:
+          ENPHASE_API_KEY: ${{ secrets.ENPHASE_API_KEY }}
+          ENPHASE_CLIENT_ID: ${{ secrets.ENPHASE_CLIENT_ID }}
+          ENPHASE_CLIENT_SECRET: ${{ secrets.ENPHASE_CLIENT_SECRET }}
+          ENPHASE_REFRESH_TOKEN: ${{ secrets.ENPHASE_REFRESH_TOKEN }}
+          ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
+          OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
+        run: python -m prevpv.run historique --jours "${{ inputs.jours }}"
+      - name: Réenregistrer le jeton Enphase s'il a changé
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_PAT }}
+        run: |
+          f="$RUNNER_TEMP/enphase_refresh_token"
+          [ -s "$f" ] && [ -n "$GH_TOKEN" ] && gh secret set ENPHASE_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$f" || true
+      - name: Publier
+        if: always()
+        run: |
+          git config user.name "prevision-pv[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Reprise d'historique (${{ inputs.jours }} jours)"
+          git pull --rebase --autostash
+          git push

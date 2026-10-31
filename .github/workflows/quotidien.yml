@@ -1,1 +1,66 @@
+name: Calcul quotidien
 
+on:
+  schedule:
+    # Heures en UTC. Hiver : 6h40 et 13h40 à Paris ; été : 7h40 et 14h40.
+    - cron: "40 5 * * *"   # mesures de la veille + prévision J+1 sur la météo du matin
+    - cron: "40 12 * * *"  # après publication des prix day-ahead (~13h) : prévision J+1 valorisée
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: prevision-pv
+  cancel-in-progress: false
+
+jobs:
+  calcul:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Calcul (réalisé, correction, prix, prévision J+1)
+        env:
+          ENPHASE_API_KEY: ${{ secrets.ENPHASE_API_KEY }}
+          ENPHASE_CLIENT_ID: ${{ secrets.ENPHASE_CLIENT_ID }}
+          ENPHASE_CLIENT_SECRET: ${{ secrets.ENPHASE_CLIENT_SECRET }}
+          ENPHASE_REFRESH_TOKEN: ${{ secrets.ENPHASE_REFRESH_TOKEN }}
+          ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
+          ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
+          OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
+        run: python -m prevpv.run quotidien
+
+      - name: Réenregistrer le jeton Enphase s'il a changé
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_PAT }}
+        run: |
+          f="$RUNNER_TEMP/enphase_refresh_token"
+          [ -s "$f" ] || exit 0
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::Enphase a fourni un nouveau jeton mais le secret SECRETS_PAT est absent : il faudra refaire l'initialisation Enphase."
+            exit 0
+          fi
+          gh secret set ENPHASE_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$f"
+          echo "Jeton de rafraîchissement Enphase mis à jour."
+
+      - name: Publier les résultats
+        if: always()
+        run: |
+          git config user.name "prevision-pv[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data docs/data
+          if git diff --cached --quiet; then echo "Aucun changement."; exit 0; fi
+          git commit -m "Calcul du $(TZ=Europe/Paris date '+%Y-%m-%d %Hh%M')"
+          git pull --rebase --autostash
+          git push
