@@ -37,7 +37,10 @@ jobs:
           ENPHASE_REFRESH_TOKEN: ${{ secrets.ENPHASE_REFRESH_TOKEN }}
           ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
           OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
-        run: python -m prevpv.run historique --jours "${{ inputs.jours }}"
+        run: |
+          set -o pipefail
+          mkdir -p data
+          python -m prevpv.run historique --jours "${{ inputs.jours }}" 2>&1 | tee data/journal_reprise_historique.log
       - name: Réenregistrer le jeton Enphase s'il a changé
         if: always()
         env:
