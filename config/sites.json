@@ -1,5 +1,10 @@
 {
   "version": 1,
+  "mis_a_jour": "2026-10-31T15:10:00+01:00",
+  "conventions": {
+    "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
+    "masque": "[azimut PVsyst °, hauteur °]"
+  },
   "sites": [
     {
       "id": "site-3o1hxnm",
@@ -174,5 +179,4 @@
       "notes": "Site fictif pour illustrer la saisie. À supprimer."
     }
   ]
-}
 }

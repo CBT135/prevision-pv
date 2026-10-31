@@ -19,9 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
@@ -59,7 +59,8 @@ jobs:
         run: |
           git config user.name "prevision-pv[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data docs/data
+          mkdir -p data docs/data
+          git add -A data docs/data
           if git diff --cached --quiet; then echo "Aucun changement."; exit 0; fi
           git commit -m "Calcul du $(TZ=Europe/Paris date '+%Y-%m-%d %Hh%M')"
           git pull --rebase --autostash

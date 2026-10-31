@@ -12,7 +12,11 @@ def _num(v, defaut=None):
 
 
 def charger_sites(actifs_seulement: bool = True) -> list[dict]:
-    brut = lire_json(FICHIER_SITES, {"sites": []})
+    try:
+        brut = lire_json(FICHIER_SITES, {"sites": []})
+    except ValueError as e:
+        raise SystemExit(f"config/sites.json illisible ({e}). Réenregistrez la base depuis la page "
+                         "« Base de données des sites PV » ou corrigez le fichier.")
     sites = brut["sites"] if isinstance(brut, dict) else brut
     sortie = []
     for s in sites:
