@@ -1,15 +1,16 @@
-[15:19:10] Réalisé du 2026-10-28
-[15:19:11]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
-[15:19:11]   Diagnostic Enphase :
-[15:19:11]     clé API : 32 caractères, espaces ou retours à la ligne autour : non, identique au Client ID : non, identique au Client Secret : non
-[15:19:11]     jeton d'accès : {'scope': 'read write', 'token_type': 'bearer', 'expires_in': 86399, 'is_internal_app': False}
-[15:19:11]     /systems : API Enphase 401 sur /systems : {"message":"Not authorized","details":"Not authorized to access this resource","code":401}
-[15:19:11]     /systems/113437/summary : {"message":"Not authorized","details":"Not authorized to access this resource","code":401}
-[15:19:19]     /systems/113437/telemetry/production_micro : ro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
-[15:19:26]     /systems/113437/telemetry/production_meter : er : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
-[15:19:33]     /systems/113437/rgm_stats : ts : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
-[15:19:40]     /systems/113437/energy_lifetime : me : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
-[15:19:47]   ! CB_QBase — installation personnelle : API Enphase 403 sur /systems/113437/telemetry/production_micro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
+[15:28:48] Réalisé du 2026-10-28
+[15:28:48]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
+[15:28:48]   Diagnostic Enphase :
+[15:28:48]     clé API : 32 caractères, espaces ou retours à la ligne autour : non, identique au Client ID : non, identique au Client Secret : non
+[15:28:48]     empreinte de la clé API : 48b1dabf
+[15:28:48]     jeton d'accès : {'scope': 'read write', 'token_type': 'bearer', 'expires_in': 86399, 'is_internal_app': False}
+[15:28:48]     /systems : API Enphase 401 sur /systems : {"message":"Not authorized","details":"Not authorized to access this resource","code":401}
+[15:28:48]     /systems/113437/summary : {"message":"Not authorized","details":"Not authorized to access this resource","code":401}
+[15:28:55]     /systems/113437/telemetry/production_micro : ro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
+[15:29:02]     /systems/113437/telemetry/production_meter : er : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
+[15:29:10]     /systems/113437/rgm_stats : ts : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
+[15:29:17]     /systems/113437/energy_lifetime : me : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
+[15:29:24]   ! CB_QBase — installation personnelle : API Enphase 403 sur /systems/113437/telemetry/production_micro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
 Traceback (most recent call last):
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/run.py", line 100, in realise
     mes = mesures.production(s, d, d)
@@ -17,10 +18,10 @@ Traceback (most recent call last):
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/__init__.py", line 15, in production
     return enphase.production(site, debut, fin)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 125, in production
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 127, in production
     return _production(sid, debut, fin)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 138, in _production
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 140, in _production
     morceaux.append(_intervalles(sid, d, "day"))
                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 72, in _intervalles
@@ -29,8 +30,8 @@ Traceback (most recent call last):
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 66, in _get
     raise EnphaseErreur(f"API Enphase {r.status_code} sur {chemin} : {r.text[:200]}")
 prevpv.mesures.enphase.EnphaseErreur: API Enphase 403 sur /systems/113437/telemetry/production_micro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
-[15:19:48] Réalisé du 2026-10-29
-[15:19:48]   ! CB_QBase — installation personnelle : API Enphase 403 sur /systems/113437/telemetry/production_micro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
+[15:29:24] Réalisé du 2026-10-29
+[15:29:24]   ! CB_QBase — installation personnelle : API Enphase 403 sur /systems/113437/telemetry/production_micro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
 Traceback (most recent call last):
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/run.py", line 100, in realise
     mes = mesures.production(s, d, d)
@@ -38,10 +39,10 @@ Traceback (most recent call last):
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/__init__.py", line 15, in production
     return enphase.production(site, debut, fin)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 125, in production
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 127, in production
     return _production(sid, debut, fin)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 138, in _production
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 140, in _production
     morceaux.append(_intervalles(sid, d, "day"))
                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 72, in _intervalles
@@ -50,8 +51,8 @@ Traceback (most recent call last):
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 66, in _get
     raise EnphaseErreur(f"API Enphase {r.status_code} sur {chemin} : {r.text[:200]}")
 prevpv.mesures.enphase.EnphaseErreur: API Enphase 403 sur /systems/113437/telemetry/production_micro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
-[15:19:48] Réalisé du 2026-10-30
-[15:19:48]   ! CB_QBase — installation personnelle : API Enphase 403 sur /systems/113437/telemetry/production_micro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
+[15:29:24] Réalisé du 2026-10-30
+[15:29:24]   ! CB_QBase — installation personnelle : API Enphase 403 sur /systems/113437/telemetry/production_micro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
 Traceback (most recent call last):
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/run.py", line 100, in realise
     mes = mesures.production(s, d, d)
@@ -59,10 +60,10 @@ Traceback (most recent call last):
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/__init__.py", line 15, in production
     return enphase.production(site, debut, fin)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 125, in production
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 127, in production
     return _production(sid, debut, fin)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 138, in _production
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 140, in _production
     morceaux.append(_intervalles(sid, d, "day"))
                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 72, in _intervalles
@@ -71,8 +72,7 @@ Traceback (most recent call last):
   File "/home/runner/work/prevision-pv/prevision-pv/prevpv/mesures/enphase.py", line 66, in _get
     raise EnphaseErreur(f"API Enphase {r.status_code} sur {chemin} : {r.text[:200]}")
 prevpv.mesures.enphase.EnphaseErreur: API Enphase 403 sur /systems/113437/telemetry/production_micro : {"message":"Forbidden","details":"Not authorized to access this resource","code":403}
-[15:19:48] Prévision du 2026-11-01
-[15:19:48]   prix : secret ENTSOE_TOKEN absent, valorisation spot non calculée
-[15:19:49]   CB_QBase — installation personnelle : 5.5 kWh, CA None €
-SECRETS_PAT voit le dépôt : CBT135/prevision-pv
-Jeton Enphase : ÉCHEC du réenregistrement (failed to fetch public key: HTTP 403: Resource not accessible by personal access token (https://api.github.com/repos/CBT135/prevision-pv/actions/secrets/public-key)). Vérifier SECRETS_PAT (droit Secrets : Read and write sur ce dépôt).
+[15:29:24] Prévision du 2026-11-01
+[15:29:24]   prix : secret ENTSOE_TOKEN absent, valorisation spot non calculée
+[15:29:24]   CB_QBase — installation personnelle : 5.5 kWh, CA None €
+Jeton Enphase : renouvelé et réenregistré.
