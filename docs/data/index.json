@@ -1,5 +1,5 @@
 {
- "mis_a_jour": "2026-10-31T16:43+01:00",
+ "mis_a_jour": "2026-10-31T16:57+01:00",
  "previsions": [
   "2026-11-01"
  ],
@@ -23,6 +23,14 @@
    "type": "sol",
    "pc_kwc": 12000.0,
    "pac_kva": 10560.0,
+   "mode": "vente_totale"
+  },
+  {
+   "id": "site-hjl27et",
+   "nom": "LM11",
+   "type": "sol",
+   "pc_kwc": 2296.8,
+   "pac_kva": 2000.0,
    "mode": "vente_totale"
   }
  ]
