@@ -79,11 +79,18 @@ def prevision(sites: list[dict], d: date) -> None:
 
 
 # ---------------------------------------------------------------- réalisé
-def realise(sites: list[dict], d: date) -> None:
+def realise(sites: list[dict], d: date, fournis: dict | None = None) -> None:
+    """Réalisé de la journée D. `fournis` (reconstitution) : {id_site: {mes, p_prev, p_mod, elev}}
+    pour les journées sans prévision archivée ; la prévision y est reconstituée à partir des archives météo."""
     prev = lire_json(DOSSIER_PREV / f"{d.isoformat()}.json")
     deja = lire_json(DOSSIER_REAL / f"{d.isoformat()}.json", {"sites": {}})
     idx = index_journee(d)
-    a_faire = [s for s in sites if s["id"] not in deja.get("sites", {})]
+    if fournis is None:
+        a_faire = [s for s in sites if s["id"] not in deja.get("sites", {})]
+    else:  # ne remplace jamais un réalisé comparé à une vraie prévision de la veille
+        a_faire = [s for s in sites if s["id"] in fournis and (
+            "p_prevue_kw" not in deja.get("sites", {}).get(s["id"], {})
+            or deja["sites"][s["id"]].get("prevision_reconstituee"))]
     if not a_faire:
         return
     journal(f"Réalisé du {d}")
@@ -98,7 +105,8 @@ def realise(sites: list[dict], d: date) -> None:
               "sites": dict(deja.get("sites", {}))}
     for s in a_faire:
         try:
-            mes = mesures.production(s, d, d)
+            f = (fournis or {}).get(s["id"])
+            mes = f["mes"] if f else mesures.production(s, d, d)
             if mes is None:
                 continue
             mes = mes.reindex(idx)
@@ -107,7 +115,11 @@ def realise(sites: list[dict], d: date) -> None:
                 continue
             mes = mes.fillna(0)
             ps = (prev or {}).get("sites", {}).get(s["id"]) or {}
-            if "p_prevue_kw" not in ps:
+            reconstitue = False
+            if "p_prevue_kw" not in ps and f is not None:
+                p_prev, p_mod, elev = (f[k].reindex(idx) for k in ("p_prev", "p_mod", "elev"))
+                reconstitue = True
+            elif "p_prevue_kw" not in ps:
                 journal(f"  {s['nom']} : pas de prévision archivée pour cette journée")
                 p_prev = p_mod = elev = None
             else:
@@ -140,6 +152,9 @@ def realise(sites: list[dict], d: date) -> None:
                     "nmae_pct": round(float((p_prev - mes)[jour].abs().mean()) / pac * 100, 2),
                     "ca_prevu_eur": ps.get("valorisation", {}).get("ca_eur"),
                 })
+                if reconstitue:
+                    res["prevision_reconstituee"] = True
+                    res["ca_prevu_eur"] = valorisation.calculer(s, p_prev, px, conso)["ca_eur"]
             sortie["sites"][s["id"]] = res
             journal(f"  {s['nom']} : mesuré {val_r['energie_kwh']:.1f} kWh"
                     + (f", prévu {res['energie_prevue_kwh']:.1f} kWh" if p_prev is not None else ""))
@@ -178,6 +193,36 @@ def historique(sites: list[dict], jours: int) -> None:
     corr = correction.mettre_a_jour(sites)
     for s in sites:
         journal(f"  correction {s['nom']} : {corr.get(s['id'])}")
+    reconstituer(sites, jours)
+    index_web()
+
+
+def reconstituer(sites: list[dict], jours: int) -> None:
+    """Réalisé des journées passées sans prévision archivée : prévision reconstituée à partir des
+    prévisions météo archivées (Open-Meteo) et de la correction en vigueur."""
+    fin = aujourd_hui_paris() - timedelta(days=1)
+    debut = fin - timedelta(days=jours - 1)
+    fournis_par_jour: dict = {}
+    for s in sites:
+        try:
+            mes = mesures.production(s, debut, fin)
+            if mes is None or mes.empty:
+                continue
+            d0 = max(debut, (mes.index.min() - pd.Timedelta(minutes=15)).tz_convert(TZ).date())
+            idx = pd.date_range(index_journee(d0)[0], index_journee(fin)[-1], freq="15min")
+            m = meteo.previsions(s, d0 - timedelta(days=1), fin + timedelta(days=1), historique=True).reindex(idx)
+            mod = modele.puissance(s, m)
+            p_prev = _plafond(s, correction.appliquer(s["id"], mod))
+            d = d0
+            while d <= fin:
+                fournis_par_jour.setdefault(d, {})[s["id"]] = {
+                    "mes": mes, "p_prev": p_prev, "p_mod": mod["p_ac_kw"], "elev": mod["elevation"]}
+                d += timedelta(days=1)
+        except Exception as e:
+            journal(f"  ! reconstitution {s.get('nom')} : {e}")
+            traceback.print_exc()
+    for d in sorted(fournis_par_jour):
+        realise(sites, d, fournis=fournis_par_jour[d])
 
 
 # ---------------------------------------------------------------- index web
@@ -186,7 +231,7 @@ def index_web() -> None:
     reals = sorted(p.stem for p in DOSSIER_REAL.glob("*.json"))
     ecrire_json(DOSSIER_WEB / "index.json", {
         "mis_a_jour": pd.Timestamp.now(tz=TZ).isoformat(timespec="minutes"),
-        "previsions": prevs[-60:], "realise": reals[-60:],
+        "previsions": prevs[-60:], "realise": reals[-400:],
         "sites": [_infos(s) for s in charger_sites(actifs_seulement=True)],
     })
 
@@ -211,6 +256,8 @@ def main(argv=None) -> int:
     p.add_argument("--date", help="journée à prévoir (défaut : demain)")
     h = sub.add_parser("historique")
     h.add_argument("--jours", type=int, default=60)
+    r = sub.add_parser("reconstitution")
+    r.add_argument("--jours", type=int, default=31)
     a = ap.parse_args(argv)
     if a.cmd == "quotidien":
         quotidien()
@@ -220,6 +267,9 @@ def main(argv=None) -> int:
         index_web()
     elif a.cmd == "historique":
         historique(charger_sites(), a.jours)
+    elif a.cmd == "reconstitution":
+        reconstituer(charger_sites(), a.jours)
+        index_web()
     return 0
 
 

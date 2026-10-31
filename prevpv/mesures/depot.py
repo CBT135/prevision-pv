@@ -64,7 +64,7 @@ def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
     import csv
     import re
     lignes = [l for l in brut.splitlines() if l.strip()]
-    m = re.search(r"(\d{2}/\d{2}/\d{4})", lignes[0])
+    m = re.search(r"(\d{1,2}/\d{1,2}/\d{4})", lignes[0])
     jour0 = pd.to_datetime(m.group(1), dayfirst=True)
     sep = "\t" if "\t" in lignes[1] else (";" if ";" in lignes[1] else ",")
     lect = list(csv.reader(lignes[1:], delimiter=sep))

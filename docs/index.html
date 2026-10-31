@@ -218,7 +218,7 @@ async function afficherReal(date){
   const ePrev=somme(comp.map(s=>s.energie_prevue_kwh)),eMes=somme(sites.map(s=>s.energie_mesuree_kwh));
   const caR=sites.map(s=>s.valorisation_realisee&&s.valorisation_realisee.ca_eur).filter(v=>v!=null);
   let h=`<div class="tiles">${tile("Produit (mesuré)",energie(eMes),`${sites.length} site(s)`)}
-    ${tile("Prévu la veille",comp.length?energie(ePrev):"–",comp.length&&eMes?`écart ${nf((ePrev-eMes)/eMes*100,1)} %`:"")}
+    ${tile(sites.some(s=>s.prevision_reconstituee)?"Prévu (reconstitué)":"Prévu la veille",comp.length?energie(ePrev):"–",comp.length&&eMes?`écart ${nf((ePrev-eMes)/eMes*100,1)} %`:"")}
     ${tile("CA réalisé",caR.length?euro(somme(caR)):"–","")}</div>`;
   for(const s of sites){
     const series=[];
@@ -226,12 +226,12 @@ async function afficherReal(date){
     series.push({v:s.p_mesure_kw,c:"var(--mes)",w:1.8});
     const ec=s.ecart_energie_pct;
     h+=`<article class="site"><div class="site-h"><h2>${esc(s.nom)}</h2><div class="chips">
-      ${ec==null?`<span class="chip">Pas de prévision archivée</span>`:`<span class="chip ${Math.abs(ec)<=10?"ok":Math.abs(ec)<=25?"warn":"bad"}">Écart ${ec>0?"+":""}${nf(ec,1)} %</span>`}</div></div>
+      ${ec==null?`<span class="chip">Pas de prévision archivée</span>`:`<span class="chip ${Math.abs(ec)<=10?"ok":Math.abs(ec)<=25?"warn":"bad"}">Écart ${ec>0?"+":""}${nf(ec,1)} %</span>`}${s.prevision_reconstituee?`<span class="chip" title="Calculée après coup à partir des prévisions météo archivées">Prévision reconstituée</span>`:""}</div></div>
       <dl class="kv"><div><dt>Mesuré</dt><dd>${energie(s.energie_mesuree_kwh)}</dd></div><div><dt>Prévu</dt><dd>${energie(s.energie_prevue_kwh)}</dd></div>
       <div><dt>Erreur moyenne (nMAE)</dt><dd>${s.nmae_pct==null?"–":nf(s.nmae_pct,1)+" % Pac"}</dd></div>
       <div><dt>CA prévu → réalisé</dt><dd>${euro(s.ca_prevu_eur)} → ${euro(s.valorisation_realisee&&s.valorisation_realisee.ca_eur)}</dd></div></dl>
       <div class="chart">${graphe(r.pas_fin,series,r.prix_eur_mwh)}</div>
-      <div class="legend">${s.p_prevue_kw?`<span><i style="background:var(--prod)"></i>Prévu la veille</span>`:""}<span><i style="background:var(--mes)"></i>Mesuré</span>${r.prix_eur_mwh?`<span><i style="background:var(--price)"></i>Prix day-ahead</span>`:""}</div>
+      <div class="legend">${s.p_prevue_kw?`<span><i style="background:var(--prod)"></i>${s.prevision_reconstituee?"Prévision reconstituée":"Prévu la veille"}</span>`:""}<span><i style="background:var(--mes)"></i>Mesuré</span>${r.prix_eur_mwh?`<span><i style="background:var(--price)"></i>Prix day-ahead</span>`:""}</div>
       ${detailValo(s.valorisation_realisee)}
     </article>`;
   }
