@@ -1,5 +1,5 @@
 {
- "mis_a_jour": "2026-10-31T15:51+01:00",
+ "mis_a_jour": "2026-10-31T16:06+01:00",
  "previsions": [
   "2026-11-01"
  ],
@@ -16,6 +16,14 @@
    "pc_kwc": 1.8,
    "pac_kva": 1.72,
    "mode": "autoconso_sans_surplus"
+  },
+  {
+   "id": "site-d513nkp",
+   "nom": "Vouzance",
+   "type": "sol",
+   "pc_kwc": 12000.0,
+   "pac_kva": 10000.0,
+   "mode": "vente_totale"
   }
  ]
 }
