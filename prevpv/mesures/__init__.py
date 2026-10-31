@@ -17,4 +17,16 @@ def production(site: dict, debut: date, fin: date) -> pd.Series | None:
 
 
 def consommation(site: dict) -> pd.Series | None:
+    """Courbe du compteur de consommation (soutirage réseau) déposée, en kW."""
     return depot.consommation(site)
+
+
+def consommation_totale(site: dict) -> pd.Series | None:
+    """Consommation totale du site = compteur (soutirage) + production PV mesurée, en kW.
+    Définie seulement là où la production mesurée est connue (historique du site)."""
+    from ..correction import lire_historique
+    sout = depot.consommation(site)
+    if sout is None:
+        return None
+    prod = lire_historique(site["id"])["p_mesure_kw"].astype(float).clip(lower=0)
+    return (sout + prod.reindex(sout.index)).dropna()

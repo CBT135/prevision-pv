@@ -13,7 +13,7 @@
 :root{
   --bg:#eef1f4; --surface:#ffffff; --sunk:#e3e8ee; --line:#cfd7e0;
   --fg:#16202b; --muted:#5a6878; --accent:#c26a00; --accent-ink:#ffffff; --accent-soft:#fbe9d2;
-  --prod:#d98a1c; --prod-fill:rgba(217,138,28,.20); --model:#7d8a99; --price:#3d5a80; --neg:rgba(179,38,30,.10); --mes:#1f7a4d;
+  --conso:#7a4f9e; --prod:#d98a1c; --prod-fill:rgba(217,138,28,.20); --model:#7d8a99; --price:#3d5a80; --neg:rgba(179,38,30,.10); --mes:#1f7a4d;
   --ok:#1f7a4d; --ok-soft:#dcf1e5; --warn:#a15c00; --warn-soft:#fdeccc; --bad:#b3261e; --bad-soft:#f9dedc;
   --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-body:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -23,12 +23,12 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0f151c; --surface:#17202a; --sunk:#1e2935; --line:#2c3a49;
   --fg:#e6edf4; --muted:#93a3b5; --accent:#f0a040; --accent-ink:#1a1206; --accent-soft:#3a2a14;
-  --prod:#f0a040; --prod-fill:rgba(240,160,64,.20); --model:#8b99a9; --price:#8fb3e0; --neg:rgba(242,148,141,.12); --mes:#5fcf93;
+  --conso:#c6a3e8; --prod:#f0a040; --prod-fill:rgba(240,160,64,.20); --model:#8b99a9; --price:#8fb3e0; --neg:rgba(242,148,141,.12); --mes:#5fcf93;
   --ok:#5fcf93; --ok-soft:#173326; --warn:#f2b45a; --warn-soft:#3a2b12; --bad:#f2948d; --bad-soft:#3d1a18; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0f151c; --surface:#17202a; --sunk:#1e2935; --line:#2c3a49;
   --fg:#e6edf4; --muted:#93a3b5; --accent:#f0a040; --accent-ink:#1a1206; --accent-soft:#3a2a14;
-  --prod:#f0a040; --prod-fill:rgba(240,160,64,.20); --model:#8b99a9; --price:#8fb3e0; --neg:rgba(242,148,141,.12); --mes:#5fcf93;
+  --conso:#c6a3e8; --prod:#f0a040; --prod-fill:rgba(240,160,64,.20); --model:#8b99a9; --price:#8fb3e0; --neg:rgba(242,148,141,.12); --mes:#5fcf93;
   --ok:#5fcf93; --ok-soft:#173326; --warn:#f2b45a; --warn-soft:#3a2b12; --bad:#f2948d; --bad-soft:#3d1a18; color-scheme:dark}
 *{box-sizing:border-box}
 html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -45,6 +45,9 @@ a{color:var(--accent)}
 .tabs button{font:inherit;font-weight:600;font-size:.88rem;border:0;background:transparent;color:var(--muted);padding:8px 14px;border-radius:7px;cursor:pointer}
 .tabs button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 .bar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:12px}
+.nav{display:inline-flex;gap:6px;align-items:center;min-width:0}
+.nav select{min-width:0;max-width:62vw}
+button.b:disabled{opacity:.4;cursor:default}
 select,input,button.b{font:inherit;font-size:.9rem;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:38px}
 button.b{font-weight:600;cursor:pointer}
 button.b.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
@@ -90,7 +93,11 @@ footer{margin-top:26px;font-size:.8rem;color:var(--muted)}
     <button role="tab" id="tPrev" aria-selected="true">Prévision</button>
     <button role="tab" id="tReal" aria-selected="false">Prévu / réalisé</button>
   </div>
-  <div class="bar"><label for="jour" class="note">Journée</label><select id="jour"></select></div>
+  <div class="bar">
+    <label for="site" class="note">Projet</label><select id="site"><option value="">Tous les projets</option></select>
+    <label for="jour" class="note">Journée</label>
+    <span class="nav"><button class="b" id="jPrev" aria-label="Journée précédente">←</button><select id="jour"></select><button class="b" id="jNext" aria-label="Journée suivante">→</button></span>
+  </div>
   <div id="vue"></div>
   <details class="cfg" id="cfg"><summary>Accès aux données d'un dépôt privé</summary>
     <p class="note">Sur GitHub Pages, les données se lisent directement. Hors GitHub Pages ou pour un dépôt privé, renseignez un jeton en lecture (Contents : read) ; il reste dans ce navigateur.</p>
@@ -170,6 +177,8 @@ const maxi=a=>a.reduce((t,v)=>v!=null&&v>t?v:t,0);
 
 /* ---------- vues ---------- */
 let INDEX=null,vue="prev";
+let FILTRE=(()=>{try{return localStorage.getItem("prevpv.site")||""}catch(e){return""}})();
+const filtrer=list=>FILTRE?list.filter(s=>s.id===FILTRE):list;
 function tile(k,v,s){return`<div class="tile"><div class="k">${k}</div><div class="v">${v}</div>${s?`<div class="s">${s}</div>`:""}</div>`}
 
 function detailValo(v){
@@ -185,7 +194,8 @@ function detailValo(v){
 
 async function afficherPrev(date){
   const p=await charger(`previsions/${date}.json`);
-  const sites=Object.values(p.sites);
+  const sites=filtrer(Object.values(p.sites));
+  if(!sites.length)return`<p class="msg">Pas de prévision pour ce projet à cette date.</p>`;
   const ok=sites.filter(s=>!s.erreur);
   const eTot=somme(ok.map(s=>s.valorisation.energie_kwh));
   const caVals=ok.map(s=>s.valorisation.ca_eur).filter(v=>v!=null);
@@ -197,14 +207,14 @@ async function afficherPrev(date){
     if(s.erreur){h+=`<article class="site"><div class="site-h"><h2>${esc(s.nom)}</h2><span class="chip bad">Erreur</span></div><p class="note">${esc(s.erreur)}</p></article>`;continue}
     const v=s.valorisation,c=s.correction||{};
     const series=[{v:s.p_prevue_kw,c:"var(--prod)",area:true,fill:"var(--prod-fill)"},{v:s.p_modele_kw,c:"var(--model)",dash:true,w:1.2}];
-    if(s.conso_prevue_kw)series.push({v:s.conso_prevue_kw,c:"var(--mes)",w:1.2});
+    if(s.conso_prevue_kw)series.push({v:s.conso_prevue_kw,c:"var(--conso)",w:1.4,dash:true});
     h+=`<article class="site">
       <div class="site-h"><h2>${esc(s.nom)}</h2><div class="chips"><span class="chip num">${nf(s.pc_kwc>=1000?s.pc_kwc/1000:s.pc_kwc,2)} ${s.pc_kwc>=1000?"MWc":"kWc"}</span><span class="chip">${esc(MODES[v.mode]||v.mode)}</span>
       ${c.active?`<span class="chip ok">Corrigé · ${c.jours} j</span>`:`<span class="chip warn">Sans correction · ${c.jours||0} j de mesures</span>`}</div></div>
       <dl class="kv"><div><dt>Énergie prévue</dt><dd>${energie(v.energie_kwh)}</dd></div><div><dt>Pointe</dt><dd>${puiss(maxi(s.p_prevue_kw))}</dd></div>
       <div><dt>Chiffre d'affaires</dt><dd>${euro(v.ca_eur)}</dd></div><div><dt>Temp. max</dt><dd>${nf(Math.max(...s.temp_air.filter(x=>x!=null)),1)} °C</dd></div></dl>
       <div class="chart">${graphe(p.pas_fin,series,p.prix_eur_mwh)}</div>
-      <div class="legend"><span><i style="background:var(--prod)"></i>Prévision corrigée</span><span><i style="background:var(--model)"></i>Modèle brut</span>${s.conso_prevue_kw?`<span><i style="background:var(--mes)"></i>Consommation prévue</span>`:""}${p.prix_eur_mwh?`<span><i style="background:var(--price)"></i>Prix day-ahead</span>`:""}</div>
+      <div class="legend"><span><i style="background:var(--prod)"></i>Prévision corrigée</span><span><i style="background:var(--model)"></i>Modèle brut</span>${s.conso_prevue_kw?`<span><i style="background:var(--conso)"></i>Consommation totale prévue</span>`:""}${p.prix_eur_mwh?`<span><i style="background:var(--price)"></i>Prix day-ahead</span>`:""}</div>
       ${detailValo(v)}
     </article>`;
   }
@@ -213,7 +223,8 @@ async function afficherPrev(date){
 
 async function afficherReal(date){
   const r=await charger(`realise/${date}.json`);
-  const sites=Object.values(r.sites);
+  const sites=filtrer(Object.values(r.sites));
+  if(!sites.length)return`<p class="msg">Pas de réalisé pour ce projet à cette date.</p>`;
   const comp=sites.filter(s=>s.energie_prevue_kwh!=null);
   const ePrev=somme(comp.map(s=>s.energie_prevue_kwh)),eMes=somme(sites.map(s=>s.energie_mesuree_kwh));
   const caR=sites.map(s=>s.valorisation_realisee&&s.valorisation_realisee.ca_eur).filter(v=>v!=null);
@@ -224,6 +235,7 @@ async function afficherReal(date){
     const series=[];
     if(s.p_prevue_kw)series.push({v:s.p_prevue_kw,c:"var(--prod)",area:true,fill:"var(--prod-fill)"});
     series.push({v:s.p_mesure_kw,c:"var(--mes)",w:1.8});
+    if(s.conso_totale_kw)series.push({v:s.conso_totale_kw,c:"var(--conso)",w:1.4,dash:!s.conso_totale_mesuree});
     const ec=s.ecart_energie_pct;
     h+=`<article class="site"><div class="site-h"><h2>${esc(s.nom)}</h2><div class="chips">
       ${ec==null?`<span class="chip">Pas de prévision archivée</span>`:`<span class="chip ${Math.abs(ec)<=10?"ok":Math.abs(ec)<=25?"warn":"bad"}">Écart ${ec>0?"+":""}${nf(ec,1)} %</span>`}${s.prevision_reconstituee?`<span class="chip" title="Calculée après coup à partir des prévisions météo archivées">Prévision reconstituée</span>`:""}</div></div>
@@ -231,7 +243,7 @@ async function afficherReal(date){
       <div><dt>Erreur moyenne (nMAE)</dt><dd>${s.nmae_pct==null?"–":nf(s.nmae_pct,1)+" % Pac"}</dd></div>
       <div><dt>CA prévu → réalisé</dt><dd>${euro(s.ca_prevu_eur)} → ${euro(s.valorisation_realisee&&s.valorisation_realisee.ca_eur)}</dd></div></dl>
       <div class="chart">${graphe(r.pas_fin,series,r.prix_eur_mwh)}</div>
-      <div class="legend">${s.p_prevue_kw?`<span><i style="background:var(--prod)"></i>${s.prevision_reconstituee?"Prévision reconstituée":"Prévu la veille"}</span>`:""}<span><i style="background:var(--mes)"></i>Mesuré</span>${r.prix_eur_mwh?`<span><i style="background:var(--price)"></i>Prix day-ahead</span>`:""}</div>
+      <div class="legend">${s.p_prevue_kw?`<span><i style="background:var(--prod)"></i>${s.prevision_reconstituee?"Prévision reconstituée":"Prévu la veille"}</span>`:""}<span><i style="background:var(--mes)"></i>Mesuré</span>${s.conso_totale_kw?`<span><i style="background:var(--conso)"></i>Consommation totale${s.conso_totale_mesuree?"":" (estimée)"}</span>`:""}${r.prix_eur_mwh?`<span><i style="background:var(--price)"></i>Prix day-ahead</span>`:""}</div>
       ${detailValo(s.valorisation_realisee)}
     </article>`;
   }
@@ -240,10 +252,11 @@ async function afficherReal(date){
 
 async function rendre(){
   const liste=vue==="prev"?INDEX.previsions:INDEX.realise;
-  const sel=$("jour");const garde=sel.dataset.vue===vue?sel.value:null;
+  const sel=$("jour");const garde=sel.value||null;
   sel.innerHTML=liste.slice().reverse().map(d=>`<option value="${d}">${jourFr(d)}</option>`).join("");
   sel.dataset.vue=vue;
   if(garde&&liste.includes(garde))sel.value=garde;
+  navEtat();
   if(!liste.length){$("vue").innerHTML=`<p class="msg">${vue==="prev"?"Aucune prévision pour l'instant : elle apparaîtra après le premier calcul quotidien.":"Aucun réalisé pour l'instant : il faut une prévision de la veille et les mesures du lendemain."}</p>`;return}
   try{$("vue").innerHTML=vue==="prev"?await afficherPrev(sel.value):await afficherReal(sel.value)}
   catch(e){$("vue").innerHTML=`<p class="msg bad">Lecture impossible : ${esc(e.message)}.</p>`}
@@ -254,9 +267,17 @@ async function demarrer(){
   try{INDEX=await charger("index.json")}
   catch(e){$("vue").innerHTML=`<p class="msg warn">Données inaccessibles (${esc(e.message)}). Ouvrez cette page depuis GitHub Pages, ou renseignez l'accès au dépôt ci-dessous.</p>`;$("cfg").open=true;return}
   $("maj").textContent=`Mis à jour le ${new Date(INDEX.mis_a_jour).toLocaleString("fr-FR",{dateStyle:"medium",timeStyle:"short"})}`;
+  const ss=(INDEX.sites||[]).slice().sort((a,b)=>a.nom.localeCompare(b.nom,"fr"));
+  $("site").innerHTML=`<option value="">Tous les projets</option>`+ss.map(x=>`<option value="${esc(x.id)}">${esc(x.nom)}</option>`).join("");
+  if(!ss.some(x=>x.id===FILTRE))FILTRE="";
+  $("site").value=FILTRE;
   rendre();
 }
 $("jour").addEventListener("change",rendre);
+function navEtat(){const sel=$("jour");$("jPrev").disabled=sel.selectedIndex<0||sel.selectedIndex>=sel.options.length-1;$("jNext").disabled=sel.selectedIndex<=0}
+$("jPrev").onclick=()=>{const sel=$("jour");if(sel.selectedIndex<sel.options.length-1){sel.selectedIndex++;rendre()}};
+$("jNext").onclick=()=>{const sel=$("jour");if(sel.selectedIndex>0){sel.selectedIndex--;rendre()}};
+$("site").addEventListener("change",e=>{FILTRE=e.target.value;try{localStorage.setItem("prevpv.site",FILTRE)}catch(err){};rendre()});
 $("tPrev").onclick=()=>{vue="prev";$("tPrev").setAttribute("aria-selected","true");$("tReal").setAttribute("aria-selected","false");rendre()};
 $("tReal").onclick=()=>{vue="real";$("tReal").setAttribute("aria-selected","true");$("tPrev").setAttribute("aria-selected","false");rendre()};
 $("cSave").onclick=()=>{["Owner","Repo","Branch","Token"].forEach(k=>cfg[k.toLowerCase()]=$("c"+k).value.trim());try{localStorage.setItem(LS,JSON.stringify(cfg))}catch(e){};demarrer()};

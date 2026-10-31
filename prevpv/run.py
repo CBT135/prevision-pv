@@ -49,7 +49,7 @@ def prevision(sites: list[dict], d: date) -> None:
             p_prev = _plafond(s, correction.appliquer(s["id"], mod))
             conso_prev, src_conso = (None, None)
             if (s.get("valorisation") or {}).get("mode", "").startswith("autoconso"):
-                conso_prev, src_conso = valorisation.prevision_conso(mesures.consommation(s), s, idx)
+                conso_prev, src_conso = valorisation.prevision_conso(mesures.consommation_totale(s), s, idx)
             val = valorisation.calculer(s, p_prev, px, conso_prev)
             corr = (lire_json(correction.FICHIER_CORRECTION, {}) or {}).get(s["id"], {})
             sortie["sites"][s["id"]] = {
@@ -130,16 +130,22 @@ def realise(sites: list[dict], d: date, fournis: dict | None = None) -> None:
                 correction.ajouter_historique(s["id"], pd.DataFrame(
                     {"p_modele_kw": p_mod, "p_mesure_kw": mes, "elevation": elev, "kt": kt}))
             conso = None
+            conso_mesuree = False
             if (s.get("valorisation") or {}).get("mode", "").startswith("autoconso"):
                 c = mesures.consommation(s)
                 if c is not None and c.reindex(idx).notna().mean() > 0.9:
-                    conso = c.reindex(idx)
-                else:  # pas de courbe mesurée pour ce jour : même estimation que la prévision
-                    conso, _ = valorisation.prevision_conso(c, s, idx)
+                    # consommation totale = compteur (soutirage) + production PV mesurée
+                    conso = c.reindex(idx).fillna(0) + mes.clip(lower=0)
+                    conso_mesuree = True
+                else:  # pas de courbe compteur pour ce jour : même estimation que la prévision
+                    conso, _ = valorisation.prevision_conso(mesures.consommation_totale(s), s, idx)
             val_r = valorisation.calculer(s, mes, px, conso)
             pac = num((s.get("onduleur") or {}).get("pac_kva"), pc_totale_kwc(s))
             res = {**_infos(s), "p_mesure_kw": serie_vers_liste(mes), "valorisation_realisee": val_r,
                    "energie_mesuree_kwh": val_r["energie_kwh"]}
+            if conso is not None:
+                res["conso_totale_kw"] = serie_vers_liste(conso)
+                res["conso_totale_mesuree"] = conso_mesuree
             if p_prev is not None:
                 e_prev = float(p_prev.sum() * 0.25)
                 jour = elev > 0
