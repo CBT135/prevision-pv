@@ -8,7 +8,8 @@ Formats acceptés (CSV : séparateur ; ou , — virgule décimale acceptée) :
    et « puissance_kw » (puissance moyenne sur l'intervalle).
 2. Export de courbe de charge Enedis : colonnes « Horodate » (fin d'intervalle) et « Valeur » en W.
 3. Export CSV de GridVis (analyseur Janitza) : ligne « Period: jj/mm/aaaa … », colonne « Date » (h:mm,
-   début de l'intervalle, heure de Paris) et colonne de puissance totale « Power (…) [W] » ; pas de 5 min.
+   début de l'intervalle, heure de Paris) et colonne de puissance totale « Power (…) [W] », ou à défaut
+   somme de toutes les colonnes en W (une par onduleur) ; pas de 5 ou 15 min.
    Puissance positive = injection.
 4. Export Excel de l'espace client Enedis (.xlsx, onglet « Puissance moyenne soutirée » ou
    « injectée ») : colonnes « Début », « Fin », « Valeur (en kW) », heure de Paris.
@@ -69,10 +70,12 @@ def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
     sep = "\t" if "\t" in lignes[1] else (";" if ";" in lignes[1] else ",")
     lect = list(csv.reader(lignes[1:], delimiter=sep))
     entete = lect[0]
-    col = next(i for i, c in enumerate(entete) if c.lower().startswith("power") and "[w]" in c.lower())
+    total = [i for i, c in enumerate(entete) if c.lower().startswith("power (") and "[w]" in c.lower()]
+    # Puissance totale du point de mesure si elle existe, sinon somme des colonnes en W (onduleurs).
+    cols = total[:1] or [i for i, c in enumerate(entete) if i > 0 and "[w]" in c.lower()]
     debuts, vals, jour, prec = [], [], jour0, None
     for r in lect[1:]:
-        if len(r) <= col or not r[0].strip():
+        if len(r) <= max(cols) or not r[0].strip():
             continue
         t = r[0].strip()
         h = pd.to_timedelta(t + ":00") if t.count(":") == 1 else pd.to_timedelta(t)
@@ -80,12 +83,13 @@ def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
             jour = jour + pd.Timedelta(days=1)
         prec = h
         debuts.append(jour + h)
-        vals.append(float(r[col].replace(",", ".")) / 1000.0)
+        vals.append(sum(float(r[c].replace(",", ".") or 0) for c in cols) / 1000.0)
     debut = pd.Series(pd.DatetimeIndex(debuts))
     pas = debut.diff().median()
     s = pd.Series(vals, index=_localiser(debut + pas))
     s = s[s.index.notna()].sort_index()
-    journal(f"  {chemin.name} : export GridVis, {len(s)} valeurs au pas de {int(pas.total_seconds() // 60)} min")
+    journal(f"  {chemin.name} : export GridVis, {len(s)} valeurs au pas de {int(pas.total_seconds() // 60)} min"
+            + (f", somme de {len(cols)} colonnes" if len(cols) > 1 else ""))
     return _au_quart_d_heure(s)
 
 
