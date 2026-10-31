@@ -78,10 +78,52 @@ def _intervalles(system_id: str, debut_jour: date, granularite: str) -> pd.Serie
     return pd.Series(val, index=idx, dtype=float)
 
 
+_diagnostic_fait = set()
+
+
+def diagnostic(sid: str) -> None:
+    """Après un refus d'accès : liste les systèmes visibles et teste les points d'accès de production."""
+    if sid in _diagnostic_fait:
+        return
+    _diagnostic_fait.add(sid)
+    journal("  Diagnostic Enphase :")
+    try:
+        j = _get("/systems", {})
+        for sy in j.get("systems", []):
+            journal(f"    système visible : id={sy.get('system_id')} nom={sy.get('name')!r} statut={sy.get('status')}")
+        if not j.get("systems"):
+            journal("    aucun système visible avec ce jeton")
+    except EnphaseErreur as e:
+        journal(f"    /systems : {e}")
+    hier = pd.Timestamp.now(tz=TZ).normalize() - pd.Timedelta(days=1)
+    t0, t1 = int(hier.timestamp()), int((hier + pd.Timedelta(days=1)).timestamp())
+    for chemin, params in [(f"/systems/{sid}/summary", {}),
+                           (f"/systems/{sid}/telemetry/production_micro", {"start_at": t0, "granularity": "day"}),
+                           (f"/systems/{sid}/telemetry/production_meter", {"start_at": t0, "granularity": "day"}),
+                           (f"/systems/{sid}/rgm_stats", {"start_at": t0, "end_at": t1}),
+                           (f"/systems/{sid}/energy_lifetime", {"start_date": hier.date().isoformat()})]:
+        try:
+            j = _get(chemin, params)
+            iv = j.get("intervals") or j.get("production") or []
+            journal(f"    {chemin} : OK ({len(iv)} valeurs)")
+        except EnphaseErreur as e:
+            journal(f"    {chemin} : {str(e)[-90:]}")
+        time.sleep(7)
+
+
 def production(site: dict, debut: date, fin: date) -> pd.Series | None:
     sid = str((site.get("mesures") or {}).get("enphase_system_id") or "").strip()
     if not sid:
         return None
+    try:
+        return _production(sid, debut, fin)
+    except EnphaseErreur as e:
+        if " 403 " in str(e) or " 401 " in str(e) or " 404 " in str(e):
+            diagnostic(sid)
+        raise
+
+
+def _production(sid: str, debut: date, fin: date) -> pd.Series | None:
     morceaux = []
     nb_jours = (fin - debut).days + 1
     if nb_jours <= 2:
