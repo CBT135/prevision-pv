@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-10-31T15:47:22.126Z",
+  "mis_a_jour": "2026-10-31T15:49:14.047Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -88,7 +88,7 @@
         "pac_kva": 10560,
         "rendement_pct": 98.4
       },
-      "pertes_dc_pct": 24.5,
+      "pertes_dc_pct": 3,
       "albedo": 0.17,
       "limitation_kva": 12000,
       "masque": {
