@@ -49,6 +49,13 @@ def hauteur_masque(points: list | None, azimut_pvlib: pd.Series) -> pd.Series:
     return pd.Series(np.interp(az_pvsyst, az, h), index=azimut_pvlib.index)
 
 
+def indice_ciel(ghi: pd.Series, sp: pd.DataFrame) -> pd.Series:
+    """Indice de ciel clair prévu : GHI prévu / GHI ciel clair (Haurwitz). NaN soleil bas (< 5°)."""
+    cs = pvlib.clearsky.haurwitz(sp["apparent_zenith"])["ghi"]
+    kt = (ghi / cs).clip(lower=0, upper=1.5)
+    return kt.where(sp["apparent_elevation"] >= 5)
+
+
 def puissance(site: dict, meteo: pd.DataFrame) -> pd.DataFrame:
     """Retourne un DataFrame : p_ac_kw (modèle brut), poa (W/m², moyenne pondérée), t_cell, elevation."""
     idx = meteo.index
@@ -115,5 +122,6 @@ def puissance(site: dict, meteo: pd.DataFrame) -> pd.DataFrame:
         "poa": poa_pondere,
         "t_cell": t_cell_pondere,
         "elevation": sp["apparent_elevation"],
+        "kt": indice_ciel(ghi, sp),
         "masque": ombre & (sp["apparent_elevation"] > 0),
     })

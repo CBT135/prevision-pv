@@ -1,14 +1,17 @@
 """Correction statistique apprise sur les mesures.
 
-Pour chaque site, un facteur multiplicatif par tranche d'élévation solaire :
-    facteur = Σ production mesurée / Σ production modélisée
+Pour chaque site, un facteur multiplicatif par état du ciel prévu (indice kt = GHI prévu / GHI ciel clair) :
+    couvert (kt < 0,35), mitigé (0,35 – 0,65), clair (kt ≥ 0,65), et un facteur global pour le soleil bas ;
+    facteur = Σ production mesurée / Σ production modélisée.
+Il corrige à la fois les pertes réelles de la centrale (visibles par ciel clair) et le biais de la
+prévision météo par temps couvert (brouillards, stratus), qui n'ont pas la même ampleur.
 sur les 30 derniers jours disponibles de data/historique/<site>.csv
 (le modèle y est celui calculé avec la prévision émise la veille).
 
 Filtres : quarts d'heure où le modèle dépasse 2 % de la puissance AC ;
 quarts d'heure d'arrêt ou de bridage exclus (mesure < 5 % du modèle alors que le modèle dépasse 10 % de Pac) ;
 journées exclues si la production mesurée est < 25 % du modèle (panne, arrêt, données absentes).
-Facteurs bornés entre 0,6 et 1,3. Il faut au moins 10 jours de données.
+Facteurs bornés entre 0,3 et 1,3. Il faut au moins 10 jours de données.
 """
 from __future__ import annotations
 
@@ -17,11 +20,15 @@ import pandas as pd
 from .commun import DOSSIER_HISTO, FICHIER_CORRECTION, ecrire_json, lire_json, TZ
 from .sites import num
 
-TRANCHES = [(-1, 15), (15, 35), (35, 91)]
+TRANCHES = [(0.0, 0.35), (0.35, 0.65), (0.65, 9.9)]
+NOMS_TRANCHES = ["couvert", "mitigé", "clair"]
 JOURS = 30
 MIN_JOURS = 10
 MIN_POINTS = 40
-BORNES = (0.6, 1.3)
+BORNES = (0.3, 1.3)
+
+
+COLONNES = ["p_modele_kw", "p_mesure_kw", "elevation", "kt"]
 
 
 def chemin_histo(site_id: str):
@@ -31,7 +38,7 @@ def chemin_histo(site_id: str):
 def lire_historique(site_id: str) -> pd.DataFrame:
     p = chemin_histo(site_id)
     if not p.exists():
-        return pd.DataFrame(columns=["p_modele_kw", "p_mesure_kw", "elevation"])
+        return pd.DataFrame(columns=COLONNES)
     df = pd.read_csv(p, index_col=0)
     df.index = pd.to_datetime(df.index, utc=True)
     return df
@@ -39,7 +46,8 @@ def lire_historique(site_id: str) -> pd.DataFrame:
 
 def ajouter_historique(site_id: str, nouveau: pd.DataFrame) -> None:
     df = lire_historique(site_id)
-    df = pd.concat([df[~df.index.isin(nouveau.index)], nouveau[["p_modele_kw", "p_mesure_kw", "elevation"]]]).sort_index()
+    nouveau = nouveau.reindex(columns=COLONNES)
+    df = pd.concat([df[~df.index.isin(nouveau.index)].reindex(columns=COLONNES), nouveau]).sort_index()
     p = chemin_histo(site_id)
     p.parent.mkdir(parents=True, exist_ok=True)
     df.index.name = "fin_quart_heure_utc"
@@ -47,7 +55,7 @@ def ajouter_historique(site_id: str, nouveau: pd.DataFrame) -> None:
 
 
 def apprendre(site: dict) -> dict:
-    df = lire_historique(site["id"]).dropna()
+    df = lire_historique(site["id"]).reindex(columns=COLONNES).dropna(subset=["p_modele_kw", "p_mesure_kw", "elevation"])
     res = {"jours": 0, "global": 1.0, "tranches": [1.0] * len(TRANCHES), "actif": False}
     if df.empty:
         return res
@@ -72,9 +80,10 @@ def apprendre(site: dict) -> dict:
     res["global"] = round(ratio(df), 4)
     tr = []
     for lo, hi in TRANCHES:
-        d = df[(df["elevation"] >= lo) & (df["elevation"] < hi)]
+        d = df[(df["kt"] >= lo) & (df["kt"] < hi)]
         tr.append(round(ratio(d), 4) if len(d) >= MIN_POINTS else res["global"])
     res["tranches"] = tr
+    res["noms"] = NOMS_TRANCHES
     res["actif"] = True
     return res
 
@@ -93,5 +102,5 @@ def appliquer(site_id: str, modele: pd.DataFrame) -> pd.Series:
         return modele["p_ac_kw"].copy()
     f = pd.Series(c["global"], index=modele.index)
     for (lo, hi), v in zip(TRANCHES, c["tranches"]):
-        f[(modele["elevation"] >= lo) & (modele["elevation"] < hi)] = v
+        f[(modele["kt"] >= lo) & (modele["kt"] < hi)] = v
     return modele["p_ac_kw"] * f

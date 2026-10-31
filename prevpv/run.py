@@ -57,6 +57,7 @@ def prevision(sites: list[dict], d: date) -> None:
                 "p_modele_kw": serie_vers_liste(mod["p_ac_kw"]),
                 "p_prevue_kw": serie_vers_liste(p_prev),
                 "elevation": serie_vers_liste(mod["elevation"], 2),
+                "kt": serie_vers_liste(mod["kt"], 3),
                 "ghi": serie_vers_liste(m["ghi"], 1),
                 "gti_openmeteo": serie_vers_liste(m["gti_openmeteo"], 1),
                 "poa": serie_vers_liste(mod["poa"], 1),
@@ -113,8 +114,9 @@ def realise(sites: list[dict], d: date) -> None:
                 p_prev = pd.Series(ps["p_prevue_kw"], index=idx, dtype=float)
                 p_mod = pd.Series(ps["p_modele_kw"], index=idx, dtype=float)
                 elev = pd.Series(ps["elevation"], index=idx, dtype=float)
+                kt = pd.Series(ps.get("kt") or [None] * len(idx), index=idx, dtype=float)
                 correction.ajouter_historique(s["id"], pd.DataFrame(
-                    {"p_modele_kw": p_mod, "p_mesure_kw": mes, "elevation": elev}))
+                    {"p_modele_kw": p_mod, "p_mesure_kw": mes, "elevation": elev, "kt": kt}))
             conso = None
             if (s.get("valorisation") or {}).get("mode", "").startswith("autoconso"):
                 c = mesures.consommation(s)
@@ -166,7 +168,7 @@ def historique(sites: list[dict], jours: int) -> None:
                 m = meteo.previsions(s, d - timedelta(days=1), f + timedelta(days=1), historique=True).reindex(idx)
                 mod = modele.puissance(s, m)
                 df = pd.DataFrame({"p_modele_kw": mod["p_ac_kw"], "p_mesure_kw": mes.reindex(idx),
-                                   "elevation": mod["elevation"]}).dropna()
+                                   "elevation": mod["elevation"], "kt": mod["kt"]}).dropna(subset=["p_mesure_kw", "p_modele_kw"])
                 correction.ajouter_historique(s["id"], df)
                 journal(f"  {d} → {f} : {len(df)} quarts d'heure")
                 d = f + timedelta(days=1)
