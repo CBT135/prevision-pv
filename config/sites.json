@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-11-02T18:35:17.946Z",
+  "mis_a_jour": "2026-11-02T19:06:38.471Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -47,7 +47,7 @@
       "masque": null,
       "mesures": {
         "source": "enphase",
-        "enphase_system_id": "111955",
+        "enphase_system_id": "c.brachet@hotmail.fr",
         "prm_production": ""
       },
       "valorisation": {
@@ -58,7 +58,9 @@
         "conso": {
           "source": "enedis",
           "prm": "19462518050078",
-          "annuelle_kwh": null
+          "annuelle_kwh": null,
+          "jeton_secret": "ENEDIS_JETON_01",
+          "jeton_le": "2026-11-02"
         },
         "spot": {
           "decote_eur_mwh": null,
