@@ -37,7 +37,6 @@ jobs:
           ENPHASE_REFRESH_TOKEN: ${{ secrets.ENPHASE_REFRESH_TOKEN }}
           ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
           OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
-          SECRETS_JSON: ${{ toJSON(secrets) }}
         run: |
           set -o pipefail
           mkdir -p data
