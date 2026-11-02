@@ -1,5 +1,5 @@
 {
- "mis_a_jour": "2026-11-02T12:09+01:00",
+ "mis_a_jour": "2026-11-02T15:55+01:00",
  "previsions": [
   "2026-11-01",
   "2026-11-02",
@@ -53,7 +53,7 @@
    "id": "site-d513nkp",
    "nom": "Vouzance",
    "type": "sol",
-   "pc_kwc": 12000.0,
+   "pc_kwc": 11981.0,
    "pac_kva": 10560.0,
    "mode": "vente_totale"
   },
