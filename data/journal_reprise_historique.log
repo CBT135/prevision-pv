@@ -1,275 +1,274 @@
-[19:18:11]   masque PVGIS importé pour Vouzance : 49 points, hauteur max 1.1°
-[19:18:11] Reprise d'historique CB_QBase — installation personnelle du 2026-09-30 au 2026-11-01
-[19:18:12]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
-[19:18:48]   2026-09-30 → 2026-10-27 : 2688 quarts d'heure
-[19:18:49]   2026-10-28 → 2026-11-01 : 480 quarts d'heure
-[19:18:49] Reprise d'historique Vouzance du 2026-09-30 au 2026-11-01
-[19:18:49]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:49]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:18:50]   2026-10-01 → 2026-10-28 : 2685 quarts d'heure
-[19:18:51]   2026-10-29 → 2026-11-01 : 384 quarts d'heure
-[19:18:51] Reprise d'historique LM11 du 2026-09-30 au 2026-11-01
-[19:18:51]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
-[19:18:51]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
-[19:18:51]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
-[19:18:51]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:51]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:18:52]   2026-10-01 → 2026-10-28 : 2556 quarts d'heure
-[19:18:52]   2026-10-29 → 2026-11-01 : 384 quarts d'heure
-[19:18:52]   correction CB_QBase — installation personnelle : {'jours': 29, 'global': np.float64(0.767), 'tranches': [np.float64(0.8904), np.float64(0.6794), np.float64(0.7734)], 'actif': True, 'quarts_arret_exclus': 0, 'noms': ['couvert', 'mitigé', 'clair']}
-[19:18:52]   correction Vouzance : {'jours': 30, 'global': np.float64(0.8284), 'tranches': [np.float64(1.0675), np.float64(0.7867), np.float64(0.818)], 'actif': True, 'quarts_arret_exclus': 27, 'noms': ['couvert', 'mitigé', 'clair']}
-[19:18:52]   correction LM11 : {'jours': 30, 'global': np.float64(0.8227), 'tranches': [np.float64(0.6355), np.float64(0.6736), np.float64(0.8313)], 'actif': True, 'quarts_arret_exclus': 12, 'noms': ['couvert', 'mitigé', 'clair']}
-[19:20:58]   Open-Meteo injoignable (ReadTimeout), nouvel essai
-[19:21:15]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:15]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[19:21:16]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
-[19:21:16]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
-[19:21:16]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
-[19:21:16]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:16]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[19:21:17] Réalisé du 2026-09-30
-[19:21:18]   CB_QBase — installation personnelle : mesuré 2.3 kWh, prévu 2.5 kWh
-[19:21:18] Réalisé du 2026-10-01
-[19:21:18]   CB_QBase — installation personnelle : mesuré 1.1 kWh, prévu 1.7 kWh
-[19:21:18]   Vouzance : mesuré 12019.4 kWh, prévu 22353.9 kWh
-[19:21:18]   LM11 : mesuré 2175.7 kWh, prévu 6536.0 kWh
-[19:21:18] Réalisé du 2026-10-02
-[19:21:19]   CB_QBase — installation personnelle : mesuré 5.4 kWh, prévu 5.9 kWh
-[19:21:19]   Vouzance : mesuré 52229.0 kWh, prévu 41013.2 kWh
-[19:21:19]   LM11 : mesuré 5870.3 kWh, prévu 8689.3 kWh
-[19:21:19] Réalisé du 2026-10-03
-[19:21:19]   CB_QBase — installation personnelle : mesuré 1.8 kWh, prévu 4.4 kWh
-[19:21:19]   Vouzance : mesuré 41508.7 kWh, prévu 41731.1 kWh
-[19:21:19]   LM11 : mesuré 7240.3 kWh, prévu 7313.5 kWh
-[19:21:19] Réalisé du 2026-10-04
-[19:21:19]   CB_QBase — installation personnelle : mesuré 4.7 kWh, prévu 5.9 kWh
-[19:21:19]   Vouzance : mesuré 41746.0 kWh, prévu 41497.8 kWh
-[19:21:19]   LM11 : mesuré 10354.1 kWh, prévu 9468.0 kWh
-[19:21:19] Réalisé du 2026-10-05
-[19:21:20]   CB_QBase — installation personnelle : mesuré 7.6 kWh, prévu 6.3 kWh
-[19:21:20]   Vouzance : mesuré 54239.9 kWh, prévu 43587.1 kWh
-[19:21:20]   LM11 : mesuré 5522.7 kWh, prévu 9030.1 kWh
-[19:21:20] Réalisé du 2026-10-06
-[19:21:20]   CB_QBase — installation personnelle : mesuré 7.7 kWh, prévu 6.3 kWh
-[19:21:20]   Vouzance : mesuré 54054.7 kWh, prévu 42509.8 kWh
-[19:21:20]   LM11 : mesuré 7140.0 kWh, prévu 8108.8 kWh
-[19:21:20] Réalisé du 2026-10-07
-[19:21:20]   CB_QBase — installation personnelle : mesuré 1.5 kWh, prévu 1.6 kWh
-[19:21:20]   Vouzance : mesuré 23875.4 kWh, prévu 22127.2 kWh
-[19:21:20]   LM11 : mesuré 2006.9 kWh, prévu 2748.0 kWh
-[19:21:20] Réalisé du 2026-10-08
-[19:21:21]   CB_QBase — installation personnelle : mesuré 1.1 kWh, prévu 1.1 kWh
-[19:21:21]   Vouzance : mesuré 15815.5 kWh, prévu 18764.1 kWh
-[19:21:21]   LM11 : mesuré 3598.1 kWh, prévu 6170.1 kWh
-[19:21:21] Réalisé du 2026-10-09
-[19:21:21]   CB_QBase — installation personnelle : mesuré 7.9 kWh, prévu 6.6 kWh
-[19:21:21]   Vouzance : mesuré 24894.5 kWh, prévu 37234.8 kWh
-[19:21:21]   LM11 : mesuré 11749.0 kWh, prévu 9614.9 kWh
-[19:21:21] Réalisé du 2026-10-10
-[19:21:21]   CB_QBase — installation personnelle : mesuré 3.4 kWh, prévu 4.2 kWh
-[19:21:21]   Vouzance : mesuré 14206.3 kWh, prévu 16243.0 kWh
-[19:21:21]   LM11 : mesuré 10833.4 kWh, prévu 9340.2 kWh
-[19:21:21] Réalisé du 2026-10-11
-[19:21:22]   CB_QBase — installation personnelle : mesuré 4.5 kWh, prévu 6.1 kWh
-[19:21:22]   Vouzance : mesuré 34158.1 kWh, prévu 39112.3 kWh
-[19:21:22]   LM11 : mesuré 9361.6 kWh, prévu 9121.9 kWh
-[19:21:22] Réalisé du 2026-10-12
-[19:21:22]   CB_QBase — installation personnelle : mesuré 7.9 kWh, prévu 6.4 kWh
-[19:21:22]   Vouzance : mesuré 39152.4 kWh, prévu 41988.4 kWh
-[19:21:22]   LM11 : mesuré 11356.4 kWh, prévu 9408.7 kWh
-[19:21:22] Réalisé du 2026-10-13
-[19:21:22]   CB_QBase — installation personnelle : mesuré 5.7 kWh, prévu 4.1 kWh
-[19:21:22]   Vouzance : mesuré 21724.8 kWh, prévu 11643.6 kWh
-[19:21:22]   LM11 : mesures incomplètes (83%), nouvel essai demain
-[19:21:22] Réalisé du 2026-10-14
-[19:21:23]   CB_QBase — installation personnelle : mesuré 4.2 kWh, prévu 4.2 kWh
-[19:21:23]   Vouzance : mesuré 26129.5 kWh, prévu 30132.5 kWh
-[19:21:23]   LM11 : mesures incomplètes (48%), nouvel essai demain
-[19:21:23] Réalisé du 2026-10-15
-[19:21:23]   CB_QBase — installation personnelle : mesuré 5.9 kWh, prévu 4.7 kWh
-[19:21:23]   Vouzance : mesuré 50389.2 kWh, prévu 36980.2 kWh
-[19:21:23]   LM11 : mesures incomplètes (35%), nouvel essai demain
-[19:21:23] Réalisé du 2026-10-16
-[19:21:23]   CB_QBase — installation personnelle : mesuré 7.3 kWh, prévu 5.9 kWh
-[19:21:23]   Vouzance : mesuré 51979.7 kWh, prévu 40412.2 kWh
-[19:21:23]   LM11 : mesuré 10865.0 kWh, prévu 9205.8 kWh
-[19:21:23] Réalisé du 2026-10-17
-[19:21:24]   CB_QBase — installation personnelle : mesuré 1.1 kWh, prévu 1.7 kWh
-[19:21:24]   Vouzance : mesuré 11389.6 kWh, prévu 9783.5 kWh
-[19:21:24]   LM11 : mesuré 9717.3 kWh, prévu 8283.1 kWh
-[19:21:24] Réalisé du 2026-10-18
-[19:21:24]   CB_QBase — installation personnelle : mesuré 0.6 kWh, prévu 2.0 kWh
-[19:21:24]   Vouzance : mesuré 15430.8 kWh, prévu 26825.1 kWh
-[19:21:24]   LM11 : mesuré 2491.3 kWh, prévu 6708.7 kWh
-[19:21:24] Réalisé du 2026-10-19
-[19:21:24]   CB_QBase — installation personnelle : mesuré 1.3 kWh, prévu 2.9 kWh
-[19:21:24]   Vouzance : mesuré 11152.6 kWh, prévu 19201.8 kWh
-[19:21:24]   LM11 : mesuré 1943.0 kWh, prévu 4015.1 kWh
-[19:21:24] Réalisé du 2026-10-20
-[19:21:25]   CB_QBase — installation personnelle : mesuré 0.7 kWh, prévu 1.2 kWh
-[19:21:25]   Vouzance : mesuré 6804.4 kWh, prévu 8176.3 kWh
-[19:21:25]   LM11 : mesuré 1701.4 kWh, prévu 1351.5 kWh
-[19:21:25] Réalisé du 2026-10-21
-[19:21:25]   CB_QBase — installation personnelle : mesuré 2.9 kWh, prévu 3.2 kWh
-[19:21:25]   Vouzance : mesuré 19738.3 kWh, prévu 21856.3 kWh
-[19:21:25]   LM11 : mesuré 7714.6 kWh, prévu 7032.0 kWh
-[19:21:25] Réalisé du 2026-10-22
-[19:21:25]   CB_QBase — installation personnelle : mesuré 6.1 kWh, prévu 5.2 kWh
-[19:21:25]   Vouzance : mesuré 23298.0 kWh, prévu 38835.3 kWh
-[19:21:25]   LM11 : mesuré 9570.3 kWh, prévu 8714.9 kWh
-[19:21:25] Réalisé du 2026-10-23
-[19:21:25]   CB_QBase — installation personnelle : mesuré 2.2 kWh, prévu 3.3 kWh
-[19:21:25]   Vouzance : mesuré 17367.1 kWh, prévu 26990.1 kWh
-[19:21:25]   LM11 : mesuré 4859.0 kWh, prévu 6138.7 kWh
-[19:21:25] Réalisé du 2026-10-24
-[19:21:26]   CB_QBase — installation personnelle : mesuré 2.1 kWh, prévu 3.9 kWh
-[19:21:26]   Vouzance : mesuré 10691.4 kWh, prévu 15292.4 kWh
-[19:21:26]   LM11 : mesuré 7480.1 kWh, prévu 8381.3 kWh
-[19:21:26] Réalisé du 2026-10-25
-[19:21:26]   CB_QBase — installation personnelle : mesuré 1.0 kWh, prévu 2.7 kWh
-[19:21:26]   Vouzance : mesuré 12068.6 kWh, prévu 13862.5 kWh
-[19:21:26]   LM11 : mesuré 6544.2 kWh, prévu 7578.9 kWh
-[19:21:26] Réalisé du 2026-10-26
-[19:21:26]   CB_QBase — installation personnelle : mesuré 3.2 kWh, prévu 4.0 kWh
-[19:21:26]   Vouzance : mesuré 14051.0 kWh, prévu 29956.0 kWh
-[19:21:26]   LM11 : mesuré 8632.2 kWh, prévu 7925.2 kWh
-[19:21:26] Réalisé du 2026-10-27
-[19:21:26]   CB_QBase — installation personnelle : mesuré 6.6 kWh, prévu 5.4 kWh
-[19:21:26]   Vouzance : mesuré 44729.1 kWh, prévu 36601.4 kWh
-[19:21:26]   LM11 : mesuré 9838.8 kWh, prévu 8135.0 kWh
-[19:21:26] Réalisé du 2026-10-28
-[19:21:26]   CB_QBase — installation personnelle : mesuré 6.0 kWh, prévu 3.6 kWh
-[19:21:26]   Vouzance : mesuré 26307.6 kWh, prévu 23378.0 kWh
-[19:21:26]   LM11 : mesuré 9834.5 kWh, prévu 8048.8 kWh
-[19:21:26] Réalisé du 2026-10-29
-[19:21:27]   CB_QBase — installation personnelle : mesuré 4.0 kWh, prévu 3.2 kWh
-[19:21:27]   Vouzance : mesuré 13020.1 kWh, prévu 32012.9 kWh
-[19:21:27]   LM11 : mesuré 7979.6 kWh, prévu 8005.3 kWh
-[19:21:27] Réalisé du 2026-10-30
-[19:21:27]   CB_QBase — installation personnelle : mesuré 1.4 kWh, prévu 1.6 kWh
-[19:21:27]   Vouzance : mesuré 16457.9 kWh, prévu 16246.1 kWh
-[19:21:27]   LM11 : mesuré 8328.9 kWh, prévu 7897.5 kWh
-[19:21:27] Réalisé du 2026-10-31
-[19:21:27]   CB_QBase — installation personnelle : mesuré 1.9 kWh, prévu 1.6 kWh
-[19:21:27]   Vouzance : mesuré 22329.2 kWh, prévu 18388.4 kWh
-[19:21:27]   LM11 : mesuré 9726.3 kWh, prévu 7887.8 kWh
+[19:26:55] Reprise d'historique CB_QBase — installation personnelle du 2026-09-30 au 2026-11-01
+[19:26:55]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
+[19:27:34]   2026-09-30 → 2026-10-27 : 2688 quarts d'heure
+[19:27:35]   2026-10-28 → 2026-11-01 : 480 quarts d'heure
+[19:27:35] Reprise d'historique Vouzance du 2026-09-30 au 2026-11-01
+[19:27:35]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:35]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:27:36]   2026-10-01 → 2026-10-28 : 2685 quarts d'heure
+[19:27:37]   2026-10-29 → 2026-11-01 : 384 quarts d'heure
+[19:27:37] Reprise d'historique LM11 du 2026-09-30 au 2026-11-01
+[19:27:37]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
+[19:27:37]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
+[19:27:37]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
+[19:27:37]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:37]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:27:38]   2026-10-01 → 2026-10-28 : 2556 quarts d'heure
+[19:27:38]   2026-10-29 → 2026-11-01 : 384 quarts d'heure
+[19:27:38]   correction CB_QBase — installation personnelle : {'jours': 29, 'global': np.float64(0.767), 'tranches': [np.float64(0.8904), np.float64(0.6794), np.float64(0.7734)], 'actif': True, 'quarts_arret_exclus': 0, 'noms': ['couvert', 'mitigé', 'clair']}
+[19:27:38]   correction Vouzance : {'jours': 30, 'global': np.float64(0.8453), 'tranches': [np.float64(1.0893), np.float64(0.8028), np.float64(0.8347)], 'actif': True, 'quarts_arret_exclus': 27, 'noms': ['couvert', 'mitigé', 'clair']}
+[19:27:38]   correction LM11 : {'jours': 30, 'global': np.float64(0.8227), 'tranches': [np.float64(0.6355), np.float64(0.6736), np.float64(0.8313)], 'actif': True, 'quarts_arret_exclus': 12, 'noms': ['couvert', 'mitigé', 'clair']}
+[19:29:46]   Open-Meteo injoignable (ReadTimeout), nouvel essai
+[19:30:03]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:03]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[19:30:04]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
+[19:30:04]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
+[19:30:04]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
+[19:30:04]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:04]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[19:30:05] Réalisé du 2026-09-30
+[19:30:06]   CB_QBase — installation personnelle : mesuré 2.3 kWh, prévu 2.5 kWh
+[19:30:06] Réalisé du 2026-10-01
+[19:30:06]   CB_QBase — installation personnelle : mesuré 1.1 kWh, prévu 1.7 kWh
+[19:30:06]   Vouzance : mesuré 12019.4 kWh, prévu 22354.5 kWh
+[19:30:06]   LM11 : mesuré 2175.7 kWh, prévu 6536.0 kWh
+[19:30:06] Réalisé du 2026-10-02
+[19:30:07]   CB_QBase — installation personnelle : mesuré 5.4 kWh, prévu 5.9 kWh
+[19:30:07]   Vouzance : mesuré 52229.0 kWh, prévu 41013.6 kWh
+[19:30:07]   LM11 : mesuré 5870.3 kWh, prévu 8689.3 kWh
+[19:30:07] Réalisé du 2026-10-03
+[19:30:07]   CB_QBase — installation personnelle : mesuré 1.8 kWh, prévu 4.4 kWh
+[19:30:07]   Vouzance : mesuré 41508.7 kWh, prévu 41731.4 kWh
+[19:30:07]   LM11 : mesuré 7240.3 kWh, prévu 7313.5 kWh
+[19:30:07] Réalisé du 2026-10-04
+[19:30:07]   CB_QBase — installation personnelle : mesuré 4.7 kWh, prévu 5.9 kWh
+[19:30:07]   Vouzance : mesuré 41746.0 kWh, prévu 41498.1 kWh
+[19:30:07]   LM11 : mesuré 10354.1 kWh, prévu 9468.0 kWh
+[19:30:07] Réalisé du 2026-10-05
+[19:30:08]   CB_QBase — installation personnelle : mesuré 7.6 kWh, prévu 6.3 kWh
+[19:30:08]   Vouzance : mesuré 54239.9 kWh, prévu 43587.4 kWh
+[19:30:08]   LM11 : mesuré 5522.7 kWh, prévu 9030.1 kWh
+[19:30:08] Réalisé du 2026-10-06
+[19:30:08]   CB_QBase — installation personnelle : mesuré 7.7 kWh, prévu 6.3 kWh
+[19:30:08]   Vouzance : mesuré 54054.7 kWh, prévu 42510.1 kWh
+[19:30:08]   LM11 : mesuré 7140.0 kWh, prévu 8108.8 kWh
+[19:30:08] Réalisé du 2026-10-07
+[19:30:08]   CB_QBase — installation personnelle : mesuré 1.5 kWh, prévu 1.6 kWh
+[19:30:08]   Vouzance : mesuré 23875.4 kWh, prévu 22128.0 kWh
+[19:30:08]   LM11 : mesuré 2006.9 kWh, prévu 2748.0 kWh
+[19:30:08] Réalisé du 2026-10-08
+[19:30:09]   CB_QBase — installation personnelle : mesuré 1.1 kWh, prévu 1.1 kWh
+[19:30:09]   Vouzance : mesuré 15815.5 kWh, prévu 18764.7 kWh
+[19:30:09]   LM11 : mesuré 3598.1 kWh, prévu 6170.1 kWh
+[19:30:09] Réalisé du 2026-10-09
+[19:30:09]   CB_QBase — installation personnelle : mesuré 7.9 kWh, prévu 6.6 kWh
+[19:30:09]   Vouzance : mesuré 24894.5 kWh, prévu 37235.2 kWh
+[19:30:09]   LM11 : mesuré 11749.0 kWh, prévu 9614.9 kWh
+[19:30:09] Réalisé du 2026-10-10
+[19:30:09]   CB_QBase — installation personnelle : mesuré 3.4 kWh, prévu 4.2 kWh
+[19:30:09]   Vouzance : mesuré 14206.3 kWh, prévu 16243.4 kWh
+[19:30:09]   LM11 : mesuré 10833.4 kWh, prévu 9340.2 kWh
+[19:30:09] Réalisé du 2026-10-11
+[19:30:10]   CB_QBase — installation personnelle : mesuré 4.5 kWh, prévu 6.1 kWh
+[19:30:10]   Vouzance : mesuré 34158.1 kWh, prévu 39112.6 kWh
+[19:30:10]   LM11 : mesuré 9361.6 kWh, prévu 9121.9 kWh
+[19:30:10] Réalisé du 2026-10-12
+[19:30:10]   CB_QBase — installation personnelle : mesuré 7.9 kWh, prévu 6.4 kWh
+[19:30:10]   Vouzance : mesuré 39152.4 kWh, prévu 41988.7 kWh
+[19:30:10]   LM11 : mesuré 11356.4 kWh, prévu 9408.7 kWh
+[19:30:10] Réalisé du 2026-10-13
+[19:30:10]   CB_QBase — installation personnelle : mesuré 5.7 kWh, prévu 4.1 kWh
+[19:30:10]   Vouzance : mesuré 21724.8 kWh, prévu 11643.9 kWh
+[19:30:10]   LM11 : mesures incomplètes (83%), nouvel essai demain
+[19:30:10] Réalisé du 2026-10-14
+[19:30:11]   CB_QBase — installation personnelle : mesuré 4.2 kWh, prévu 4.2 kWh
+[19:30:11]   Vouzance : mesuré 26129.5 kWh, prévu 30133.0 kWh
+[19:30:11]   LM11 : mesures incomplètes (48%), nouvel essai demain
+[19:30:11] Réalisé du 2026-10-15
+[19:30:11]   CB_QBase — installation personnelle : mesuré 5.9 kWh, prévu 4.7 kWh
+[19:30:11]   Vouzance : mesuré 50389.2 kWh, prévu 36980.6 kWh
+[19:30:11]   LM11 : mesures incomplètes (35%), nouvel essai demain
+[19:30:11] Réalisé du 2026-10-16
+[19:30:11]   CB_QBase — installation personnelle : mesuré 7.3 kWh, prévu 5.9 kWh
+[19:30:11]   Vouzance : mesuré 51979.7 kWh, prévu 40412.5 kWh
+[19:30:11]   LM11 : mesuré 10865.0 kWh, prévu 9205.8 kWh
+[19:30:11] Réalisé du 2026-10-17
+[19:30:11]   CB_QBase — installation personnelle : mesuré 1.1 kWh, prévu 1.7 kWh
+[19:30:11]   Vouzance : mesuré 11389.6 kWh, prévu 9783.8 kWh
+[19:30:12]   LM11 : mesuré 9717.3 kWh, prévu 8283.1 kWh
+[19:30:12] Réalisé du 2026-10-18
+[19:30:12]   CB_QBase — installation personnelle : mesuré 0.6 kWh, prévu 2.0 kWh
+[19:30:12]   Vouzance : mesuré 15430.8 kWh, prévu 26825.8 kWh
+[19:30:12]   LM11 : mesuré 2491.3 kWh, prévu 6708.7 kWh
+[19:30:12] Réalisé du 2026-10-19
+[19:30:12]   CB_QBase — installation personnelle : mesuré 1.3 kWh, prévu 2.9 kWh
+[19:30:12]   Vouzance : mesuré 11152.6 kWh, prévu 19202.1 kWh
+[19:30:12]   LM11 : mesuré 1943.0 kWh, prévu 4015.1 kWh
+[19:30:12] Réalisé du 2026-10-20
+[19:30:12]   CB_QBase — installation personnelle : mesuré 0.7 kWh, prévu 1.2 kWh
+[19:30:12]   Vouzance : mesuré 6804.4 kWh, prévu 8176.4 kWh
+[19:30:13]   LM11 : mesuré 1701.4 kWh, prévu 1351.5 kWh
+[19:30:13] Réalisé du 2026-10-21
+[19:30:13]   CB_QBase — installation personnelle : mesuré 2.9 kWh, prévu 3.2 kWh
+[19:30:13]   Vouzance : mesuré 19738.3 kWh, prévu 21856.6 kWh
+[19:30:13]   LM11 : mesuré 7714.6 kWh, prévu 7032.0 kWh
+[19:30:13] Réalisé du 2026-10-22
+[19:30:13]   CB_QBase — installation personnelle : mesuré 6.1 kWh, prévu 5.2 kWh
+[19:30:13]   Vouzance : mesuré 23298.0 kWh, prévu 38835.6 kWh
+[19:30:13]   LM11 : mesuré 9570.3 kWh, prévu 8714.9 kWh
+[19:30:13] Réalisé du 2026-10-23
+[19:30:13]   CB_QBase — installation personnelle : mesuré 2.2 kWh, prévu 3.3 kWh
+[19:30:13]   Vouzance : mesuré 17367.1 kWh, prévu 26990.7 kWh
+[19:30:13]   LM11 : mesuré 4859.0 kWh, prévu 6138.7 kWh
+[19:30:13] Réalisé du 2026-10-24
+[19:30:13]   CB_QBase — installation personnelle : mesuré 2.1 kWh, prévu 3.9 kWh
+[19:30:13]   Vouzance : mesuré 10691.4 kWh, prévu 15292.9 kWh
+[19:30:13]   LM11 : mesuré 7480.1 kWh, prévu 8381.3 kWh
+[19:30:13] Réalisé du 2026-10-25
+[19:30:14]   CB_QBase — installation personnelle : mesuré 1.0 kWh, prévu 2.7 kWh
+[19:30:14]   Vouzance : mesuré 12068.6 kWh, prévu 13863.0 kWh
+[19:30:14]   LM11 : mesuré 6544.2 kWh, prévu 7578.9 kWh
+[19:30:14] Réalisé du 2026-10-26
+[19:30:14]   CB_QBase — installation personnelle : mesuré 3.2 kWh, prévu 4.0 kWh
+[19:30:14]   Vouzance : mesuré 14051.0 kWh, prévu 29956.4 kWh
+[19:30:14]   LM11 : mesuré 8632.2 kWh, prévu 7925.2 kWh
+[19:30:14] Réalisé du 2026-10-27
+[19:30:14]   CB_QBase — installation personnelle : mesuré 6.6 kWh, prévu 5.4 kWh
+[19:30:14]   Vouzance : mesuré 44729.1 kWh, prévu 36601.7 kWh
+[19:30:14]   LM11 : mesuré 9838.8 kWh, prévu 8135.0 kWh
+[19:30:14] Réalisé du 2026-10-28
+[19:30:14]   CB_QBase — installation personnelle : mesuré 6.0 kWh, prévu 3.6 kWh
+[19:30:14]   Vouzance : mesuré 26307.6 kWh, prévu 23378.7 kWh
+[19:30:14]   LM11 : mesuré 9834.5 kWh, prévu 8048.8 kWh
+[19:30:14] Réalisé du 2026-10-29
+[19:30:14]   CB_QBase — installation personnelle : mesuré 4.0 kWh, prévu 3.2 kWh
+[19:30:14]   Vouzance : mesuré 13020.1 kWh, prévu 32013.3 kWh
+[19:30:14]   LM11 : mesuré 7979.6 kWh, prévu 8005.3 kWh
+[19:30:14] Réalisé du 2026-10-30
+[19:30:14]   CB_QBase — installation personnelle : mesuré 1.4 kWh, prévu 1.6 kWh
+[19:30:14]   Vouzance : mesuré 16457.9 kWh, prévu 16246.6 kWh
+[19:30:14]   LM11 : mesuré 8328.9 kWh, prévu 7897.5 kWh
+[19:30:14] Réalisé du 2026-10-31
+[19:30:15]   CB_QBase — installation personnelle : mesuré 1.9 kWh, prévu 1.6 kWh
+[19:30:15]   Vouzance : mesuré 22329.2 kWh, prévu 18388.8 kWh
+[19:30:15]   LM11 : mesuré 9726.3 kWh, prévu 7887.8 kWh
