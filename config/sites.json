@@ -57,10 +57,8 @@
         "tarif_vente_eur_mwh": null,
         "conso": {
           "source": "enedis",
-          "prm": "19462518050078",
-          "annuelle_kwh": null,
-          "jeton_secret": "ENEDIS_JETON_01",
-          "jeton_le": "2026-11-02"
+          "prm": "",
+          "annuelle_kwh": null
         },
         "spot": {
           "decote_eur_mwh": null,
@@ -69,7 +67,10 @@
           "prix_reference_eur_mwh": null
         }
       },
-      "notes": "Compléter localisation, orientation, puissance AC et tarifs."
+      "notes": "Compléter localisation, orientation, puissance AC et tarifs.",
+      "prm": "19462518050078",
+      "jeton_secret": "ENEDIS_JETON_01",
+      "jeton_le": "2026-11-02"
     },
     {
       "id": "site-d513nkp",
@@ -335,7 +336,10 @@
           "prix_reference_eur_mwh": 78
         }
       },
-      "notes": "Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Mesures GridVis au point de livraison : pertes AC 2 % (auxiliaires 0,04 + câbles AC 0,69 + transfo HTA 1,00 + ligne HTA 0,24). Masque d'horizon PVGIS."
+      "notes": "Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Mesures GridVis au point de livraison : pertes AC 2 % (auxiliaires 0,04 + câbles AC 0,69 + transfo HTA 1,00 + ligne HTA 0,24). Masque d'horizon PVGIS.",
+      "prm": "",
+      "jeton_secret": null,
+      "jeton_le": null
     },
     {
       "id": "site-hjl27et",
@@ -524,7 +528,10 @@
           "prix_reference_eur_mwh": null
         }
       },
-      "notes": "Paramètres du rapport PVsyst VC3 (28/08/26, variante « Avec vieillissement ») : 8 352 Suntech STP 275-24/Vd, 4 ABB PVS800-57-0500kW (600 kVA max ≤ 25 °C). Pertes DC = LID 6 % + mismatch 1,15 % + câblage 1,04 %. Mesures GridVis en sortie onduleurs : pertes AC nulles. Puissance AC retenue : 2 000 kVA."
+      "notes": "Paramètres du rapport PVsyst VC3 (28/08/26, variante « Avec vieillissement ») : 8 352 Suntech STP 275-24/Vd, 4 ABB PVS800-57-0500kW (600 kVA max ≤ 25 °C). Pertes DC = LID 6 % + mismatch 1,15 % + câblage 1,04 %. Mesures GridVis en sortie onduleurs : pertes AC nulles. Puissance AC retenue : 2 000 kVA.",
+      "prm": "",
+      "jeton_secret": null,
+      "jeton_le": null
     }
   ]
 }

@@ -139,7 +139,7 @@ const TYPES={residentiel:"Résidentiel",toiture:"Toiture tertiaire / industriell
 const POSES={integre:"Intégré au bâti (peu ventilé)",surimpose:"Surimposé (toiture ventilée)",sol:"Au sol / ombrière (libre)"};
 
 function newSite(){return{
-  id:uid(),actif:true,nom:"",type:"toiture",lat:null,lon:null,altitude:null,
+  id:uid(),actif:true,nom:"",type:"toiture",prm:"",jeton_secret:null,jeton_le:null,lat:null,lon:null,altitude:null,
   pans:[newPan()],
   modules:{gamma_pct:-0.35,pose:"surimpose",uc:null,uv:null,rendement_pct:null},
   onduleur:{type:"string",pac_kva:null,rendement_pct:97.5},
@@ -195,7 +195,8 @@ function issues(s){
   if(v.mode==="vente_totale"&&bad(v.tarif_vente_eur_mwh))out.push("tarif de vente");
   if(v.mode==="spot"&&v.spot.complement&&bad(v.spot.prix_reference_eur_mwh))out.push("tarif de référence");
   if(s.mesures.source==="enphase"&&!/^\d+$/.test(String(s.mesures.enphase_system_id||"").trim()))out.push("identifiant Enphase (chiffres uniquement)");
-  if(s.mesures.source==="enedis"&&!String(s.mesures.prm_production||"").trim())out.push("PRM de production");
+  if(s.mesures.source==="enedis"&&!String(s.mesures.prm_production||s.prm||"").trim())out.push("PRM");
+  if(String(s.prm||"").trim()&&!/^\d{14}$/.test(String(s.prm).trim()))out.push("PRM (14 chiffres)");
   return out;
 }
 const kwc=s=>s.pans.reduce((t,p)=>t+(Number(p.pc_kwc)||0),0);
@@ -244,7 +245,7 @@ const NB_JETONS=20;
 function secretPour(chemin){
   const deja=get(chemin);if(deja)return deja;
   const pris=new Set();
-  [...st.sites,st.ed].forEach(x=>{if(!x)return;[(x.mesures||{}).jeton_secret,((x.valorisation||{}).conso||{}).jeton_secret].forEach(n=>n&&pris.add(n))});
+  [...st.sites,st.ed].forEach(x=>{if(!x)return;[x.jeton_secret,(x.mesures||{}).jeton_secret,((x.valorisation||{}).conso||{}).jeton_secret].forEach(n=>n&&pris.add(n))});
   for(let i=1;i<=NB_JETONS;i++){const n="ENEDIS_JETON_"+String(i).padStart(2,"0");if(!pris.has(n))return n}
   throw new Error(`Les ${NB_JETONS} emplacements de jetons Enedis sont utilisés : ajoutez des lignes ENEDIS_JETON_xx dans .github/workflows/quotidien.yml.`);
 }
@@ -336,7 +337,7 @@ function render(){
       <span class="meta"><span class="num">${fmtP(kwc(s))}</span><span>${esc(TYPES[s.type]||"")}</span><span>${esc(MODES[s.valorisation.mode].short)}</span>${s.masque?"<span>Masque importé</span>":""}${s.actif?"":"<span>Désactivé</span>"}</span>
     </button>`}).join("");
   app.innerHTML=`
-  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 2 nov., 20 h</span></p></div>${syncChip()}</header>
+  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 2 nov., 20 h 40</span></p></div>${syncChip()}</header>
   ${msgHtml()}
   <div class="list">${items||`<div class="empty">Aucun site. Ajoutez le premier avec « Nouveau site ».</div>`}</div>
   <details class="tools" id="tGit"><summary>Dépôt GitHub</summary><div class="body">
@@ -421,8 +422,10 @@ function renderEdit(){
     valoFields+=`<div class="grid">${num("valorisation.prix_achat_eur_kwh","Prix d'achat évité","€/kWh TTC",{ph:"ex. 0,2016"})}
       ${v.mode==="autoconso_surplus"?num("valorisation.tarif_surplus_eur_kwh","Tarif de rachat du surplus","€/kWh",{ph:"ex. 0,04"}):""}
       ${sel("valorisation.conso.source","Consommation du site",{enedis:"Courbe de charge Enedis",profil:"Profil type (conso annuelle)"})}
-      ${v.conso.source==="enedis"?txt("valorisation.conso.prm","PRM de consommation",{ph:"14 chiffres",mono:true}):num("valorisation.conso.annuelle_kwh","Consommation annuelle","kWh/an")}</div>
-      ${v.conso.source==="enedis"?jetonEnedis("valorisation.conso.jeton_le","valorisation.conso.prm"):""}`;
+      ${v.conso.source!=="enedis"?num("valorisation.conso.annuelle_kwh","Consommation annuelle","kWh/an")
+        :String(s.prm||"").trim()&&!String(v.conso.prm||"").trim()?`<p class="hint">Courbe du PRM du site (${esc(s.prm)}), jeton saisi dans « Site et localisation ».</p>`
+        :txt("valorisation.conso.prm","PRM de consommation",{ph:"14 chiffres",mono:true})}</div>
+      ${v.conso.source==="enedis"&&String(v.conso.prm||"").trim()&&String(v.conso.prm).trim()!==String(s.prm||"").trim()?jetonEnedis("valorisation.conso.jeton_le","valorisation.conso.prm"):""}`;
   }
   if(v.mode==="vente_totale")valoFields+=`<div class="grid">${num("valorisation.tarif_vente_eur_mwh","Tarif de vente","€/MWh",{ph:"ex. 105"})}</div>`;
   if(v.mode==="spot")valoFields+=`<div class="grid">${num("valorisation.spot.decote_eur_mwh","Décote agrégateur","€/MWh",{ph:"ex. 3"})}
@@ -440,6 +443,10 @@ function renderEdit(){
     <label class="f">Coordonnées GPS (coller « lat, lon » remplit les deux champs)<input id="eCoord" class="num" inputmode="decimal" placeholder="45.7640, 4.8357" autocapitalize="off"></label>
     <div class="grid">${num("lat","Latitude","°",{ph:"ex. 45,764"})}${num("lon","Longitude","°",{ph:"ex. 4,836"})}${num("altitude","Altitude","m",{ph:"facultatif"})}</div>
     ${Number.isFinite(s.lat)&&Number.isFinite(s.lon)?`<p class="hint"><a href="https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lon}#map=17/${s.lat}/${s.lon}" target="_blank" rel="noopener">Vérifier l'emplacement sur la carte ↗</a></p>`:""}
+    <div class="grid">${txt("prm","PRM du point de livraison",{ph:"14 chiffres · laisser vide si inconnu",mono:true})}</div>
+    ${String(s.prm||"").trim()?(s.type==="residentiel"?jetonEnedis("jeton_le","prm")
+      :`<p class="hint">Compteur de plus de 36 kVA ou site professionnel : MyElectricalData ne s'applique pas ; les mesures viennent de la supervision ou d'un fichier déposé.</p>`)
+      :`<p class="hint">Si le PRM est connu, saisissez-le : pour une toiture résidentielle (Linky ≤ 36 kVA), la courbe Enedis pourra être récupérée chaque jour avec un jeton MyElectricalData.</p>`}
     <label class="chk"><input type="checkbox" id="eActif" ${s.actif?"checked":""}> Site actif (inclus dans le calcul quotidien)</label>`,openSet.has("loc"))}
   ${sec("pans","Champs PV",`<span class="chip plain num">${fmtP(kwc(s))}</span>`,`${pans}<div class="row"><button id="eAddPan">Ajouter un champ (autre orientation)</button></div>`,openSet.has("pans"))}
   ${sec("tech","Modules, onduleurs et pertes","",`<div class="grid">${num("modules.gamma_pct","Coeff. température Pmax","%/°C",{ph:"ex. −0,35"})}${sel("modules.pose","Mode de pose",POSES)}
@@ -454,7 +461,7 @@ function renderEdit(){
   ${sec("mes","Données mesurées","",`<div class="grid">${sel("mesures.source","Source des mesures J+1",{enphase:"API Enphase",enedis:"Compteur Enedis Linky (MyElectricalData)",csv:"Fichier compteur déposé (CSV)",supervision:"Supervision (API à définir)"})}
     ${s.mesures.source==="enphase"?txt("mesures.enphase_system_id","Identifiant système Enphase",{mono:true}):""}
     ${txt("mesures.prm_production","PRM de production",{ph:s.mesures.source==="enedis"?"14 chiffres":"facultatif",mono:true})}</div>
-    ${s.mesures.source==="enedis"?jetonEnedis("mesures.jeton_le","mesures.prm_production"):""}
+    ${s.mesures.source==="enedis"&&String(s.mesures.prm_production||"").trim()&&String(s.mesures.prm_production).trim()!==String(s.prm||"").trim()?jetonEnedis("mesures.jeton_le","mesures.prm_production"):""}
     <p class="hint">Les identifiants d'accès (clés API, jetons) ne se saisissent pas ici : ils vont dans les secrets du dépôt GitHub.</p>`,openSet.has("mes"))}
   ${sec("valo","Valorisation de l'énergie","",`<div class="seg" role="radiogroup">${modeRadios}</div><p class="formula">${esc(MODES[v.mode].help)}</p>${valoFields}`,openSet.has("valo"))}
   ${sec("notes","Notes","",`<label class="f">Notes internes<textarea id="eNotes" style="font-family:var(--f-body);font-size:.92rem;min-height:80px">${esc(s.notes)}</textarea></label>`,openSet.has("notes"))}`;
@@ -502,6 +509,8 @@ function bindEdit(){
     let nom;
     try{const cs=chemin.replace(/jeton_le$/,"jeton_secret");nom=secretPour(cs);await ghSecret(nom,val);set(cs,nom);set(chemin,new Date().toISOString().slice(0,10))}
     catch(e){console.error(e);dire("bad","Échec : "+e.message);return}
+    // vente totale sans autre source : la production se lit alors sur le compteur Enedis
+    if(chemin==="jeton_le"&&st.ed.valorisation.mode==="vente_totale"&&st.ed.mesures.source==="csv")st.ed.mesures.source="enedis";
     // le site est validé et la base enregistrée sur GitHub dans la foulée : l'emplacement du jeton y est noté
     if(st.edIdx<0){st.sites.push(st.ed);st.edIdx=st.sites.length-1}else st.sites[st.edIdx]=st.ed;
     st.ed=clone(st.ed);st.dirty=true;persistDraft();

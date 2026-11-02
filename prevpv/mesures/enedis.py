@@ -151,15 +151,23 @@ def actualiser(site: dict, sens: str, prm: str, nom: str | None = None) -> None:
 
 
 def actualiser_tous(sites: list[dict]) -> None:
+    """PRM et jeton se saisissent d'abord au niveau du site (champ « PRM du point de livraison ») ;
+    les champs PRM de la valorisation et des mesures restent possibles pour un second compteur."""
     for s in sites:
         conso = (s.get("valorisation") or {}).get("conso") or {}
         mes = s.get("mesures") or {}
+        prm_site, nom_site = str(s.get("prm") or "").strip(), s.get("jeton_secret")
+        def jeton(prm: str, nom: str | None) -> str | None:
+            return nom or (nom_site if prm == prm_site else None)
         travaux = []
-        if str((s.get("valorisation") or {}).get("mode", "")).startswith("autoconso") \
-                and conso.get("source") == "enedis" and conso.get("prm"):
-            travaux.append(("consumption", conso["prm"], conso.get("jeton_secret")))
-        if mes.get("source") == "enedis" and mes.get("prm_production"):
-            travaux.append(("production", mes["prm_production"], mes.get("jeton_secret")))
+        if str((s.get("valorisation") or {}).get("mode", "")).startswith("autoconso") and conso.get("source") == "enedis":
+            prm = str(conso.get("prm") or prm_site).strip()
+            if prm:
+                travaux.append(("consumption", prm, jeton(prm, conso.get("jeton_secret"))))
+        if mes.get("source") == "enedis":
+            prm = str(mes.get("prm_production") or prm_site).strip()
+            if prm:
+                travaux.append(("production", prm, jeton(prm, mes.get("jeton_secret"))))
         for sens, prm, nom in travaux:
             try:
                 actualiser(s, sens, str(prm).strip(), nom)
