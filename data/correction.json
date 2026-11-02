@@ -1,11 +1,11 @@
 {
  "site-3o1hxnm": {
   "jours": 29,
-  "global": 0.7619,
+  "global": 0.767,
   "tranches": [
-   0.9013,
-   0.6744,
-   0.7673
+   0.8904,
+   0.6794,
+   0.7734
   ],
   "actif": true,
   "quarts_arret_exclus": 0,
@@ -48,13 +48,19 @@
   ]
  },
  "site-bhl4p7u": {
-  "jours": 0,
-  "global": 1.0,
+  "jours": 26,
+  "global": 0.7107,
   "tranches": [
-   1.0,
-   1.0,
-   1.0
+   0.6151,
+   0.6454,
+   0.7294
   ],
-  "actif": false
+  "actif": true,
+  "quarts_arret_exclus": 12,
+  "noms": [
+   "couvert",
+   "mitigé",
+   "clair"
+  ]
  }
 }
