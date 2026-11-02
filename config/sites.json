@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-11-02T21:15:53.729Z",
+  "mis_a_jour": "2026-11-02T21:16:14.097Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -9,7 +9,7 @@
     {
       "id": "site-3o1hxnm",
       "actif": true,
-      "nom": "CB - installation personnelle en auto-consommation",
+      "nom": "CB - Installation personnelle en auto-consommation",
       "type": "residentiel",
       "prm": "19462518050078",
       "jeton_secret": "ENEDIS_JETON_01",
