@@ -206,8 +206,28 @@ const fmtP=k=>k>=1000?fmt(+(k/1000).toFixed(2))+" MWc":fmt(+k.toFixed(2))+" kWc"
 const st={sites:[],sha:null,dirty:false,view:"list",ed:null,edIdx:-1,cfg:Object.assign({owner:"cbt135",repo:"prevision-pv",branch:"main",path:"config/sites.json",token:""},lsGet(LS_CFG)||{}),msg:null,busy:false,armDel:false};
 if(!lsGet(LS_CFG)&&/\.github\.io$/.test(location.hostname)){st.cfg.owner=location.hostname.split(".")[0];const seg=location.pathname.split("/").filter(Boolean);if(seg.length&&!seg[0].endsWith(".html"))st.cfg.repo=seg[0]}
 const draft=lsGet(LS_DRAFT);
-if(draft&&Array.isArray(draft.sites)){st.sites=draft.sites;st.sha=draft.sha||null;st.dirty=!!draft.dirty}else st.sites=seeds();
-const persistDraft=()=>lsSet(LS_DRAFT,{sites:st.sites,sha:st.sha,dirty:st.dirty});
+/* touched / deleted : sites modifiés ou supprimés dans ce navigateur depuis le dernier enregistrement.
+   Ils permettent de fusionner avec la version GitHub si elle a changé entre-temps (calcul automatique,
+   autre onglet, autre appareil) au lieu de perdre la saisie. */
+st.touched=new Set();st.deleted=new Set();
+if(draft&&Array.isArray(draft.sites)){st.sites=draft.sites;st.sha=draft.sha||null;st.dirty=!!draft.dirty;
+  st.touched=new Set(draft.touched||[]);st.deleted=new Set(draft.deleted||[]);
+  // ancien brouillon sans suivi : les sites absents de GitHub seront conservés à la fusion
+  if(st.dirty&&!draft.touched)st.legacy=true}else st.sites=seeds();
+const persistDraft=()=>lsSet(LS_DRAFT,{sites:st.sites,sha:st.sha,dirty:st.dirty,touched:[...st.touched],deleted:[...st.deleted]});
+function fusion(distants){
+  const loc=new Map(st.sites.map(x=>[x.id,x]));
+  const out=distants.filter(x=>!st.deleted.has(x.id)).map(x=>st.touched.has(x.id)&&loc.has(x.id)?loc.get(x.id):x);
+  const ids=new Set(out.map(x=>x.id));
+  st.sites.forEach(x=>{if(!ids.has(x.id)&&!st.deleted.has(x.id)&&(st.touched.has(x.id)||st.legacy))out.push(x)});
+  return out;
+}
+async function lireDistant(){
+  const r=await fetch(apiUrl()+"?ref="+encodeURIComponent(st.cfg.branch)+"&t="+Date.now(),{headers:ghHeaders(),cache:"no-store"});
+  if(!r.ok)return{r};
+  const j=await r.json();const data=JSON.parse(b64d(j.content));
+  return{r,sites:Array.isArray(data.sites)?data.sites:[],sha:j.sha};
+}
 
 /* ---------- GitHub ---------- */
 const b64e=s=>btoa(unescape(encodeURIComponent(s)));
@@ -231,9 +251,11 @@ async function ghLoad(){
       if(rr.ok){st.sha=null;st.dirty=true;persistDraft();say("warn",`Le fichier ${st.cfg.path} n'existe pas encore. Il sera créé au premier enregistrement.`)}
       else say("bad",ghError(rr,await rr.text()));
     }else if(!r.ok){say("bad",ghError(r,await r.text()))}
-    else{const j=await r.json();const data=JSON.parse(b64d(j.content));
-      st.sites=Array.isArray(data.sites)?data.sites:[];st.sha=j.sha;st.dirty=false;persistDraft();
-      say("ok",`${st.sites.length} site${st.sites.length>1?"s":""} chargé${st.sites.length>1?"s":""} depuis GitHub.`)}
+    else{const j=await r.json();const data=JSON.parse(b64d(j.content));const distants=Array.isArray(data.sites)?data.sites:[];
+      if(st.dirty&&(st.touched.size||st.deleted.size||st.legacy)){st.sites=fusion(distants);st.sha=j.sha;persistDraft();
+        say("warn","Modifications de ce navigateur pas encore enregistrées : elles ont été conservées. Cliquez sur « Enregistrer sur GitHub ».")}
+      else{st.sites=distants;st.sha=j.sha;st.dirty=false;st.touched.clear();st.deleted.clear();st.legacy=false;persistDraft();
+        say("ok",`${st.sites.length} site${st.sites.length>1?"s":""} chargé${st.sites.length>1?"s":""} depuis GitHub.`)}}
   }catch(e){say("bad","Connexion à GitHub impossible. Vérifiez votre réseau et réessayez.")}
   st.busy=false;render();
 }
@@ -269,9 +291,17 @@ async function ghSave(){
   const body={message:`Sites PV : mise à jour (${st.sites.length} site${st.sites.length>1?"s":""})`,content:b64e(JSON.stringify(payload,null,2)+"\n"),branch:st.cfg.branch};
   if(st.sha)body.sha=st.sha;
   try{
-    const r=await fetch(apiUrl(),{method:"PUT",headers:Object.assign({"Content-Type":"application/json"},ghHeaders()),body:JSON.stringify(body)});
+    let r=await fetch(apiUrl(),{method:"PUT",headers:Object.assign({"Content-Type":"application/json"},ghHeaders()),body:JSON.stringify(body)});
+    if(r.status===409||r.status===422){
+      // la base a changé sur GitHub depuis le chargement : on repart de la version GitHub + nos modifications
+      const d=await lireDistant();
+      if(d.sites){st.sites=fusion(d.sites);st.sha=d.sha;persistDraft();
+        payload.sites=st.sites;body.content=b64e(JSON.stringify(payload,null,2)+"\n");body.sha=d.sha;
+        body.message=`Sites PV : mise à jour (${st.sites.length} site${st.sites.length>1?"s":""})`;
+        r=await fetch(apiUrl(),{method:"PUT",headers:Object.assign({"Content-Type":"application/json"},ghHeaders()),body:JSON.stringify(body)})}
+    }
     if(!r.ok)say("bad",ghError(r,await r.text()));
-    else{const j=await r.json();st.sha=j.content.sha;st.dirty=false;persistDraft();say("ok","Enregistré sur GitHub.")}
+    else{const j=await r.json();st.sha=j.content.sha;st.dirty=false;st.touched.clear();st.deleted.clear();st.legacy=false;persistDraft();say("ok","Enregistré sur GitHub.")}
   }catch(e){say("bad","Connexion à GitHub impossible. Vos modifications restent dans ce navigateur.")}
   st.busy=false;render();
 }
@@ -337,7 +367,7 @@ function render(){
       <span class="meta"><span class="num">${fmtP(kwc(s))}</span><span>${esc(TYPES[s.type]||"")}</span><span>${esc(MODES[s.valorisation.mode].short)}</span>${s.masque?"<span>Masque importé</span>":""}${s.actif?"":"<span>Désactivé</span>"}</span>
     </button>`}).join("");
   app.innerHTML=`
-  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 2 nov., 20 h 40</span></p></div>${syncChip()}</header>
+  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 2 nov., 21 h 20</span></p></div>${syncChip()}</header>
   ${msgHtml()}
   <div class="list">${items||`<div class="empty">Aucun site. Ajoutez le premier avec « Nouveau site ».</div>`}</div>
   <details class="tools" id="tGit"><summary>Dépôt GitHub</summary><div class="body">
@@ -369,7 +399,7 @@ function render(){
   document.getElementById("cSave").onclick=()=>{["Owner","Repo","Branch","Path","Token"].forEach(k=>st.cfg[k.toLowerCase()]=document.getElementById("c"+k).value.trim());lsSet(LS_CFG,st.cfg);ghLoad()};
   document.getElementById("cForget").onclick=()=>{st.cfg.token="";lsSet(LS_CFG,st.cfg);say("ok","Jeton effacé de ce navigateur.");render()};
   document.getElementById("jCopy").onclick=()=>{const t=document.getElementById("jOut");navigator.clipboard.writeText(t.value).then(()=>{say("ok","JSON copié.");render()},()=>{t.focus();t.select()})};
-  document.getElementById("jImport").onclick=()=>{try{const d=JSON.parse(document.getElementById("jIn").value);const arr=Array.isArray(d)?d:d.sites;if(!Array.isArray(arr))throw 0;st.sites=arr.map(s=>Object.assign(newSite(),s));st.dirty=true;persistDraft();say("ok",`${arr.length} site(s) importé(s). Enregistrez sur GitHub pour les conserver.`)}catch(e){say("bad","JSON illisible : il doit contenir une liste « sites ».")}render()};
+  document.getElementById("jImport").onclick=()=>{try{const d=JSON.parse(document.getElementById("jIn").value);const arr=Array.isArray(d)?d:d.sites;if(!Array.isArray(arr))throw 0;const avant=st.sites.map(x=>x.id);st.sites=arr.map(s=>Object.assign(newSite(),s));st.sites.forEach(x=>st.touched.add(x.id));avant.filter(id=>!st.sites.some(x=>x.id===id)).forEach(id=>st.deleted.add(id));st.dirty=true;persistDraft();say("ok",`${arr.length} site(s) importé(s). Enregistrez sur GitHub pour les conserver.`)}catch(e){say("bad","JSON illisible : il doit contenir une liste « sites ».")}render()};
 }
 
 function openEdit(i){st.jetonMsg=null;st.edIdx=i;st.ed=i<0?newSite():Object.assign(newSite(),clone(st.sites[i]));st.view="edit";st.msg=null;st.armDel=false;st.open=null;render();window.scrollTo(0,0)}
@@ -380,7 +410,9 @@ function num(path,label,unit,opt={}){const v=get(path);const bad=Number.isNaN(v)
 function txt(path,label,opt={}){return`<label class="f">${label}<input data-txt="${path}" autocomplete="off" value="${esc(get(path))}" placeholder="${esc(opt.ph||"")}" ${opt.mono?'class="num" autocapitalize="off" spellcheck="false"':""}></label>`}
 function sel(path,label,opts){const v=get(path);return`<label class="f">${label}<select data-sel="${path}">${Object.entries(opts).map(([k,l])=>`<option value="${k}"${k===v?" selected":""}>${esc(l)}</option>`).join("")}</select></label>`}
 function limAngle(p){const b=p.inclinaison*Math.PI/180,r=p.pitch_m/p.largeur_m;return Math.atan(Math.sin(b)/(r-Math.cos(b)))*180/Math.PI}
-function jetonEnedis(chemin,prmPath){const le=get(chemin),nom=get(chemin.replace(/jeton_le$/,"jeton_secret")),id="jt-"+chemin.replace(/\./g,"-");
+function jetonEnedis(chemin,prmPath){
+  if(st.edIdx<0)return`<p class="msg warn">Validez d'abord le site (bouton « Valider le site » en bas de page) : il est alors enregistré dans la base. Rouvrez-le ensuite pour saisir le jeton MyElectricalData.</p>`;
+  const le=get(chemin),nom=get(chemin.replace(/jeton_le$/,"jeton_secret")),id="jt-"+chemin.replace(/\./g,"-");
   return`<div class="pan"><div class="grid"><label class="f">Jeton MyElectricalData${nom?` <span class="u">secret ${esc(nom)}</span>`:""}<input id="${id}" class="secret" type="text" name="jeton-${id}" autocomplete="off" autocapitalize="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-form-type="other" placeholder="${le?"enregistré le "+esc(le)+" · coller pour remplacer":"coller le jeton"}"></label></div>
   ${st.jetonMsg&&st.jetonMsg.chemin===chemin?`<p class="msg ${st.jetonMsg.kind}" role="status">${esc(st.jetonMsg.text)}</p>`:""}
   <div class="row"><button data-jeton="${chemin}|${prmPath}">${le?"Remplacer le jeton":"Enregistrer le jeton dans les secrets GitHub"}</button>${le?`<span class="chip ok">Jeton enregistré le ${esc(le)}</span>`:`<span class="chip warn">Aucun jeton</span>`}</div>
@@ -511,20 +543,24 @@ function bindEdit(){
     catch(e){console.error(e);dire("bad","Échec : "+e.message);return}
     // vente totale sans autre source : la production se lit alors sur le compteur Enedis
     if(chemin==="jeton_le"&&st.ed.valorisation.mode==="vente_totale"&&st.ed.mesures.source==="csv")st.ed.mesures.source="enedis";
-    // le site est validé et la base enregistrée sur GitHub dans la foulée : l'emplacement du jeton y est noté
-    if(st.edIdx<0){st.sites.push(st.ed);st.edIdx=st.sites.length-1}else st.sites[st.edIdx]=st.ed;
+    // la fiche est mise à jour et la base enregistrée sur GitHub dans la foulée : l'emplacement du jeton y est noté
+    st.sites[st.edIdx]=st.ed;st.touched.add(st.ed.id);
     st.ed=clone(st.ed);st.dirty=true;persistDraft();
     await ghSave();
     dire(st.dirty?"warn":"ok",st.dirty?`Jeton enregistré dans le secret ${nom}, mais la base des sites n'a pas pu être enregistrée sur GitHub : cliquez sur « Enregistrer sur GitHub » depuis la liste.`
       :`Jeton enregistré dans le secret ${nom} et base des sites enregistrée sur GitHub. La courbe sera récupérée au prochain calcul.`)});
   on("eBack","click",closeEdit);on("eCancel","click",closeEdit);
-  on("eOk","click",()=>{if(!s.nom.trim())s.nom="Site sans nom";
+  on("eOk","click",async()=>{if(!s.nom.trim())s.nom="Site sans nom";
     if(st.edIdx<0)st.sites.push(s);else st.sites[st.edIdx]=s;
-    st.dirty=true;persistDraft();const n=issues(s).length;
-    say(n?"warn":"ok",n?`Site validé, ${n} paramètre(s) encore à compléter. Pensez à enregistrer sur GitHub.`:"Site validé. Pensez à enregistrer sur GitHub.");
-    st.view="list";render();window.scrollTo(0,0)});
+    st.touched.add(s.id);st.dirty=true;persistDraft();const n=issues(s).length;
+    st.view="list";window.scrollTo(0,0);
+    if(st.cfg.token){await ghSave();
+      if(!st.dirty&&n)say("warn",`Site enregistré sur GitHub, ${n} paramètre(s) encore à compléter : il ne sera calculé qu'une fois complet.`);
+      else if(!st.dirty)say("ok",`Site « ${s.nom} » enregistré sur GitHub.`);
+      render()}
+    else{say(n?"warn":"ok",n?`Site validé, ${n} paramètre(s) encore à compléter. Renseignez le jeton GitHub pour l'enregistrer.`:"Site validé. Renseignez le jeton GitHub pour l'enregistrer.");render()}});
   on("eDel","click",()=>{if(!st.armDel){st.armDel=true;rerender();return}
-    st.sites.splice(st.edIdx,1);st.dirty=true;persistDraft();say("ok","Site supprimé. Enregistrez sur GitHub pour confirmer.");st.view="list";render()});
+    const sup=st.sites.splice(st.edIdx,1)[0];if(sup){st.deleted.add(sup.id);st.touched.delete(sup.id)}st.dirty=true;persistDraft();say("ok","Site supprimé. Enregistrez sur GitHub pour confirmer.");st.view="list";render()});
 }
 function rerender(){const y=window.scrollY,a=document.activeElement,id=a&&a.id,val=a&&a.classList&&a.classList.contains("secret")?a.value:null;
   render();window.scrollTo(0,y);
@@ -532,7 +568,7 @@ function rerender(){const y=window.scrollY,a=document.activeElement,id=a&&a.id,v
 function closeEdit(){st.view="list";st.msg=null;render();window.scrollTo(0,0)}
 
 render();
-if(st.cfg.token&&!st.dirty)ghLoad();
+if(st.cfg.token)ghLoad();  // toujours relire GitHub ; les modifications locales en attente sont fusionnées
 })();
 </script>
 
