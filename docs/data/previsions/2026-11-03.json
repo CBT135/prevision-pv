@@ -1,6 +1,6 @@
 {
  "date": "2026-11-03",
- "genere_le": "2026-11-02T22:13+01:00",
+ "genere_le": "2026-11-02T22:15+01:00",
  "pas_fin": [
   "00:15",
   "00:30",
@@ -3437,7 +3437,7 @@
    "type": "residentiel",
    "pc_kwc": 2.8,
    "pac_kva": 2.5,
-   "mode": "vente_totale",
+   "mode": "spot",
    "tarifs": {
     "prix_achat_eur_kwh": null,
     "tarif_surplus_eur_kwh": null,
@@ -4426,10 +4426,16 @@
    "conso_prevue_kw": null,
    "source_conso": null,
    "valorisation": {
-    "mode": "vente_totale",
+    "mode": "spot",
     "energie_kwh": 5.52,
-    "ca_eur": 3.45,
-    "detail": {}
+    "ca_eur": 1.2,
+    "detail": {
+     "marche_eur": 1.2,
+     "quarts_prix_negatif": 0,
+     "energie_arretee_kwh": 0.0,
+     "prix_moyen_pondere": 219.61,
+     "prix_moyen_base": 246.37
+    }
    },
    "correction": {
     "active": true,
