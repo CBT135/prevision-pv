@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-11-02T20:10:44.943Z",
+  "mis_a_jour": "2026-11-02T20:12:39.727Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -540,6 +540,9 @@
       "actif": true,
       "nom": "CB - Installation personnelle en vente totale",
       "type": "residentiel",
+      "prm": "",
+      "jeton_secret": null,
+      "jeton_le": null,
       "lat": 45.697525,
       "lon": 5.134203,
       "altitude": null,
@@ -578,9 +581,11 @@
         "points": null
       },
       "mesures": {
-        "source": "csv",
+        "source": "enedis",
         "enphase_system_id": "",
-        "prm_production": ""
+        "prm_production": "19425180815654",
+        "jeton_secret": "ENEDIS_JETON_02",
+        "jeton_le": "2026-11-02"
       },
       "valorisation": {
         "mode": "vente_totale",
