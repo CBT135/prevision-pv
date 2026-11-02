@@ -194,7 +194,7 @@ function issues(s){
   if(v.mode==="autoconso_surplus"&&bad(v.tarif_surplus_eur_kwh))out.push("tarif du surplus");
   if(v.mode==="vente_totale"&&bad(v.tarif_vente_eur_mwh))out.push("tarif de vente");
   if(v.mode==="spot"&&v.spot.complement&&bad(v.spot.prix_reference_eur_mwh))out.push("tarif de référence");
-  if(s.mesures.source==="enphase"&&!String(s.mesures.enphase_system_id).trim())out.push("identifiant Enphase");
+  if(s.mesures.source==="enphase"&&!/^\d+$/.test(String(s.mesures.enphase_system_id||"").trim()))out.push("identifiant Enphase (chiffres uniquement)");
   if(s.mesures.source==="enedis"&&!String(s.mesures.prm_production||"").trim())out.push("PRM de production");
   return out;
 }

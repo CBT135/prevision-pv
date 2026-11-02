@@ -27,6 +27,22 @@ BASE = "https://www.myelectricaldata.fr"
 JOURS_REPRISE = 60  # historique récupéré au premier passage
 
 
+_DIAG: list[str] = []  # réponses brutes de la passerelle, journalisées quand rien n'est récupéré
+
+
+def _diagnostic(sens: str, prm: str, jeton: str) -> None:
+    """Rien reçu : réponses obtenues, et contrôle du jeton sur les données journalières et le contrat."""
+    for l in _DIAG[-3:]:
+        journal(f"    réponse courbe {l}")
+    fin = aujourd_hui_paris()
+    for chemin in (f"daily_{sens}/{prm}/start/{fin - timedelta(days=7)}/end/{fin}", f"contracts/{prm}/cache"):
+        try:
+            r = requests.get(f"{BASE}/{chemin}", headers={"Authorization": jeton}, timeout=60)
+            journal(f"    contrôle {chemin.split('/')[0]} : HTTP {r.status_code} {r.text[:200]!r}")
+        except Exception as e:
+            journal(f"    contrôle {chemin.split('/')[0]} : {e}")
+
+
 def nom_secret(prm: str) -> str:
     return "ENEDIS_" + "".join(c for c in str(prm) if c.isalnum())
 
@@ -39,6 +55,7 @@ def _appel(sens: str, prm: str, jeton: str, debut: date, fin: date, cache: bool)
             time.sleep(5 * (essai + 1))
             continue
         break
+    _DIAG.append(f"{debut}→{fin} : HTTP {r.status_code} {r.text[:160]!r}")
     if r.status_code == 404:  # Enedis ne détient rien sur la période
         return pd.Series(dtype=float)
     if r.status_code in (401, 403):
@@ -123,6 +140,7 @@ def actualiser(site: dict, sens: str, prm: str, nom: str | None = None) -> None:
     nouveau = pd.concat(morceaux) if morceaux else pd.Series(dtype=float)
     if nouveau.empty:
         journal(f"  {site.get('nom')} : aucune courbe Enedis {sens} du {debut} au {fin - timedelta(days=1)}")
+        _diagnostic(sens, prm, jeton)
         return
     _ecrire(d, pd.concat([existant[~existant.index.isin(nouveau.index)], nouveau]))
     journal(f"  {site.get('nom')} : courbe Enedis {'consommation' if sens == 'consumption' else 'production'} "
