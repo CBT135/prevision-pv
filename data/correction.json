@@ -16,12 +16,12 @@
   ]
  },
  "site-d513nkp": {
-  "jours": 30,
-  "global": 0.6968,
+  "jours": 29,
+  "global": 0.7028,
   "tranches": [
-   0.9199,
-   0.6516,
-   0.6891
+   0.9332,
+   0.645,
+   0.6965
   ],
   "actif": true,
   "quarts_arret_exclus": 27,
