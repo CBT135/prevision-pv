@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-11-02T20:58:22.818Z",
+  "mis_a_jour": "2026-11-02T21:04:03.800Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -54,7 +54,7 @@
         "prm_production": ""
       },
       "valorisation": {
-        "mode": "autoconso_surplus",
+        "mode": "autoconso_sans_surplus",
         "prix_achat_eur_kwh": 0.1654,
         "tarif_surplus_eur_kwh": 0,
         "tarif_vente_eur_mwh": null,
