@@ -48,7 +48,7 @@ def prevision(sites: list[dict], d: date) -> None:
         try:
             m = meteo.previsions(s, d - timedelta(days=1), d + timedelta(days=1)).reindex(idx)
             mod = modele.puissance(s, m)
-            p_prev = _plafond(s, correction.appliquer(s["id"], mod))
+            p_prev = _plafond(s, correction.appliquer(s, mod))
             conso_prev, src_conso = (None, None)
             if (s.get("valorisation") or {}).get("mode", "").startswith("autoconso"):
                 conso_prev, src_conso = valorisation.prevision_conso(mesures.consommation_totale(s), s, idx)
@@ -70,7 +70,8 @@ def prevision(sites: list[dict], d: date) -> None:
                 "source_conso": src_conso,
                 "valorisation": val,
                 "correction": {"active": bool(corr.get("actif")), "jours": corr.get("jours", 0),
-                               "facteurs": corr.get("tranches")},
+                               "facteurs": corr.get("tranches"),
+                               "cases_ombrees": (corr.get("position") or {}).get("cases_ombrees")},
             }
             journal(f"  {s['nom']} : {val['energie_kwh']:.1f} kWh, CA {val['ca_eur']} €")
         except Exception as e:  # un site en échec ne bloque pas les autres
@@ -235,7 +236,7 @@ def reconstituer(sites: list[dict], jours: int) -> None:
             idx = pd.date_range(index_journee(d0)[0], index_journee(fin)[-1], freq="15min")
             m = meteo.previsions(s, d0 - timedelta(days=1), fin + timedelta(days=1), historique=True).reindex(idx)
             mod = modele.puissance(s, m)
-            p_prev = _plafond(s, correction.appliquer(s["id"], mod))
+            p_prev = _plafond(s, correction.appliquer(s, mod))
             d = d0
             while d <= fin:
                 fournis_par_jour.setdefault(d, {})[s["id"]] = {
@@ -267,6 +268,10 @@ def quotidien() -> None:
     enedis.actualiser_tous(sites)
     if not sites:
         journal("Aucun site actif et complet dans config/sites.json")
+    nouveaux = [s for s in sites if not correction.chemin_histo(s["id"]).exists()]
+    if nouveaux:  # site ajouté dans la base : historique et correction dès son premier passage
+        journal("Nouveau(x) site(s) : " + ", ".join(s.get("nom", s["id"]) for s in nouveaux))
+        historique(nouveaux, 60)
     t = aujourd_hui_paris()
     for k in (3, 2, 1):
         realise(sites, t - timedelta(days=k))

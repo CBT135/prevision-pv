@@ -11,6 +11,10 @@ on:
     - cron: "23 15 * * *"  # 16h23 : après le run AROME de 12 h UTC et les prix day-ahead
     - cron: "53 16 * * *"  # 17h53 : second essai de l'après-midi
   workflow_dispatch:
+  # Base des sites modifiée (nom, mode de valorisation, paramètres, nouveau site) : nouveau calcul
+  push:
+    branches: [main]
+    paths: ["config/sites.json"]
 
 permissions:
   contents: write

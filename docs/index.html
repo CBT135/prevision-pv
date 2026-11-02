@@ -338,6 +338,9 @@ async function rendre(){
   // prix du jour dans le tableau : moyenne day-ahead (spot), sinon prix valorisé = CA / énergie
   const prixTab=j=>{if(!ps)return"–";
     if(ps.spot){const v=(j.prix||[]).filter(x=>x!=null);return v.length?nf(somme(v)/v.length,1):"–"}
+    const t=site.tarifs||{};
+    if(site.mode==="vente_totale")return t.tarif_vente_eur_mwh==null?"–":nf(+t.tarif_vente_eur_mwh,2);
+    if(site.mode==="autoconso_sans_surplus")return t.prix_achat_eur_kwh==null?"–":nf(+t.prix_achat_eur_kwh,4);
     const ca=j.etat==="real"?j.caReal:j.caPrev,e=j.etat==="real"?j.eMes:j.ePrev;
     if(ca==null||!e)return"–";const kwh=ca/e;return ps.unite==="€/kWh"?nf(kwh,4):nf(kwh*1000,2)};
   const {svg,geo}=graphe(jours,site);
@@ -350,7 +353,7 @@ async function rendre(){
   $("vue").innerHTML=`
   <div class="card">
     <div class="site-h"><h2>${esc(site.nom)}</h2><div class="chips"><span class="chip num">${site.pc_kwc>=1000?nf(site.pc_kwc/1000,2)+" MWc":nf(site.pc_kwc,2)+" kWc"}</span><span class="chip">${esc(MODES[site.mode]||site.mode||"")}</span>
-      ${corr?(corr.active?`<span class="chip ok">Correction active · ${corr.jours} j</span>`:`<span class="chip warn">Sans correction · ${corr.jours||0} j de mesures</span>`):""}</div></div>
+      ${corr?(corr.active?`<span class="chip ok">Correction active · ${corr.jours} j${corr.cases_ombrees?` · ombrages appris`:""}</span>`:`<span class="chip warn">Sans correction · ${corr.jours||0} j de mesures</span>`):""}</div></div>
   </div>
   <div class="week">
     <button class="b arrow" id="wPrev" aria-label="Semaine précédente" ${geoMin<=lundi(premier)?"disabled":""}>←</button>
@@ -394,12 +397,24 @@ async function listeSites(){
   $("sites").querySelectorAll(".sbtn").forEach(b=>b.onclick=()=>{SITE=b.dataset.id;lsSet("prevpv.site",SITE);rendre()});
 }
 
+/* La base des sites (config/sites.json) est lue directement sur GitHub : un nom, un mode de valorisation
+   ou un tarif modifié s'affiche tout de suite, sans attendre le calcul suivant (qui recalcule les CA). */
+async function completerSites(){
+  let base=null;
+  try{const r=await fetch(`https://raw.githubusercontent.com/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/${encodeURIComponent(cfg.branch)}/config/sites.json?t=${Date.now()}`,{cache:"no-store"});if(r.ok)base=await r.json()}catch(e){}
+  if(!base&&cfg.token){try{const r=await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/config/sites.json?ref=${encodeURIComponent(cfg.branch)}`,{headers:{"Accept":"application/vnd.github.raw+json","Authorization":"Bearer "+cfg.token}});if(r.ok)base=await r.json()}catch(e){}}
+  const liste=base&&(Array.isArray(base)?base:base.sites);if(!Array.isArray(liste))return;
+  const parId=new Map(liste.map(x=>[x.id,x]));
+  INDEX.sites=(INDEX.sites||[]).filter(s=>!parId.has(s.id)||parId.get(s.id).actif!==false).map(s=>{const b=parId.get(s.id);if(!b)return s;const v=b.valorisation||{};
+    return Object.assign({},s,{nom:b.nom||s.nom,mode:v.mode||s.mode,tarifs:{prix_achat_eur_kwh:v.prix_achat_eur_kwh,tarif_surplus_eur_kwh:v.tarif_surplus_eur_kwh,tarif_vente_eur_mwh:v.tarif_vente_eur_mwh}})});
+}
 async function demarrer(){
   ["Owner","Repo","Branch","Token"].forEach(k=>$("c"+k).value=cfg[k.toLowerCase()]||"");
   cache.clear();
   try{INDEX=await charger("index.json")}
   catch(e){$("vue").innerHTML=`<p class="msg warn">Données inaccessibles (${esc(e.message)}). Ouvrez cette page depuis GitHub Pages, ou renseignez l'accès au dépôt ci-dessous.</p>`;$("cfg").open=true;return}
   $("maj").textContent=`Mis à jour le ${new Date(INDEX.mis_a_jour).toLocaleString("fr-FR",{dateStyle:"medium",timeStyle:"short"})}`;
+  await completerSites();
   INDEX.sites=(INDEX.sites||[]).slice().sort((a,b)=>a.nom.localeCompare(b.nom,"fr"));
   INDEX.realise=INDEX.realise||[];INDEX.previsions=INDEX.previsions||[];
   const garde=lsGet("prevpv.site");
