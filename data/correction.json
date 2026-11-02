@@ -17,11 +17,11 @@
  },
  "site-d513nkp": {
   "jours": 30,
-  "global": 0.8453,
+  "global": 0.8284,
   "tranches": [
-   1.0893,
-   0.8028,
-   0.8347
+   1.0675,
+   0.7867,
+   0.818
   ],
   "actif": true,
   "quarts_arret_exclus": 27,
@@ -33,11 +33,11 @@
  },
  "site-hjl27et": {
   "jours": 30,
-  "global": 0.8352,
+  "global": 0.8227,
   "tranches": [
-   0.6474,
-   0.6838,
-   0.8439
+   0.6355,
+   0.6736,
+   0.8313
   ],
   "actif": true,
   "quarts_arret_exclus": 12,
