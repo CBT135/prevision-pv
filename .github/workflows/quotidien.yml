@@ -2,9 +2,14 @@ name: Calcul quotidien
 
 on:
   schedule:
-    # Heures en UTC. Hiver : 6h40 et 16h20 à Paris ; été : 7h40 et 17h20.
-    - cron: "40 5 * * *"   # mesures de la veille + prévision J+1 sur la météo du matin
-    - cron: "20 15 * * *"  # après le run AROME de 12 h UTC et les prix day-ahead : prévision J+1 finale valorisée
+    # Heures en UTC (hiver : +1 h à Paris ; été : +2 h).
+    # GitHub retarde souvent les calculs programmés de plusieurs heures : chaque créneau est doublé.
+    # Les passages supplémentaires ne refont rien d'inutile (réalisé déjà calculé ignoré,
+    # prévision J+1 simplement remplacée par une version plus récente).
+    - cron: "17 4 * * *"   # 5h17 : mesures de la veille + prévision J+1 du matin
+    - cron: "47 5 * * *"   # 6h47 : second essai du matin
+    - cron: "23 15 * * *"  # 16h23 : après le run AROME de 12 h UTC et les prix day-ahead
+    - cron: "53 16 * * *"  # 17h53 : second essai de l'après-midi
   workflow_dispatch:
 
 permissions:
