@@ -81,6 +81,15 @@ def prevision(sites: list[dict], d: date) -> None:
 
 
 # ---------------------------------------------------------------- réalisé
+def _conso_arrivee(site: dict, res: dict, idx: pd.DatetimeIndex) -> bool:
+    """Réalisé déjà calculé avec une consommation estimée, alors que la courbe mesurée est maintenant
+    disponible (Enedis la publie le lendemain, parfois plus tard) : la journée est recalculée."""
+    if res.get("conso_totale_mesuree", True) or not str((site.get("valorisation") or {}).get("mode", "")).startswith("autoconso"):
+        return False
+    c = mesures.consommation(site)
+    return c is not None and c.reindex(idx).notna().mean() > 0.9
+
+
 def realise(sites: list[dict], d: date, fournis: dict | None = None) -> None:
     """Réalisé de la journée D. `fournis` (reconstitution) : {id_site: {mes, p_prev, p_mod, elev}}
     pour les journées sans prévision archivée ; la prévision y est reconstituée à partir des archives météo."""
@@ -88,7 +97,7 @@ def realise(sites: list[dict], d: date, fournis: dict | None = None) -> None:
     deja = lire_json(DOSSIER_REAL / f"{d.isoformat()}.json", {"sites": {}})
     idx = index_journee(d)
     if fournis is None:
-        a_faire = [s for s in sites if s["id"] not in deja.get("sites", {})]
+        a_faire = [s for s in sites if s["id"] not in deja.get("sites", {}) or _conso_arrivee(s, deja["sites"][s["id"]], idx)]
     else:  # ne remplace jamais un réalisé comparé à une vraie prévision de la veille
         a_faire = [s for s in sites if s["id"] in fournis and (
             "p_prevue_kw" not in deja.get("sites", {}).get(s["id"], {})
@@ -121,6 +130,11 @@ def realise(sites: list[dict], d: date, fournis: dict | None = None) -> None:
             if "p_prevue_kw" not in ps and f is not None:
                 p_prev, p_mod, elev = (f[k].reindex(idx) for k in ("p_prev", "p_mod", "elev"))
                 reconstitue = True
+            elif "p_prevue_kw" not in ps and "p_prevue_kw" in (ancien := deja.get("sites", {}).get(s["id"], {})):
+                # recalcul d'une journée déjà comparée (consommation mesurée arrivée) : même prévision qu'avant
+                p_prev = pd.Series(ancien["p_prevue_kw"], index=idx, dtype=float)
+                p_mod = elev = None
+                reconstitue = bool(ancien.get("prevision_reconstituee"))
             elif "p_prevue_kw" not in ps:
                 journal(f"  {s['nom']} : pas de prévision archivée pour cette journée")
                 p_prev = p_mod = elev = None
@@ -150,7 +164,7 @@ def realise(sites: list[dict], d: date, fournis: dict | None = None) -> None:
                 res["conso_totale_mesuree"] = conso_mesuree
             if p_prev is not None:
                 e_prev = float(p_prev.sum() * 0.25)
-                jour = elev > 0
+                jour = elev > 0 if elev is not None else (p_prev > 0) | (mes > 0)
                 res.update({
                     "p_prevue_kw": serie_vers_liste(p_prev),
                     "energie_prevue_kwh": round(e_prev, 3),
