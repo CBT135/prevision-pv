@@ -56,6 +56,9 @@ def _appel(sens: str, prm: str, jeton: str, debut: date, fin: date, cache: bool)
             continue
         break
     _DIAG.append(f"{debut}→{fin} : HTTP {r.status_code} {r.text[:160]!r}")
+    if r.status_code == 404 and "consentement" in r.text.lower():
+        raise RuntimeError("MyElectricalData : pas de consentement pour ce PRM. Faire (ou refaire) le consentement "
+                           "Enedis sur myelectricaldata.fr pour ce PRM, puis vérifier que le jeton saisi est bien celui de ce PRM")
     if r.status_code == 404:  # Enedis ne détient rien sur la période
         return pd.Series(dtype=float)
     if r.status_code in (401, 403):
