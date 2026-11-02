@@ -84,10 +84,13 @@ def _ecrire(d: Path, s: pd.Series) -> None:
 
 
 def actualiser(site: dict, sens: str, prm: str, nom: str | None = None) -> None:
-    nom = nom or nom_secret(prm)
+    if not nom:
+        journal(f"  {site.get('nom')} : aucun jeton MyElectricalData enregistré pour le PRM {prm} "
+                "(fiche du site), courbe Enedis non récupérée")
+        return
     jeton = secret(nom)
     if not jeton:
-        journal(f"  {site.get('nom')} : secret {nom} vide ou absent, courbe Enedis non récupérée")
+        journal(f"  {site.get('nom')} : secret {nom} vide ou non déclaré dans le workflow, courbe Enedis non récupérée")
         return
     d = _dossier(sens, site["id"])
     existant = _lire_existant(d)
