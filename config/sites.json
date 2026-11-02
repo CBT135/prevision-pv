@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-11-02T21:13:03.826Z",
+  "mis_a_jour": "2026-11-02T21:14:35.674Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -788,7 +788,7 @@
         "jeton_le": "2026-11-02"
       },
       "valorisation": {
-        "mode": "vente_totale",
+        "mode": "spot",
         "prix_achat_eur_kwh": null,
         "tarif_surplus_eur_kwh": null,
         "tarif_vente_eur_mwh": 625.91,
@@ -798,7 +798,7 @@
           "annuelle_kwh": null
         },
         "spot": {
-          "decote_eur_mwh": null,
+          "decote_eur_mwh": 3,
           "prix_negatif": "arret",
           "complement": false,
           "prix_reference_eur_mwh": null
