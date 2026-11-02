@@ -341,6 +341,12 @@ async function rendre(){
     const t=site.tarifs||{};
     if(site.mode==="vente_totale")return t.tarif_vente_eur_mwh==null?"–":nf(+t.tarif_vente_eur_mwh,2);
     if(site.mode==="autoconso_sans_surplus")return t.prix_achat_eur_kwh==null?"–":nf(+t.prix_achat_eur_kwh,4);
+    // autoconso avec surplus : (autoconsommé × prix évité + surplus × tarif surplus) / production,
+    // calculé sur les énergies (le CA est arrondi au centime, ce qui fausse le rapport sur de petites productions)
+    const d=(j.valo&&j.valo.detail)||{};
+    if(site.mode==="autoconso_surplus"&&t.prix_achat_eur_kwh!=null&&d.autoconsomme_kwh!=null){
+      const au=+d.autoconsomme_kwh,su=+(d.surplus_kwh||0);
+      return au+su>0?nf((au*t.prix_achat_eur_kwh+su*(+t.tarif_surplus_eur_kwh||0))/(au+su),4):"–"}
     const ca=j.etat==="real"?j.caReal:j.caPrev,e=j.etat==="real"?j.eMes:j.ePrev;
     if(ca==null||!e)return"–";const kwh=ca/e;return ps.unite==="€/kWh"?nf(kwh,4):nf(kwh*1000,2)};
   const {svg,geo}=graphe(jours,site);
