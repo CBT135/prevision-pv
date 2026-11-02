@@ -24,9 +24,10 @@ Chaque jour, à 6 h 40 et 16 h 20 (heure d'hiver ; 7 h 40 et 17 h 20 en été), 
 | Météo | GHI, DHI, DNI, température 2 m, vent 10 m au pas 15 min (moyennes sur le quart d'heure), nébulosité horaire interpolée. GTI Open-Meteo du premier champ conservée comme contrôle. |
 | Masque | Profil PVsyst importé ; la composante directe est supprimée quand le soleil passe sous l'horizon. |
 | Transposition | Perez, albédo du site ; tracker 1 axe avec backtracking (GCR 0,35). |
+| Rangées (sol) | Si l'entraxe et la largeur de table sont saisis : ombrage mutuel du direct et du circumsolaire (rangées infinies, terrain plat) avec effet électrique façon PVsyst (une chaîne touchée perd son direct), diffus du ciel masqué par la rangée de devant (Passias), GCR des trackers = largeur / entraxe. |
 | Optique | Pertes angulaires ASHRAE (b0 = 0,05) sur le direct. |
-| Thermique | Faiman ; coefficients de départ selon la pose (sol 25 / 6,84 ; surimposé 20 / 4 ; intégré 15 / 2). |
-| Électrique | Pc × G/1000 × (1 + γ(Tc − 25)) × (1 − pertes DC), rendement onduleur, écrêtage à Pac puis à la limitation d'injection. |
+| Thermique | Modèle PVsyst si Uc / Uv sont saisis ; sinon Faiman ; coefficients de départ selon la pose (sol 25 / 6,84 ; surimposé 20 / 4 ; intégré 15 / 2). |
+| Électrique | Pc × G/1000 × (1 + γ(Tc − 25)) × (1 − pertes DC), rendement onduleur, écrêtage à Pac puis à la limitation d'injection, pertes AC jusqu'au compteur. |
 | Correction | Σ mesuré / Σ modèle sur 30 jours, par tranche d'élévation (< 15°, 15–35°, > 35°), bornée 0,6–1,3, active à partir de 10 jours valides. |
 
 ### Valorisation

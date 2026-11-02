@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-10-31T15:49:24.263Z",
+  "mis_a_jour": "2026-11-02T15:00:00.000Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -21,12 +21,19 @@
           "inclinaison": 17,
           "azimut": -20,
           "suivi": "fixe",
-          "rotation_max": null
+          "rotation_max": null,
+          "pitch_m": null,
+          "largeur_m": null,
+          "chaines_largeur": null,
+          "bande_inactive_m": null
         }
       ],
       "modules": {
         "gamma_pct": -0.35,
-        "pose": "surimpose"
+        "pose": "surimpose",
+        "uc": null,
+        "uv": null,
+        "rendement_pct": null
       },
       "onduleur": {
         "type": "micro",
@@ -59,7 +66,8 @@
           "prix_reference_eur_mwh": null
         }
       },
-      "notes": "Compléter localisation, orientation, puissance AC et tarifs."
+      "notes": "Compléter localisation, orientation, puissance AC et tarifs.",
+      "pertes_ac_pct": null
     },
     {
       "id": "site-d513nkp",
@@ -71,89 +79,34 @@
       "altitude": 280,
       "pans": [
         {
-          "nom": "Tables fixes",
-          "pc_kwc": 12000,
+          "nom": "Sheds fixes",
+          "pc_kwc": 11981,
           "inclinaison": 25,
           "azimut": 0,
           "suivi": "fixe",
-          "rotation_max": null
+          "rotation_max": null,
+          "pitch_m": 5.8,
+          "largeur_m": 3.0,
+          "chaines_largeur": 3,
+          "bande_inactive_m": 0.02
         }
       ],
       "modules": {
         "gamma_pct": -0.41,
-        "pose": "sol"
+        "pose": "sol",
+        "uc": 29,
+        "uv": 0,
+        "rendement_pct": 15.5
       },
       "onduleur": {
         "type": "string",
         "pac_kva": 10560,
-        "rendement_pct": 98.4
+        "rendement_pct": 98.2
       },
-      "pertes_dc_pct": 3,
+      "pertes_dc_pct": 15.3,
       "albedo": 0.17,
-      "limitation_kva": 12000,
-      "masque": {
-        "fichier": "exemple_horizon.csv",
-        "importe_le": "2026-10-30",
-        "convention": "pvsyst_sud0",
-        "points": [
-          [
-            -180,
-            3
-          ],
-          [
-            -150,
-            4
-          ],
-          [
-            -120,
-            9
-          ],
-          [
-            -100,
-            14
-          ],
-          [
-            -80,
-            12
-          ],
-          [
-            -60,
-            6
-          ],
-          [
-            -30,
-            2
-          ],
-          [
-            0,
-            1
-          ],
-          [
-            30,
-            2
-          ],
-          [
-            60,
-            4
-          ],
-          [
-            90,
-            5
-          ],
-          [
-            120,
-            4
-          ],
-          [
-            150,
-            3
-          ],
-          [
-            180,
-            3
-          ]
-        ]
-      },
+      "limitation_kva": 9998,
+      "masque": null,
       "mesures": {
         "source": "csv",
         "enphase_system_id": "",
@@ -176,7 +129,8 @@
           "prix_reference_eur_mwh": 78
         }
       },
-      "notes": "Site fictif pour illustrer la saisie. À supprimer."
+      "notes": "Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Pertes AC = auxiliaires, câbles, transfo HTA, ligne HTA. Pas d'horizon.",
+      "pertes_ac_pct": 2.0
     },
     {
       "id": "site-hjl27et",
@@ -188,27 +142,160 @@
       "altitude": 810,
       "pans": [
         {
-          "nom": "Champ PV",
+          "nom": "Sheds fixes",
           "pc_kwc": 2296.8,
-          "inclinaison": 25,
-          "azimut": 0,
+          "inclinaison": 23,
+          "azimut": 5,
           "suivi": "fixe",
-          "rotation_max": null
+          "rotation_max": null,
+          "pitch_m": 7.9,
+          "largeur_m": 3.93,
+          "chaines_largeur": 1,
+          "bande_inactive_m": 0.02
         }
       ],
       "modules": {
         "gamma_pct": -0.47,
-        "pose": "sol"
+        "pose": "sol",
+        "uc": 29,
+        "uv": 0,
+        "rendement_pct": 14.2
       },
       "onduleur": {
         "type": "central",
         "pac_kva": 2000,
-        "rendement_pct": 98.4
+        "rendement_pct": 97.9
       },
-      "pertes_dc_pct": 3,
+      "pertes_dc_pct": 8.0,
       "albedo": 0.17,
       "limitation_kva": null,
-      "masque": null,
+      "masque": {
+        "fichier": "Rapport PVsyst VC3 (horizon PVGIS)",
+        "importe_le": "2026-11-02",
+        "convention": "pvsyst_sud0",
+        "points": [
+          [
+            -180,
+            3.1
+          ],
+          [
+            -165,
+            3.1
+          ],
+          [
+            -158,
+            6.1
+          ],
+          [
+            -120,
+            6.1
+          ],
+          [
+            -113,
+            2.7
+          ],
+          [
+            -105,
+            1.9
+          ],
+          [
+            -98,
+            2.7
+          ],
+          [
+            -90,
+            3.1
+          ],
+          [
+            -83,
+            2.7
+          ],
+          [
+            -75,
+            2.7
+          ],
+          [
+            -68,
+            2.3
+          ],
+          [
+            -60,
+            2.3
+          ],
+          [
+            -53,
+            1.5
+          ],
+          [
+            -45,
+            1.5
+          ],
+          [
+            -38,
+            1.1
+          ],
+          [
+            -30,
+            0.8
+          ],
+          [
+            -23,
+            0.4
+          ],
+          [
+            -15,
+            0.0
+          ],
+          [
+            30,
+            0.0
+          ],
+          [
+            38,
+            2.3
+          ],
+          [
+            68,
+            2.3
+          ],
+          [
+            75,
+            3.1
+          ],
+          [
+            105,
+            3.1
+          ],
+          [
+            113,
+            1.5
+          ],
+          [
+            120,
+            1.9
+          ],
+          [
+            128,
+            3.1
+          ],
+          [
+            135,
+            3.1
+          ],
+          [
+            143,
+            2.7
+          ],
+          [
+            150,
+            3.1
+          ],
+          [
+            180,
+            3.1
+          ]
+        ]
+      },
       "mesures": {
         "source": "csv",
         "enphase_system_id": "",
@@ -231,7 +318,8 @@
           "prix_reference_eur_mwh": null
         }
       },
-      "notes": ""
+      "notes": "Paramètres du rapport PVsyst VC3 (28/08/26, variante « Avec vieillissement ») : 8 352 Suntech STP 275-24/Vd, 4 ABB PVS800-57-0500kW (600 kVA max ≤ 25 °C). Pertes DC = LID 6 % + mismatch 1,15 % + câblage 1,04 %. Pertes AC = auxiliaires, câbles, transfo HTA, ligne HTA.",
+      "pertes_ac_pct": 1.5
     }
   ]
 }

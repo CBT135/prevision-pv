@@ -138,16 +138,16 @@ const POSES={integre:"Intégré au bâti (peu ventilé)",surimpose:"Surimposé (
 function newSite(){return{
   id:uid(),actif:true,nom:"",type:"toiture",lat:null,lon:null,altitude:null,
   pans:[newPan()],
-  modules:{gamma_pct:-0.35,pose:"surimpose"},
+  modules:{gamma_pct:-0.35,pose:"surimpose",uc:null,uv:null,rendement_pct:null},
   onduleur:{type:"string",pac_kva:null,rendement_pct:97.5},
-  pertes_dc_pct:3,albedo:0.2,limitation_kva:null,
+  pertes_dc_pct:3,pertes_ac_pct:null,albedo:0.2,limitation_kva:null,
   masque:null,
   mesures:{source:"csv",enphase_system_id:"",prm_production:""},
   valorisation:{mode:"vente_totale",prix_achat_eur_kwh:null,tarif_surplus_eur_kwh:null,tarif_vente_eur_mwh:null,
     conso:{source:"enedis",prm:"",annuelle_kwh:null},
     spot:{decote_eur_mwh:null,prix_negatif:"arret",complement:false,prix_reference_eur_mwh:null}},
   notes:""}}
-function newPan(){return{nom:"",pc_kwc:null,inclinaison:null,azimut:null,suivi:"fixe",rotation_max:null}}
+function newPan(){return{nom:"",pc_kwc:null,inclinaison:null,azimut:null,suivi:"fixe",rotation_max:null,pitch_m:null,largeur_m:null,chaines_largeur:null,bande_inactive_m:null}}
 
 function seeds(){
   const a=newSite();
@@ -179,7 +179,8 @@ function issues(s){
   s.pans.forEach((p,i)=>{const n=s.pans.length>1?` (champ ${i+1})`:"";
     if(bad(p.pc_kwc)||p.pc_kwc<=0)out.push("puissance crête"+n);
     if(p.suivi==="fixe"){if(bad(p.inclinaison)||p.inclinaison<0||p.inclinaison>90)out.push("inclinaison"+n);}
-    if(bad(p.azimut)||p.azimut<-180||p.azimut>180)out.push("azimut"+n);});
+    if(bad(p.azimut)||p.azimut<-180||p.azimut>180)out.push("azimut"+n);
+    if(Number.isNaN(p.pitch_m)||Number.isNaN(p.largeur_m)||(p.pitch_m>0&&p.largeur_m>0&&p.largeur_m>=p.pitch_m))out.push("entraxe supérieur à la largeur de table"+n);});
   if(bad(s.onduleur.pac_kva)||s.onduleur.pac_kva<=0)out.push("puissance AC onduleurs");
   const v=s.valorisation;
   if(v.mode.startsWith("autoconso")){
@@ -347,6 +348,7 @@ function num(path,label,unit,opt={}){const v=get(path);const bad=Number.isNaN(v)
   return`<label class="f">${label}${unit?` <span class="u">${unit}</span>`:""}<input class="num${bad?" invalid":""}" inputmode="decimal" data-num="${path}" value="${esc(bad?"":fmt(v))}" placeholder="${esc(opt.ph||"")}"></label>`}
 function txt(path,label,opt={}){return`<label class="f">${label}<input data-txt="${path}" value="${esc(get(path))}" placeholder="${esc(opt.ph||"")}" ${opt.mono?'class="num" autocapitalize="off" spellcheck="false"':""}></label>`}
 function sel(path,label,opts){const v=get(path);return`<label class="f">${label}<select data-sel="${path}">${Object.entries(opts).map(([k,l])=>`<option value="${k}"${k===v?" selected":""}>${esc(l)}</option>`).join("")}</select></label>`}
+function limAngle(p){const b=p.inclinaison*Math.PI/180,r=p.pitch_m/p.largeur_m;return Math.atan(Math.sin(b)/(r-Math.cos(b)))*180/Math.PI}
 function get(path){return path.split(".").reduce((o,k)=>o==null?o:o[k],st.ed)}
 function set(path,val){const ks=path.split(".");let o=st.ed;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=val}
 
@@ -360,7 +362,11 @@ function renderEdit(){
     <div class="grid">${txt(`pans.${i}.nom`,"Nom",{ph:"ex. Pan sud-ouest"})}${num(`pans.${i}.pc_kwc`,"Puissance crête","kWc")}
     ${sel(`pans.${i}.suivi`,"Structure",{fixe:"Fixe",tracker_1axe:"Tracker 1 axe N-S"})}
     ${p.suivi==="fixe"?num(`pans.${i}.inclinaison`,"Inclinaison","°",{ph:"0 à 90"}):num(`pans.${i}.rotation_max`,"Rotation max","± °",{ph:"ex. 55"})}
-    ${num(`pans.${i}.azimut`,p.suivi==="fixe"?"Azimut":"Azimut de l'axe","° PVsyst",{ph:"Sud 0 · Est −90 · Ouest +90"})}</div></div>`).join("");
+    ${num(`pans.${i}.azimut`,p.suivi==="fixe"?"Azimut":"Azimut de l'axe","° PVsyst",{ph:"Sud 0 · Est −90 · Ouest +90"})}</div>
+    ${s.type==="sol"||p.pitch_m||p.largeur_m?`<p class="hint" style="margin:10px 0 4px"><strong>Rangées</strong> · ombrage mutuel et diffus masqué (onglet « Orientation » de PVsyst, sheds)</p>
+    <div class="grid">${num(`pans.${i}.pitch_m`,"Entraxe des rangées (pitch)","m",{ph:"ex. 5,80"})}${num(`pans.${i}.largeur_m`,p.suivi==="fixe"?"Largeur de table (rampant)":"Largeur de table","m",{ph:"ex. 3,00"})}
+    ${p.suivi==="fixe"?num(`pans.${i}.chaines_largeur`,"Chaînes dans la largeur","nb",{ph:"ex. 3"})+num(`pans.${i}.bande_inactive_m`,"Bande inactive (haut et bas)","m",{ph:"ex. 0,02"}):""}</div>
+    ${p.pitch_m>0&&p.largeur_m>0?`<p class="hint">GCR <span class="num">${fmt(Math.round(p.largeur_m/p.pitch_m*1000)/10)} %</span>${p.suivi==="fixe"&&Number.isFinite(p.inclinaison)?` · angle limite d'ombrage <span class="num">${fmt(Math.round(limAngle(p)*10)/10)}°</span>`:""}. Largeur de table = nombre de modules dans le rampant × dimension du module dans le sens de la pente. Chaînes dans la largeur : 1 en portrait si une chaîne occupe toute la hauteur de table ; en paysage, en général une chaîne par rangée de modules.</p>`:""}`:""}</div>`).join("");
 
   const m=s.masque;
   const maskInner=`${m?`<div class="maskbox">${maskSvg(m.points)}</div>
@@ -399,9 +405,12 @@ function renderEdit(){
   ${sec("pans","Champs PV",`<span class="chip plain num">${fmtP(kwc(s))}</span>`,`${pans}<div class="row"><button id="eAddPan">Ajouter un champ (autre orientation)</button></div>`,openSet.has("pans"))}
   ${sec("tech","Modules, onduleurs et pertes","",`<div class="grid">${num("modules.gamma_pct","Coeff. température Pmax","%/°C",{ph:"ex. −0,35"})}${sel("modules.pose","Mode de pose",POSES)}
     ${sel("onduleur.type","Onduleurs",{micro:"Micro-onduleurs",string:"Onduleurs string",central:"Onduleurs centraux"})}${num("onduleur.pac_kva","Puissance AC totale","kVA")}
-    ${num("onduleur.rendement_pct","Rendement européen","%")}${num("pertes_dc_pct","Pertes DC (câbles, mismatch, salissure)","%")}
-    ${num("albedo","Albédo","0 – 1",{ph:"0,2"})}${num("limitation_kva","Limitation d'injection","kVA",{ph:"facultatif"})}</div>
-    <p class="hint">Le mode de pose fixe le modèle thermique des cellules (température et vent prévus).</p>`,openSet.has("tech"))}
+    ${num("onduleur.rendement_pct","Rendement européen","%")}${num("pertes_dc_pct","Pertes DC (LID, vieillissement, câbles, mismatch, salissure)","%")}
+    ${num("pertes_ac_pct","Pertes AC jusqu'au compteur (câbles, transfo, ligne HTA)","%",{ph:"facultatif"})}
+    ${num("albedo","Albédo","0 – 1",{ph:"0,2"})}${num("limitation_kva","Limitation d'injection","kVA",{ph:"facultatif"})}
+    ${num("modules.uc","Uc thermique (PVsyst)","W/m²K",{ph:"ex. 29"})}${num("modules.uv","Uv thermique (PVsyst)","W/m²K/m/s",{ph:"ex. 0"})}
+    ${num("modules.rendement_pct","Rendement des modules (STC)","%",{ph:"ex. 15,5"})}</div>
+    <p class="hint">Avec Uc et Uv, la température des cellules suit le modèle PVsyst ; sinon le mode de pose fixe un modèle thermique par défaut.</p>`,openSet.has("tech"))}
   ${sec("mask","Masque d'horizon",m?`<span class="chip ok">Importé</span>`:`<span class="chip">Aucun</span>`,maskInner,openSet.has("mask"))}
   ${sec("mes","Données mesurées","",`<div class="grid">${sel("mesures.source","Source des mesures J+1",{enphase:"API Enphase",csv:"Fichier compteur déposé (CSV)",supervision:"Supervision (API à définir)"})}
     ${s.mesures.source==="enphase"?txt("mesures.enphase_system_id","Identifiant système Enphase",{mono:true}):""}
