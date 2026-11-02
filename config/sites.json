@@ -104,7 +104,7 @@
         "rendement_pct": 98.2
       },
       "pertes_dc_pct": 15.3,
-      "pertes_ac_pct": 0,
+      "pertes_ac_pct": 2.0,
       "albedo": 0.17,
       "limitation_kva": 9998,
       "masque": {
@@ -333,7 +333,7 @@
           "prix_reference_eur_mwh": 78
         }
       },
-      "notes": "Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Mesures GridVis en sortie onduleurs : pertes AC nulles. Masque d'horizon PVGIS."
+      "notes": "Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Mesures GridVis au point de livraison : pertes AC 2 % (auxiliaires 0,04 + câbles AC 0,69 + transfo HTA 1,00 + ligne HTA 0,24). Masque d'horizon PVGIS."
     },
     {
       "id": "site-hjl27et",
