@@ -1,5 +1,5 @@
 {
- "mis_a_jour": "2026-11-02T20:31+01:00",
+ "mis_a_jour": "2026-11-02T21:16+01:00",
  "previsions": [
   "2026-11-01",
   "2026-11-02",
@@ -78,6 +78,19 @@
     "prix_achat_eur_kwh": null,
     "tarif_surplus_eur_kwh": null,
     "tarif_vente_eur_mwh": 412.04
+   }
+  },
+  {
+   "id": "site-bhl4p7u",
+   "nom": "CB - Installation personnelle en vente totale",
+   "type": "residentiel",
+   "pc_kwc": 2.8,
+   "pac_kva": 2.5,
+   "mode": "vente_totale",
+   "tarifs": {
+    "prix_achat_eur_kwh": null,
+    "tarif_surplus_eur_kwh": null,
+    "tarif_vente_eur_mwh": 625.91
    }
   }
  ]
