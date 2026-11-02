@@ -1,11 +1,11 @@
 {
  "site-3o1hxnm": {
-  "jours": 28,
-  "global": 0.7559,
+  "jours": 29,
+  "global": 0.7628,
   "tranches": [
-   0.8759,
-   0.6646,
-   0.7633
+   0.8886,
+   0.6755,
+   0.7692
   ],
   "actif": true,
   "quarts_arret_exclus": 0,
@@ -16,12 +16,12 @@
   ]
  },
  "site-d513nkp": {
-  "jours": 29,
-  "global": 0.7028,
+  "jours": 30,
+  "global": 0.7064,
   "tranches": [
-   0.9332,
-   0.645,
-   0.6965
+   0.9137,
+   0.6702,
+   0.6973
   ],
   "actif": true,
   "quarts_arret_exclus": 27,
