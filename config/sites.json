@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-11-02T19:27:55.168Z",
+  "mis_a_jour": "2026-11-02T20:07:31.336Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -532,6 +532,72 @@
       "prm": "",
       "jeton_secret": null,
       "jeton_le": null
+    },
+    {
+      "id": "site-bhl4p7u",
+      "actif": true,
+      "nom": "CB - Installation personnelle en vente totale",
+      "type": "residentiel",
+      "lat": 45.697525,
+      "lon": 5.134203,
+      "altitude": null,
+      "pans": [
+        {
+          "nom": "Pan ouest",
+          "pc_kwc": 2.8,
+          "inclinaison": 17,
+          "azimut": 70,
+          "suivi": "fixe",
+          "rotation_max": null,
+          "pitch_m": null,
+          "largeur_m": null,
+          "chaines_largeur": null,
+          "bande_inactive_m": null
+        }
+      ],
+      "modules": {
+        "gamma_pct": -0.38,
+        "pose": "integre",
+        "uc": 20,
+        "uv": null,
+        "rendement_pct": 12
+      },
+      "onduleur": {
+        "type": "string",
+        "pac_kva": 2.5,
+        "rendement_pct": 97.5
+      },
+      "pertes_dc_pct": 15,
+      "pertes_ac_pct": 0.1,
+      "albedo": 0.2,
+      "limitation_kva": null,
+      "masque": {
+        "source": "pvgis",
+        "points": null
+      },
+      "mesures": {
+        "source": "csv",
+        "enphase_system_id": "",
+        "prm_production": ""
+      },
+      "valorisation": {
+        "mode": "vente_totale",
+        "prix_achat_eur_kwh": null,
+        "tarif_surplus_eur_kwh": null,
+        "tarif_vente_eur_mwh": 625.91,
+        "conso": {
+          "source": "enedis",
+          "prm": "",
+          "annuelle_kwh": null
+        },
+        "spot": {
+          "decote_eur_mwh": null,
+          "prix_negatif": "arret",
+          "complement": false,
+          "prix_reference_eur_mwh": null
+        }
+      },
+      "notes": ""
     }
   ]
 }
