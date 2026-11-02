@@ -1,5 +1,5 @@
 {
- "mis_a_jour": "2026-11-02T22:12+01:00",
+ "mis_a_jour": "2026-11-02T22:13+01:00",
  "previsions": [
   "2026-11-01",
   "2026-11-02",
@@ -70,7 +70,7 @@
  "sites": [
   {
    "id": "site-3o1hxnm",
-   "nom": "CB_QBase — installation personnelle",
+   "nom": "CB - installation personnelle en auto-consommation",
    "type": "residentiel",
    "pc_kwc": 1.8,
    "pac_kva": 1.72,
