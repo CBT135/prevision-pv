@@ -1,6 +1,6 @@
 {
  "date": "2026-11-03",
- "genere_le": "2026-11-02T19:31+01:00",
+ "genere_le": "2026-11-02T19:47+01:00",
  "pas_fin": [
   "00:15",
   "00:30",
@@ -303,6 +303,11 @@
    "pc_kwc": 1.8,
    "pac_kva": 1.72,
    "mode": "autoconso_sans_surplus",
+   "tarifs": {
+    "prix_achat_eur_kwh": 0.1654,
+    "tarif_surplus_eur_kwh": null,
+    "tarif_vente_eur_mwh": null
+   },
    "p_modele_kw": [
     0.0,
     0.0,
@@ -1088,10 +1093,10 @@
     1.2
    ],
    "vent": [
+    2.1,
+    1.7,
+    1.7,
     1.9,
-    2.0,
-    2.0,
-    2.0,
     2.1,
     2.2,
     2.3,
@@ -1409,6 +1414,11 @@
    "pc_kwc": 11981.0,
    "pac_kva": 10560.0,
    "mode": "vente_totale",
+   "tarifs": {
+    "prix_achat_eur_kwh": null,
+    "tarif_surplus_eur_kwh": null,
+    "tarif_vente_eur_mwh": 90.22
+   },
    "p_modele_kw": [
     0.0,
     0.0,
@@ -2096,9 +2106,9 @@
     0.0
    ],
    "temp_air": [
+    1.5,
     1.3,
     1.1,
-    1.0,
     0.9,
     0.7,
     0.6,
@@ -2194,9 +2204,9 @@
     -0.1
    ],
    "vent": [
-    2.2,
-    2.3,
-    2.2,
+    2.9,
+    2.6,
+    2.4,
     2.2,
     2.2,
     2.2,
@@ -2414,6 +2424,11 @@
    "pc_kwc": 2296.8,
    "pac_kva": 2000.0,
    "mode": "vente_totale",
+   "tarifs": {
+    "prix_achat_eur_kwh": null,
+    "tarif_surplus_eur_kwh": null,
+    "tarif_vente_eur_mwh": 412.04
+   },
    "p_modele_kw": [
     0.0,
     0.0,
@@ -3101,8 +3116,8 @@
     0.0
    ],
    "temp_air": [
-    5.0,
-    4.9,
+    4.8,
+    4.8,
     4.9,
     4.8,
     4.7,
@@ -3199,10 +3214,10 @@
     4.0
    ],
    "vent": [
-    4.0,
-    4.0,
-    3.9,
-    3.9,
+    4.9,
+    4.8,
+    4.5,
+    4.2,
     3.9,
     3.8,
     3.8,

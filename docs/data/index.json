@@ -1,5 +1,5 @@
 {
- "mis_a_jour": "2026-11-02T19:31+01:00",
+ "mis_a_jour": "2026-11-02T19:47+01:00",
  "previsions": [
   "2026-11-01",
   "2026-11-02",
@@ -47,7 +47,12 @@
    "type": "residentiel",
    "pc_kwc": 1.8,
    "pac_kva": 1.72,
-   "mode": "autoconso_sans_surplus"
+   "mode": "autoconso_sans_surplus",
+   "tarifs": {
+    "prix_achat_eur_kwh": 0.1654,
+    "tarif_surplus_eur_kwh": null,
+    "tarif_vente_eur_mwh": null
+   }
   },
   {
    "id": "site-d513nkp",
@@ -55,7 +60,12 @@
    "type": "sol",
    "pc_kwc": 11981.0,
    "pac_kva": 10560.0,
-   "mode": "vente_totale"
+   "mode": "vente_totale",
+   "tarifs": {
+    "prix_achat_eur_kwh": null,
+    "tarif_surplus_eur_kwh": null,
+    "tarif_vente_eur_mwh": 90.22
+   }
   },
   {
    "id": "site-hjl27et",
@@ -63,7 +73,12 @@
    "type": "sol",
    "pc_kwc": 2296.8,
    "pac_kva": 2000.0,
-   "mode": "vente_totale"
+   "mode": "vente_totale",
+   "tarifs": {
+    "prix_achat_eur_kwh": null,
+    "tarif_surplus_eur_kwh": null,
+    "tarif_vente_eur_mwh": 412.04
+   }
   }
  ]
 }
