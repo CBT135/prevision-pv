@@ -1,11 +1,11 @@
 {
  "site-3o1hxnm": {
-  "jours": 29,
-  "global": 0.7566,
+  "jours": 28,
+  "global": 0.7559,
   "tranches": [
-   0.8979,
-   0.6693,
-   0.7611
+   0.8759,
+   0.6646,
+   0.7633
   ],
   "actif": true,
   "quarts_arret_exclus": 0,
