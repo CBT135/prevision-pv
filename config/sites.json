@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-11-02T20:09:16.462Z",
+  "mis_a_jour": "2026-11-02T20:09:26.200Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
