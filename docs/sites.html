@@ -336,7 +336,7 @@ function render(){
       <span class="meta"><span class="num">${fmtP(kwc(s))}</span><span>${esc(TYPES[s.type]||"")}</span><span>${esc(MODES[s.valorisation.mode].short)}</span>${s.masque?"<span>Masque importé</span>":""}${s.actif?"":"<span>Désactivé</span>"}</span>
     </button>`}).join("");
   app.innerHTML=`
-  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a></p></div>${syncChip()}</header>
+  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 2 nov., 20 h</span></p></div>${syncChip()}</header>
   ${msgHtml()}
   <div class="list">${items||`<div class="empty">Aucun site. Ajoutez le premier avec « Nouveau site ».</div>`}</div>
   <details class="tools" id="tGit"><summary>Dépôt GitHub</summary><div class="body">
@@ -371,7 +371,7 @@ function render(){
   document.getElementById("jImport").onclick=()=>{try{const d=JSON.parse(document.getElementById("jIn").value);const arr=Array.isArray(d)?d:d.sites;if(!Array.isArray(arr))throw 0;st.sites=arr.map(s=>Object.assign(newSite(),s));st.dirty=true;persistDraft();say("ok",`${arr.length} site(s) importé(s). Enregistrez sur GitHub pour les conserver.`)}catch(e){say("bad","JSON illisible : il doit contenir une liste « sites ».")}render()};
 }
 
-function openEdit(i){st.edIdx=i;st.ed=i<0?newSite():Object.assign(newSite(),clone(st.sites[i]));st.view="edit";st.msg=null;st.armDel=false;st.open=null;render();window.scrollTo(0,0)}
+function openEdit(i){st.jetonMsg=null;st.edIdx=i;st.ed=i<0?newSite():Object.assign(newSite(),clone(st.sites[i]));st.view="edit";st.msg=null;st.armDel=false;st.open=null;render();window.scrollTo(0,0)}
 
 /* champs */
 function num(path,label,unit,opt={}){const v=get(path);const bad=Number.isNaN(v);
@@ -381,6 +381,7 @@ function sel(path,label,opts){const v=get(path);return`<label class="f">${label}
 function limAngle(p){const b=p.inclinaison*Math.PI/180,r=p.pitch_m/p.largeur_m;return Math.atan(Math.sin(b)/(r-Math.cos(b)))*180/Math.PI}
 function jetonEnedis(chemin,prmPath){const le=get(chemin),nom=get(chemin.replace(/jeton_le$/,"jeton_secret")),id="jt-"+chemin.replace(/\./g,"-");
   return`<div class="pan"><div class="grid"><label class="f">Jeton MyElectricalData${nom?` <span class="u">secret ${esc(nom)}</span>`:""}<input id="${id}" class="secret" type="text" name="jeton-${id}" autocomplete="off" autocapitalize="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-form-type="other" placeholder="${le?"enregistré le "+esc(le)+" · coller pour remplacer":"coller le jeton"}"></label></div>
+  ${st.jetonMsg&&st.jetonMsg.chemin===chemin?`<p class="msg ${st.jetonMsg.kind}" role="status">${esc(st.jetonMsg.text)}</p>`:""}
   <div class="row"><button data-jeton="${chemin}|${prmPath}">${le?"Remplacer le jeton":"Enregistrer le jeton dans les secrets GitHub"}</button>${le?`<span class="chip ok">Jeton enregistré le ${esc(le)}</span>`:`<span class="chip warn">Aucun jeton</span>`}</div>
   <p class="hint">Jeton obtenu sur myelectricaldata.fr après consentement sur le compte Enedis du titulaire du PRM (compteur Linky ≤ 36 kVA ; activer aussi l'enregistrement de la courbe de charge dans l'espace client Enedis). Il est chiffré dans ce navigateur et envoyé directement dans les secrets du dépôt : il n'apparaît ni dans la base des sites ni dans le dépôt. Le jeton GitHub doit avoir la permission « Secrets : Read and write ».</p></div>`}
 function get(path){return path.split(".").reduce((o,k)=>o==null?o:o[k],st.ed)}
@@ -494,13 +495,19 @@ function bindEdit(){
   app.querySelectorAll("[data-jeton]").forEach(b=>b.onclick=async()=>{
     const [chemin,prmPath]=b.dataset.jeton.split("|");const inp=document.getElementById("jt-"+chemin.replace(/\./g,"-"));
     const prm=get(prmPath),val=(inp&&inp.value||"").trim();
-    if(!prm){say("bad","Saisissez d'abord le PRM.");rerender();return}
-    if(!val){say("bad","Collez le jeton MyElectricalData avant d'enregistrer.");rerender();return}
+    const dire=(k,t)=>{st.jetonMsg={chemin,kind:k,text:t};rerender()};
+    if(!prm){dire("bad","Saisissez d'abord le PRM.");return}
+    if(!val){dire("bad","Collez le jeton MyElectricalData avant d'enregistrer.");return}
     b.disabled=true;b.textContent="Chiffrement et envoi…";
-    try{const cs=chemin.replace(/jeton_le$/,"jeton_secret"),nom=secretPour(cs);await ghSecret(nom,val);set(cs,nom);set(chemin,new Date().toISOString().slice(0,10));
-      say("ok",`Jeton enregistré dans le secret GitHub ${nom}. Validez le site puis enregistrez sur GitHub.`)}
-    catch(e){say("bad",e.message)}
-    rerender()});
+    let nom;
+    try{const cs=chemin.replace(/jeton_le$/,"jeton_secret");nom=secretPour(cs);await ghSecret(nom,val);set(cs,nom);set(chemin,new Date().toISOString().slice(0,10))}
+    catch(e){console.error(e);dire("bad","Échec : "+e.message);return}
+    // le site est validé et la base enregistrée sur GitHub dans la foulée : l'emplacement du jeton y est noté
+    if(st.edIdx<0){st.sites.push(st.ed);st.edIdx=st.sites.length-1}else st.sites[st.edIdx]=st.ed;
+    st.ed=clone(st.ed);st.dirty=true;persistDraft();
+    await ghSave();
+    dire(st.dirty?"warn":"ok",st.dirty?`Jeton enregistré dans le secret ${nom}, mais la base des sites n'a pas pu être enregistrée sur GitHub : cliquez sur « Enregistrer sur GitHub » depuis la liste.`
+      :`Jeton enregistré dans le secret ${nom} et base des sites enregistrée sur GitHub. La courbe sera récupérée au prochain calcul.`)});
   on("eBack","click",closeEdit);on("eCancel","click",closeEdit);
   on("eOk","click",()=>{if(!s.nom.trim())s.nom="Site sans nom";
     if(st.edIdx<0)st.sites.push(s);else st.sites[st.edIdx]=s;
