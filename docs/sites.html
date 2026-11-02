@@ -78,6 +78,7 @@ details.card[open]>summary::after{transform:rotate(-135deg)}
 .body{padding:2px 14px 16px;display:grid;gap:12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
 label.f{display:grid;gap:4px;font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.01em;min-width:0}
+input.secret{-webkit-text-security:disc;text-security:disc;font-family:var(--f-mono)}
 label.f .u{font-weight:400;font-family:var(--f-mono);font-size:.74rem}
 input,select,textarea{font:inherit;font-size:.95rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:9px 10px;width:100%;min-width:0}
 input.num{font-family:var(--f-mono)}
@@ -375,11 +376,11 @@ function openEdit(i){st.edIdx=i;st.ed=i<0?newSite():Object.assign(newSite(),clon
 /* champs */
 function num(path,label,unit,opt={}){const v=get(path);const bad=Number.isNaN(v);
   return`<label class="f">${label}${unit?` <span class="u">${unit}</span>`:""}<input class="num${bad?" invalid":""}" inputmode="decimal" data-num="${path}" value="${esc(bad?"":fmt(v))}" placeholder="${esc(opt.ph||"")}"></label>`}
-function txt(path,label,opt={}){return`<label class="f">${label}<input data-txt="${path}" value="${esc(get(path))}" placeholder="${esc(opt.ph||"")}" ${opt.mono?'class="num" autocapitalize="off" spellcheck="false"':""}></label>`}
+function txt(path,label,opt={}){return`<label class="f">${label}<input data-txt="${path}" autocomplete="off" value="${esc(get(path))}" placeholder="${esc(opt.ph||"")}" ${opt.mono?'class="num" autocapitalize="off" spellcheck="false"':""}></label>`}
 function sel(path,label,opts){const v=get(path);return`<label class="f">${label}<select data-sel="${path}">${Object.entries(opts).map(([k,l])=>`<option value="${k}"${k===v?" selected":""}>${esc(l)}</option>`).join("")}</select></label>`}
 function limAngle(p){const b=p.inclinaison*Math.PI/180,r=p.pitch_m/p.largeur_m;return Math.atan(Math.sin(b)/(r-Math.cos(b)))*180/Math.PI}
 function jetonEnedis(chemin,prmPath){const le=get(chemin),nom=get(chemin.replace(/jeton_le$/,"jeton_secret")),id="jt-"+chemin.replace(/\./g,"-");
-  return`<div class="pan"><div class="grid"><label class="f">Jeton MyElectricalData${nom?` <span class="u">secret ${esc(nom)}</span>`:""}<input id="${id}" type="password" autocomplete="off" spellcheck="false" placeholder="${le?"enregistré le "+esc(le)+" · coller pour remplacer":"coller le jeton"}"></label></div>
+  return`<div class="pan"><div class="grid"><label class="f">Jeton MyElectricalData${nom?` <span class="u">secret ${esc(nom)}</span>`:""}<input id="${id}" class="secret" type="text" name="jeton-${id}" autocomplete="off" autocapitalize="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-form-type="other" placeholder="${le?"enregistré le "+esc(le)+" · coller pour remplacer":"coller le jeton"}"></label></div>
   <div class="row"><button data-jeton="${chemin}|${prmPath}">${le?"Remplacer le jeton":"Enregistrer le jeton dans les secrets GitHub"}</button>${le?`<span class="chip ok">Jeton enregistré le ${esc(le)}</span>`:`<span class="chip warn">Aucun jeton</span>`}</div>
   <p class="hint">Jeton obtenu sur myelectricaldata.fr après consentement sur le compte Enedis du titulaire du PRM (compteur Linky ≤ 36 kVA ; activer aussi l'enregistrement de la courbe de charge dans l'espace client Enedis). Il est chiffré dans ce navigateur et envoyé directement dans les secrets du dépôt : il n'apparaît ni dans la base des sites ni dans le dépôt. Le jeton GitHub doit avoir la permission « Secrets : Read and write ».</p></div>`}
 function get(path){return path.split(".").reduce((o,k)=>o==null?o:o[k],st.ed)}
@@ -467,9 +468,9 @@ function bindEdit(){
   const s=st.ed;
   app.querySelectorAll("details.card").forEach(d=>d.addEventListener("toggle",()=>{const id=d.id.slice(2);d.open?st.open.add(id):st.open.delete(id)}));
   app.querySelectorAll("[data-num]").forEach(el=>el.addEventListener("input",()=>{const n=parseNum(el.value);set(el.dataset.num,n);el.classList.toggle("invalid",Number.isNaN(n))}));
-  app.querySelectorAll("[data-num]").forEach(el=>el.addEventListener("change",()=>rerender()));
+  app.querySelectorAll("[data-num]").forEach(el=>{const v0=el.value;el.addEventListener("change",()=>{if(el.value!==v0)setTimeout(rerender,0)})});
   app.querySelectorAll("[data-txt]").forEach(el=>el.addEventListener("input",()=>set(el.dataset.txt,el.value)));
-  app.querySelectorAll("[data-txt]").forEach(el=>el.addEventListener("change",()=>rerender()));
+  app.querySelectorAll("[data-txt]").forEach(el=>{const v0=el.value;el.addEventListener("change",()=>{if(el.value!==v0)setTimeout(rerender,0)})});
   app.querySelectorAll("[data-sel]").forEach(el=>el.addEventListener("change",()=>{set(el.dataset.sel,el.value);rerender()}));
   app.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener("change",()=>{s.valorisation.mode=el.value;rerender()}));
   app.querySelectorAll("[data-delpan]").forEach(b=>b.onclick=()=>{s.pans.splice(+b.dataset.delpan,1);rerender()});
@@ -509,7 +510,9 @@ function bindEdit(){
   on("eDel","click",()=>{if(!st.armDel){st.armDel=true;rerender();return}
     st.sites.splice(st.edIdx,1);st.dirty=true;persistDraft();say("ok","Site supprimé. Enregistrez sur GitHub pour confirmer.");st.view="list";render()});
 }
-function rerender(){const y=window.scrollY;render();window.scrollTo(0,y)}
+function rerender(){const y=window.scrollY,a=document.activeElement,id=a&&a.id,val=a&&a.classList&&a.classList.contains("secret")?a.value:null;
+  render();window.scrollTo(0,y);
+  if(id){const el=document.getElementById(id);if(el&&el!==document.activeElement){if(val!=null)el.value=val;el.focus({preventScroll:true})}}}
 function closeEdit(){st.view="list";st.msg=null;render();window.scrollTo(0,0)}
 
 render();
