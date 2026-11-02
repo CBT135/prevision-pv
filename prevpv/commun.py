@@ -73,5 +73,14 @@ def journal(msg: str) -> None:
 
 
 def secret(nom: str) -> str | None:
+    """Secret lu dans l'environnement, sinon dans SECRETS_JSON (tous les secrets du dépôt, passés
+    par le workflow avec toJSON(secrets) : utile pour les secrets créés par site depuis la page web)."""
     v = os.environ.get(nom, "").strip()
+    if v:
+        return v
+    try:
+        tous = json.loads(os.environ.get("SECRETS_JSON") or "{}")
+    except ValueError:
+        return None
+    v = str(tous.get(nom) or "").strip()
     return v or None

@@ -37,6 +37,7 @@ jobs:
           ENPHASE_REFRESH_TOKEN: ${{ secrets.ENPHASE_REFRESH_TOKEN }}
           ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
           OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
+          SECRETS_JSON: ${{ toJSON(secrets) }}
         run: |
           set -o pipefail
           mkdir -p data
@@ -54,7 +55,7 @@ jobs:
           git config user.name "prevision-pv[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           mkdir -p data docs/data
-          git add -A data docs/data
+          git add -A data docs/data config/sites.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Reprise d'historique (${{ inputs.jours }} jours)"
           git pull --rebase --autostash

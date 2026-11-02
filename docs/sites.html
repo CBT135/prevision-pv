@@ -113,6 +113,8 @@ details.tools>summary{cursor:pointer;color:var(--muted);font-size:.88rem;font-we
 <div class="wrap" id="app"></div>
 <div class="bar" id="bar" hidden><div class="wrap" id="barInner"></div></div>
 
+<script src="lib/nacl-fast.min.js"></script>
+<script src="lib/sealedbox.web.js"></script>
 <script>
 (function(){
 "use strict";
@@ -192,6 +194,7 @@ function issues(s){
   if(v.mode==="vente_totale"&&bad(v.tarif_vente_eur_mwh))out.push("tarif de vente");
   if(v.mode==="spot"&&v.spot.complement&&bad(v.spot.prix_reference_eur_mwh))out.push("tarif de référence");
   if(s.mesures.source==="enphase"&&!String(s.mesures.enphase_system_id).trim())out.push("identifiant Enphase");
+  if(s.mesures.source==="enedis"&&!String(s.mesures.prm_production||"").trim())out.push("PRM de production");
   return out;
 }
 const kwc=s=>s.pans.reduce((t,p)=>t+(Number(p.pc_kwc)||0),0);
@@ -231,6 +234,22 @@ async function ghLoad(){
       say("ok",`${st.sites.length} site${st.sites.length>1?"s":""} chargé${st.sites.length>1?"s":""} depuis GitHub.`)}
   }catch(e){say("bad","Connexion à GitHub impossible. Vérifiez votre réseau et réessayez.")}
   st.busy=false;render();
+}
+/* Secret GitHub Actions : chiffré dans le navigateur avec la clé publique du dépôt (sealed box libsodium),
+   jamais écrit dans sites.json. Le jeton GitHub doit avoir « Secrets : Read and write ». */
+const nomSecret=prm=>"ENEDIS_"+String(prm||"").replace(/[^0-9A-Za-z]/g,"");
+async function ghSecret(nom,valeur){
+  if(!st.cfg.token)throw new Error("Renseignez d'abord le jeton GitHub dans « Dépôt GitHub » (liste des sites).");
+  if(!window.nacl||!window.sealedBox)throw new Error("Bibliothèque de chiffrement non chargée : vérifiez la connexion et rechargez la page.");
+  const base=`https://api.github.com/repos/${encodeURIComponent(st.cfg.owner)}/${encodeURIComponent(st.cfg.repo)}/actions/secrets`;
+  const r=await fetch(base+"/public-key",{headers:ghHeaders()});
+  if(!r.ok)throw new Error(r.status===403||r.status===404?"GitHub refuse l'accès aux secrets : le jeton doit avoir la permission « Secrets : Read and write » sur ce dépôt.":ghError(r,await r.text()));
+  const k=await r.json();
+  const pub=Uint8Array.from(atob(k.key),c=>c.charCodeAt(0));
+  const chiffre=window.sealedBox.seal(new TextEncoder().encode(valeur),pub);
+  let bin="";chiffre.forEach(b=>bin+=String.fromCharCode(b));
+  const w=await fetch(base+"/"+nom,{method:"PUT",headers:Object.assign({"Content-Type":"application/json"},ghHeaders()),body:JSON.stringify({encrypted_value:btoa(bin),key_id:k.key_id})});
+  if(!w.ok)throw new Error(w.status===403?"GitHub refuse l'écriture du secret : permission « Secrets : Read and write » requise.":ghError(w,await w.text()));
 }
 async function ghSave(){
   if(!st.cfg.token){say("warn","Renseignez d'abord le jeton GitHub dans « Dépôt GitHub ».");return}
@@ -273,6 +292,7 @@ function parseHorizon(text,conv){
   return{points:out,convention:used};
 }
 function maskSvg(points){
+  if(!points||!points.length)return"";
   const W=360,H=150,x0=34,x1=350,y0=124,y1=12;
   const hmax=Math.max(20,Math.ceil(Math.max(...points.map(p=>p[1]))/10)*10);
   const X=a=>x0+(a+180)/360*(x1-x0),Y=h=>y0-h/hmax*(y0-y1);
@@ -317,7 +337,7 @@ function render(){
       <label class="f">Branche<input id="cBranch" value="${esc(st.cfg.branch)}" autocapitalize="off" spellcheck="false"></label>
       <label class="f">Fichier<input id="cPath" value="${esc(st.cfg.path)}" autocapitalize="off" spellcheck="false"></label>
     </div>
-    <label class="f">Jeton d'accès (fine-grained, ce dépôt seulement, Contents : read and write)<input id="cToken" type="password" value="${esc(st.cfg.token)}" autocomplete="off" spellcheck="false"></label>
+    <label class="f">Jeton d'accès (fine-grained, ce dépôt seulement, Contents et Secrets : read and write)<input id="cToken" type="password" value="${esc(st.cfg.token)}" autocomplete="off" spellcheck="false"></label>
     <div class="row"><button id="cSave">Enregistrer les réglages et charger</button><button class="ghost" id="cForget">Effacer le jeton</button></div>
   </div></details>
   <details class="tools" id="tJson"><summary>Exporter / importer en JSON</summary><div class="body">
@@ -349,6 +369,10 @@ function num(path,label,unit,opt={}){const v=get(path);const bad=Number.isNaN(v)
 function txt(path,label,opt={}){return`<label class="f">${label}<input data-txt="${path}" value="${esc(get(path))}" placeholder="${esc(opt.ph||"")}" ${opt.mono?'class="num" autocapitalize="off" spellcheck="false"':""}></label>`}
 function sel(path,label,opts){const v=get(path);return`<label class="f">${label}<select data-sel="${path}">${Object.entries(opts).map(([k,l])=>`<option value="${k}"${k===v?" selected":""}>${esc(l)}</option>`).join("")}</select></label>`}
 function limAngle(p){const b=p.inclinaison*Math.PI/180,r=p.pitch_m/p.largeur_m;return Math.atan(Math.sin(b)/(r-Math.cos(b)))*180/Math.PI}
+function jetonEnedis(chemin,prmPath){const prm=get(prmPath),le=get(chemin),id="jt-"+chemin.replace(/\./g,"-");
+  return`<div class="pan"><div class="grid"><label class="f">Jeton MyElectricalData${prm?` <span class="u">secret ${esc(nomSecret(prm))}</span>`:""}<input id="${id}" type="password" autocomplete="off" spellcheck="false" placeholder="${le?"enregistré le "+esc(le)+" · coller pour remplacer":"coller le jeton"}"></label></div>
+  <div class="row"><button data-jeton="${chemin}|${prmPath}">${le?"Remplacer le jeton":"Enregistrer le jeton dans les secrets GitHub"}</button>${le?`<span class="chip ok">Jeton enregistré le ${esc(le)}</span>`:`<span class="chip warn">Aucun jeton</span>`}</div>
+  <p class="hint">Jeton obtenu sur myelectricaldata.fr après consentement sur le compte Enedis du titulaire du PRM (compteur Linky ≤ 36 kVA ; activer aussi l'enregistrement de la courbe de charge dans l'espace client Enedis). Il est chiffré dans ce navigateur et envoyé directement dans les secrets du dépôt : il n'apparaît ni dans la base des sites ni dans le dépôt. Le jeton GitHub doit avoir la permission « Secrets : Read and write ».</p></div>`}
 function get(path){return path.split(".").reduce((o,k)=>o==null?o:o[k],st.ed)}
 function set(path,val){const ks=path.split(".");let o=st.ed;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=val}
 
@@ -369,9 +393,12 @@ function renderEdit(){
     ${p.pitch_m>0&&p.largeur_m>0?`<p class="hint">GCR <span class="num">${fmt(Math.round(p.largeur_m/p.pitch_m*1000)/10)} %</span>${p.suivi==="fixe"&&Number.isFinite(p.inclinaison)?` · angle limite d'ombrage <span class="num">${fmt(Math.round(limAngle(p)*10)/10)}°</span>`:""}. Largeur de table = nombre de modules dans le rampant × dimension du module dans le sens de la pente. Chaînes dans la largeur : 1 en portrait si une chaîne occupe toute la hauteur de table ; en paysage, en général une chaîne par rangée de modules.</p>`:""}`:""}</div>`).join("");
 
   const m=s.masque;
-  const maskInner=`${m?`<div class="maskbox">${maskSvg(m.points)}</div>
+  const mOk=m&&m.points&&m.points.length;
+  const maskInner=`${mOk?`<div class="maskbox">${maskSvg(m.points)}</div>
     <p class="hint">${esc(m.fichier)} · ${m.points.length} points · importé le ${esc(m.importe_le)} · hauteur max <span class="num">${fmt(Math.max(...m.points.map(p=>p[1])))}°</span></p>`
+    :m&&m.source==="pvgis"?`<p class="msg warn">Masque PVGIS demandé : il sera calculé à partir du relief au prochain calcul automatique (PVGIS refuse les appels depuis un navigateur). Enregistrez sur GitHub pour lancer la demande.</p>`
     :`<p class="hint">Aucun masque. Sans masque, l'horizon est supposé dégagé.</p>`}
+    <div class="row"><button id="mPvgis">${m&&m.source==="pvgis"?"Recalculer le masque PVGIS":"Utiliser le masque PVGIS (relief)"}</button></div>
     <div class="grid">${`<label class="f">Convention des azimuts du fichier<select id="mConv"><option value="auto">Détection automatique</option><option value="pvsyst_sud0">PVsyst : Sud = 0°, Est négatif</option><option value="nord0">Nord = 0°, Sud = 180°</option></select></label>`}
     <label class="f">Fichier CSV exporté de PVsyst<input type="file" id="mFile" accept=".csv,.hor,.txt,text/csv,text/plain"></label></div>
     <p class="hint">Format attendu : une ligne par point, « azimut ; hauteur » en degrés. Les lignes d'en-tête sont ignorées, la virgule décimale est acceptée.</p>
@@ -383,7 +410,8 @@ function renderEdit(){
     valoFields+=`<div class="grid">${num("valorisation.prix_achat_eur_kwh","Prix d'achat évité","€/kWh TTC",{ph:"ex. 0,2016"})}
       ${v.mode==="autoconso_surplus"?num("valorisation.tarif_surplus_eur_kwh","Tarif de rachat du surplus","€/kWh",{ph:"ex. 0,04"}):""}
       ${sel("valorisation.conso.source","Consommation du site",{enedis:"Courbe de charge Enedis",profil:"Profil type (conso annuelle)"})}
-      ${v.conso.source==="enedis"?txt("valorisation.conso.prm","PRM de consommation",{ph:"14 chiffres",mono:true}):num("valorisation.conso.annuelle_kwh","Consommation annuelle","kWh/an")}</div>`;
+      ${v.conso.source==="enedis"?txt("valorisation.conso.prm","PRM de consommation",{ph:"14 chiffres",mono:true}):num("valorisation.conso.annuelle_kwh","Consommation annuelle","kWh/an")}</div>
+      ${v.conso.source==="enedis"?jetonEnedis("valorisation.conso.jeton_le","valorisation.conso.prm"):""}`;
   }
   if(v.mode==="vente_totale")valoFields+=`<div class="grid">${num("valorisation.tarif_vente_eur_mwh","Tarif de vente","€/MWh",{ph:"ex. 105"})}</div>`;
   if(v.mode==="spot")valoFields+=`<div class="grid">${num("valorisation.spot.decote_eur_mwh","Décote agrégateur","€/MWh",{ph:"ex. 3"})}
@@ -411,10 +439,11 @@ function renderEdit(){
     ${num("modules.uc","Uc thermique (PVsyst)","W/m²K",{ph:"ex. 29"})}${num("modules.uv","Uv thermique (PVsyst)","W/m²K/m/s",{ph:"ex. 0"})}
     ${num("modules.rendement_pct","Rendement des modules (STC)","%",{ph:"ex. 15,5"})}</div>
     <p class="hint">Avec Uc et Uv, la température des cellules suit le modèle PVsyst ; sinon le mode de pose fixe un modèle thermique par défaut.</p>`,openSet.has("tech"))}
-  ${sec("mask","Masque d'horizon",m?`<span class="chip ok">Importé</span>`:`<span class="chip">Aucun</span>`,maskInner,openSet.has("mask"))}
-  ${sec("mes","Données mesurées","",`<div class="grid">${sel("mesures.source","Source des mesures J+1",{enphase:"API Enphase",csv:"Fichier compteur déposé (CSV)",supervision:"Supervision (API à définir)"})}
+  ${sec("mask","Masque d'horizon",mOk?`<span class="chip ok">${m.source==="pvgis"?"PVGIS":"Importé"}</span>`:m?`<span class="chip warn">PVGIS en attente</span>`:`<span class="chip">Aucun</span>`,maskInner,openSet.has("mask"))}
+  ${sec("mes","Données mesurées","",`<div class="grid">${sel("mesures.source","Source des mesures J+1",{enphase:"API Enphase",enedis:"Compteur Enedis Linky (MyElectricalData)",csv:"Fichier compteur déposé (CSV)",supervision:"Supervision (API à définir)"})}
     ${s.mesures.source==="enphase"?txt("mesures.enphase_system_id","Identifiant système Enphase",{mono:true}):""}
-    ${txt("mesures.prm_production","PRM de production",{ph:"facultatif",mono:true})}</div>
+    ${txt("mesures.prm_production","PRM de production",{ph:s.mesures.source==="enedis"?"14 chiffres":"facultatif",mono:true})}</div>
+    ${s.mesures.source==="enedis"?jetonEnedis("mesures.jeton_le","mesures.prm_production"):""}
     <p class="hint">Les identifiants d'accès (clés API, jetons) ne se saisissent pas ici : ils vont dans les secrets du dépôt GitHub.</p>`,openSet.has("mes"))}
   ${sec("valo","Valorisation de l'énergie","",`<div class="seg" role="radiogroup">${modeRadios}</div><p class="formula">${esc(MODES[v.mode].help)}</p>${valoFields}`,openSet.has("valo"))}
   ${sec("notes","Notes","",`<label class="f">Notes internes<textarea id="eNotes" style="font-family:var(--f-body);font-size:.92rem;min-height:80px">${esc(s.notes)}</textarea></label>`,openSet.has("notes"))}`;
@@ -451,6 +480,17 @@ function bindEdit(){
       st.open.add("mask");rerender()}
     rd.readAsText(f,"utf-8")});
   on("mDel","click",()=>{s.masque=null;rerender()});
+  on("mPvgis","click",()=>{s.masque={source:"pvgis",points:null};say("ok","Masque PVGIS demandé. Validez le site puis enregistrez sur GitHub : il sera importé au prochain calcul.");st.open.add("mask");rerender()});
+  app.querySelectorAll("[data-jeton]").forEach(b=>b.onclick=async()=>{
+    const [chemin,prmPath]=b.dataset.jeton.split("|");const inp=document.getElementById("jt-"+chemin.replace(/\./g,"-"));
+    const prm=get(prmPath),val=(inp&&inp.value||"").trim();
+    if(!prm){say("bad","Saisissez d'abord le PRM.");rerender();return}
+    if(!val){say("bad","Collez le jeton MyElectricalData avant d'enregistrer.");rerender();return}
+    b.disabled=true;b.textContent="Chiffrement et envoi…";
+    try{await ghSecret(nomSecret(prm),val);set(chemin,new Date().toISOString().slice(0,10));
+      say("ok",`Jeton enregistré dans les secrets GitHub sous ${nomSecret(prm)}. Validez le site puis enregistrez sur GitHub.`)}
+    catch(e){say("bad",e.message)}
+    rerender()});
   on("eBack","click",closeEdit);on("eCancel","click",closeEdit);
   on("eOk","click",()=>{if(!s.nom.trim())s.nom="Site sans nom";
     if(st.edIdx<0)st.sites.push(s);else st.sites[st.edIdx]=s;

@@ -244,7 +244,11 @@ def index_web() -> None:
 
 
 def quotidien() -> None:
+    from . import horizon
+    from .mesures import enedis
+    horizon.completer()
     sites = charger_sites()
+    enedis.actualiser_tous(sites)
     if not sites:
         journal("Aucun site actif et complet dans config/sites.json")
     t = aujourd_hui_paris()
@@ -273,6 +277,8 @@ def main(argv=None) -> int:
         prevision(charger_sites(), d)
         index_web()
     elif a.cmd == "historique":
+        from . import horizon
+        horizon.completer()
         historique(charger_sites(), a.jours)
     elif a.cmd == "reconstitution":
         reconstituer(charger_sites(), a.jours)

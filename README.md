@@ -4,7 +4,7 @@ Prévision J+1 de la production de centrales photovoltaïques au pas de 15 minut
 
 Tout tourne sur GitHub : un calcul automatique deux fois par jour (GitHub Actions) et deux pages web (GitHub Pages) :
 
-- `docs/index.html` : **Prévision PV**, le tableau de bord (prévision J+1, prix, CA, prévu / réalisé) ;
+- `docs/index.html` : **Prévision PV**, le tableau de bord : un site à la fois (colonne de gauche), vue de la semaine du lundi au dimanche avec le prévu / réalisé des jours passés et la prévision du lendemain, prix et CA ; flèches ← → pour changer de semaine ;
 - `docs/sites.html` : **Base de données des sites PV**, la saisie des paramètres des centrales.
 
 ## Fonctionnement
@@ -22,7 +22,7 @@ Chaque jour, à 6 h 40 et 16 h 20 (heure d'hiver ; 7 h 40 et 17 h 20 en été), 
 | Étape | Méthode |
 |---|---|
 | Météo | GHI, DHI, DNI, température 2 m, vent 10 m au pas 15 min (moyennes sur le quart d'heure), nébulosité horaire interpolée. GTI Open-Meteo du premier champ conservée comme contrôle. |
-| Masque | Profil PVsyst importé ; la composante directe est supprimée quand le soleil passe sous l'horizon. |
+| Masque | Profil PVsyst importé, ou profil PVGIS calculé à partir du relief (bouton « Utiliser le masque PVGIS » : import au calcul suivant) ; la composante directe est supprimée quand le soleil passe sous l'horizon. |
 | Transposition | Perez, albédo du site ; tracker 1 axe avec backtracking (GCR 0,35). |
 | Rangées (sol) | Si l'entraxe et la largeur de table sont saisis : ombrage mutuel du direct et du circumsolaire (rangées infinies, terrain plat) avec effet électrique façon PVsyst (une chaîne touchée perd son direct), diffus du ciel masqué par la rangée de devant (Passias), GCR des trackers = largeur / entraxe. |
 | Optique | Pertes angulaires ASHRAE (b0 = 0,05) sur le direct. |
@@ -81,6 +81,14 @@ Ouvrir `https://<compte>.github.io/prevision-pv/sites.html`, saisir le jeton Git
 1. Actions → *Reprise d'historique* → *Run workflow* (90 jours par défaut) : la correction est active dès le premier jour.
 2. Actions → *Calcul quotidien* → *Run workflow*.
 3. Ouvrir `https://<compte>.github.io/prevision-pv/`.
+
+## Courbes Enedis (MyElectricalData)
+
+Pour un compteur Linky ≤ 36 kVA (particulier ou petit professionnel), le titulaire du PRM donne son consentement sur [myelectricaldata.fr](https://www.myelectricaldata.fr), qui fournit un jeton par PRM. L'enregistrement de la courbe de charge doit aussi être activé dans l'espace client Enedis.
+
+Dans la fiche du site, choisir « Courbe de charge Enedis » (consommation) ou « Compteur Enedis Linky » (production), saisir le PRM, coller le jeton puis « Enregistrer le jeton dans les secrets GitHub ». Le jeton est chiffré dans le navigateur avec la clé publique du dépôt et stocké dans le secret `ENEDIS_<PRM>` ; il n'est jamais écrit dans `sites.json`. Le jeton GitHub de la page doit avoir **Contents** et **Secrets : Read and write**.
+
+À chaque calcul quotidien, les courbes sont récupérées (60 jours au premier passage, puis les derniers jours) et rangées dans `data/conso/<id_site>/enedis_AAAA-MM.csv` ou `data/mesures_depot/<id_site>/enedis_AAAA-MM.csv`.
 
 ## Mesures déposées en CSV
 
