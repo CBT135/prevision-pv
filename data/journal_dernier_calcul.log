@@ -1,5 +1,10 @@
-[20:09:57]   CB_QBase — installation personnelle : aucune courbe Enedis consumption du 2026-09-03 au 2026-11-01
-[20:09:57] Prévision du 2026-11-03
-[20:10:01]   CB_QBase — installation personnelle : 5.3 kWh, CA 0.87 €
-[20:10:02]   Vouzance : 34514.8 kWh, CA 3113.92 €
-[20:10:03]   LM11 : 7199.7 kWh, CA 2966.57 €
+[20:11:14]   CB_QBase — installation personnelle : aucune courbe Enedis consumption du 2026-09-03 au 2026-11-01
+[20:11:14]     réponse courbe 2026-10-15→2026-10-22 : HTTP 404 '{"detail":"Pas de consentement détecté sur le point de livraison 19462518050078, merci de les faire sur https://www.myelectricaldata.fr"}'
+[20:11:14]     réponse courbe 2026-10-22→2026-10-29 : HTTP 404 '{"detail":"Pas de consentement détecté sur le point de livraison 19462518050078, merci de les faire sur https://www.myelectricaldata.fr"}'
+[20:11:14]     réponse courbe 2026-10-29→2026-11-02 : HTTP 404 '{"detail":"Pas de consentement détecté sur le point de livraison 19462518050078, merci de les faire sur https://www.myelectricaldata.fr"}'
+[20:11:14]     contrôle daily_consumption : HTTP 404 '{"detail":"Pas de consentement détecté sur le point de livraison 19462518050078, merci de les faire sur https://www.myelectricaldata.fr"}'
+[20:11:15]     contrôle contracts : HTTP 404 '{"detail":"Pas de consentement détecté sur le point de livraison 19462518050078, merci de les faire sur https://www.myelectricaldata.fr"}'
+[20:11:15] Prévision du 2026-11-03
+[20:11:33]   CB_QBase — installation personnelle : 5.3 kWh, CA 0.87 €
+[20:11:33]   Vouzance : 34514.8 kWh, CA 3113.92 €
+[20:11:34]   LM11 : 7199.7 kWh, CA 2966.57 €
