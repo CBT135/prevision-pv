@@ -29,7 +29,9 @@ def _infos(site: dict) -> dict:
     return {"id": site["id"], "nom": site.get("nom", site["id"]), "type": site.get("type"),
             "pc_kwc": round(pc_totale_kwc(site), 3),
             "pac_kva": num((site.get("onduleur") or {}).get("pac_kva")),
-            "mode": (site.get("valorisation") or {}).get("mode")}
+            "mode": (site.get("valorisation") or {}).get("mode"),
+            "tarifs": {k: (site.get("valorisation") or {}).get(k) for k in
+                       ("prix_achat_eur_kwh", "tarif_surplus_eur_kwh", "tarif_vente_eur_mwh")}}
 
 
 # ---------------------------------------------------------------- prévision

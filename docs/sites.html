@@ -347,7 +347,7 @@ function render(){
       <label class="f">Branche<input id="cBranch" value="${esc(st.cfg.branch)}" autocapitalize="off" spellcheck="false"></label>
       <label class="f">Fichier<input id="cPath" value="${esc(st.cfg.path)}" autocapitalize="off" spellcheck="false"></label>
     </div>
-    <label class="f">Jeton d'accès (fine-grained, ce dépôt seulement, Contents et Secrets : read and write)<input id="cToken" type="password" value="${esc(st.cfg.token)}" autocomplete="off" spellcheck="false"></label>
+    <label class="f">Jeton d'accès (fine-grained, ce dépôt seulement, Contents et Secrets : read and write)<input id="cToken" class="secret" type="text" data-1p-ignore data-lpignore="true" value="${esc(st.cfg.token)}" autocomplete="off" spellcheck="false"></label>
     <div class="row"><button id="cSave">Enregistrer les réglages et charger</button><button class="ghost" id="cForget">Effacer le jeton</button></div>
   </div></details>
   <details class="tools" id="tJson"><summary>Exporter / importer en JSON</summary><div class="body">

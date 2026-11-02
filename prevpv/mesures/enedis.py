@@ -60,6 +60,19 @@ def _appel(sens: str, prm: str, jeton: str, debut: date, fin: date, cache: bool)
     return s[~s.index.duplicated()].sort_index()
 
 
+def _chercher_emplacement(prm: str) -> str | None:
+    """Fiche sans emplacement noté : essaie les secrets ENEDIS_JETON_xx remplis sur ce PRM."""
+    for i in range(1, 21):
+        nom = f"ENEDIS_JETON_{i:02d}"
+        jeton = secret(nom)
+        if not jeton:
+            continue
+        r = requests.get(f"{BASE}/contracts/{prm}/cache", headers={"Authorization": jeton}, timeout=60)
+        if r.ok:
+            return nom
+    return None
+
+
 def _dossier(sens: str, site_id: str) -> Path:
     return (DOSSIER_CONSO if sens == "consumption" else DOSSIER_DEPOT) / site_id
 
@@ -85,9 +98,12 @@ def _ecrire(d: Path, s: pd.Series) -> None:
 
 def actualiser(site: dict, sens: str, prm: str, nom: str | None = None) -> None:
     if not nom:
-        journal(f"  {site.get('nom')} : aucun jeton MyElectricalData enregistré pour le PRM {prm} "
-                "(fiche du site), courbe Enedis non récupérée")
-        return
+        nom = _chercher_emplacement(prm)
+        if not nom:
+            journal(f"  {site.get('nom')} : aucun jeton MyElectricalData valable pour le PRM {prm} "
+                    "(fiche du site ou secrets ENEDIS_JETON_xx), courbe Enedis non récupérée")
+            return
+        journal(f"  {site.get('nom')} : jeton du PRM {prm} trouvé dans {nom} (emplacement non noté dans la fiche)")
     jeton = secret(nom)
     if not jeton:
         journal(f"  {site.get('nom')} : secret {nom} vide ou non déclaré dans le workflow, courbe Enedis non récupérée")

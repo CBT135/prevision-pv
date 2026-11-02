@@ -111,6 +111,7 @@ details.cfg summary{cursor:pointer;color:var(--muted);font-size:.86rem;font-weig
 .cfg label{display:grid;gap:4px;font-size:.78rem;color:var(--muted);font-weight:600}
 .cfg input{width:100%;min-width:0;font:inherit;font-size:.9rem;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
 footer{margin-top:26px;font-size:.8rem;color:var(--muted)}
+input.secret{-webkit-text-security:disc;text-security:disc}
 </style>
 </head>
 <body>
@@ -129,7 +130,7 @@ footer{margin-top:26px;font-size:.8rem;color:var(--muted)}
       <label>Propriétaire<input id="cOwner" autocapitalize="off" spellcheck="false"></label>
       <label>Dépôt<input id="cRepo" autocapitalize="off" spellcheck="false"></label>
       <label>Branche<input id="cBranch" autocapitalize="off" spellcheck="false"></label>
-      <label>Jeton<input id="cToken" type="password" autocomplete="off" spellcheck="false"></label>
+      <label>Jeton<input id="cToken" class="secret" type="text" data-1p-ignore data-lpignore="true" autocomplete="off" spellcheck="false"></label>
     </div>
     <p><button class="b" id="cSave">Enregistrer et recharger</button></p>
   </details>
@@ -198,6 +199,34 @@ async function journee(date,id){
   return{date,etat:"vide",pas,prix};
 }
 
+/* ---------- prix affiché selon le mode de valorisation ----------
+   spot : prix day-ahead ; vente totale : tarif de vente ; autoconso sans surplus : prix d'achat évité ;
+   autoconso avec surplus : prix évité tant que production ≤ consommation, sinon
+   (consommation × prix évité + surplus × tarif surplus) / production. */
+function prixSite(site){
+  const t=site.tarifs||{},m=site.mode||"";
+  if(m==="spot")return{lib:"Prix day-ahead",unite:"€/MWh",dec:2,spot:true};
+  if(m==="vente_totale")return t.tarif_vente_eur_mwh==null?null:{lib:"Tarif de vente",unite:"€/MWh",dec:2};
+  if(m==="autoconso_sans_surplus")return t.prix_achat_eur_kwh==null?null:{lib:"Prix d'achat évité",unite:"€/kWh",dec:4};
+  if(m==="autoconso_surplus")return t.prix_achat_eur_kwh==null?null:{lib:"Prix valorisé",unite:"€/kWh",dec:4};
+  return null;
+}
+function prixJour(site,j){
+  const t=site.tarifs||{},m=site.mode||"",n=(j.pas||[]).length;
+  if(!n)return null;
+  if(m==="spot")return j.prix||null;
+  if(m==="vente_totale")return t.tarif_vente_eur_mwh==null?null:Array(n).fill(+t.tarif_vente_eur_mwh);
+  const pa=t.prix_achat_eur_kwh;if(pa==null)return null;
+  if(m==="autoconso_sans_surplus")return Array(n).fill(+pa);
+  if(m==="autoconso_surplus"){
+    const ts=+(t.tarif_surplus_eur_kwh||0),prod=j.etat==="real"?j.mesure:j.prevu;
+    return[...Array(n)].map((_,i)=>{const P=prod&&prod[i],C=j.conso&&j.conso[i];
+      if(P==null||C==null||P<=0||P<=C)return +pa;
+      return(C*pa+(P-C)*ts)/P});
+  }
+  return null;
+}
+
 /* ---------- graphique de la semaine ---------- */
 function graphe(jours,site){
   const W=1180,H=320,L=52,R=56,T=22,B=44,PW=W-L-R,DW=PW/7,PH=H-T-B;
@@ -207,15 +236,16 @@ function graphe(jours,site){
   if(!ymax)ymax=site.pac_kva||site.pc_kwc||1;
   ymax=nice(ymax*1.05);
   const Y=v=>T+(1-v/ymax)*PH;
-  const prixTous=jours.flatMap(j=>j.prix||[]).filter(v=>v!=null);
+  const ps=prixSite(site);
+  const prixTous=ps?jours.flatMap(j=>j.pv||[]).filter(v=>v!=null):[];
   let pmin=0,pmax=1,P=null;
-  if(prixTous.length){pmin=Math.min(0,...prixTous);pmax=nice(Math.max(...prixTous)*1.05||1);if(pmin<0)pmin=-nice(-pmin*1.05);P=v=>T+(1-(v-pmin)/(pmax-pmin))*PH}
+  if(prixTous.length){pmin=Math.min(0,...prixTous);pmax=nice(Math.max(...prixTous)*1.15||1);if(pmin<0)pmin=-nice(-pmin*1.05);P=v=>T+(1-(v-pmin)/(pmax-pmin))*PH}
   const aujd=auj();
   let g="";
   jours.forEach((j,k)=>{
     const x0=L+k*DW;
     if(j.etat==="prev"||j.etat==="vide"||j.etat==="err")g+=`<rect x="${x0}" y="${T}" width="${DW}" height="${PH}" fill="var(--sunk)" opacity="${j.etat==="prev"?.75:.4}"/>`;
-    if(j.prix&&j.pas)j.prix.forEach((p,i)=>{if(p!=null&&p<0)g+=`<rect x="${(x0+i/j.prix.length*DW).toFixed(1)}" y="${T}" width="${(DW/j.prix.length).toFixed(2)}" height="${PH}" fill="var(--neg)"/>`});
+    if(ps&&ps.spot&&j.prix&&j.pas)j.prix.forEach((p,i)=>{if(p!=null&&p<0)g+=`<rect x="${(x0+i/j.prix.length*DW).toFixed(1)}" y="${T}" width="${(DW/j.prix.length).toFixed(2)}" height="${PH}" fill="var(--neg)"/>`});
     if(j.etat==="prev")g+=`<text class="tag" x="${x0+6}" y="${T+12}" style="fill:var(--accent)">${j.date===plus(aujd,1)?"Prévision J+1":"Prévision"}</text>`;
     if(j.etat==="real"&&j.reconst)g+=`<text class="tag" x="${x0+6}" y="${T+12}">prév. reconstituée</text>`;
   });
@@ -237,11 +267,11 @@ function graphe(jours,site){
   trace(j=>j.conso,"var(--conso)",{w:1.3,dash:j=>j.consoEst});
   trace(j=>j.mesure,"var(--mes)",{w:1.7});
   if(P){
-    jours.forEach((j,k)=>{if(!j.prix)return;const n=j.prix.length;const pts=j.prix.map((v,i)=>v==null?null:`${X(k,i,n).toFixed(1)},${P(v).toFixed(1)}`).filter(Boolean).join(" ");
+    jours.forEach((j,k)=>{if(!j.pv)return;const n=j.pv.length;const pts=j.pv.map((v,i)=>v==null?null:`${X(k,i,n).toFixed(1)},${P(v).toFixed(1)}`).filter(Boolean).join(" ");
       if(pts)g+=`<polyline points="${pts}" fill="none" stroke="var(--price)" stroke-width="1.1" opacity=".9"/>`});
-    [pmin,0,pmax].filter((v,i,a)=>a.indexOf(v)===i).forEach(v=>{g+=`<text x="${W-R+6}" y="${P(v)+3.5}" style="fill:var(--price)">${nf(v)}</text>`});
+    [pmin,0,pmax].filter((v,i,a)=>a.indexOf(v)===i).forEach(v=>{g+=`<text x="${W-R+6}" y="${P(v)+3.5}" style="fill:var(--price)">${nf(v,ps.unite==="€/kWh"?2:0)}</text>`});
     if(pmin<0)g+=`<line x1="${L}" x2="${W-R}" y1="${P(0)}" y2="${P(0)}" stroke="var(--price)" stroke-width=".6" stroke-dasharray="2 3"/>`;
-    g+=`<text x="${W-R+6}" y="${T-8}" style="fill:var(--price)">€/MWh</text>`;
+    g+=`<text x="${W-R+6}" y="${T-8}" style="fill:var(--price)">${ps.unite}</text>`;
   }
   g+=`<text x="${L-6}" y="${T-8}" text-anchor="end">${ymax>=1000?"MW":"kW"}</text>`;
   g+=`<line id="curseur" x1="0" x2="0" y1="${T}" y2="${H-B}" stroke="var(--fg)" stroke-width=".8" opacity="0"/>`;
@@ -250,7 +280,7 @@ function graphe(jours,site){
 }
 function nice(v){const p=Math.pow(10,Math.floor(Math.log10(v)));const m=v/p;return(m<=1?1:m<=2?2:m<=2.5?2.5:m<=4?4:m<=5?5:10)*p}
 
-function bulle(jours,geo){
+function bulle(jours,geo,ps){
   const svg=$("gsem"),tip=$("tip"),cur=$("curseur"),box=svg.parentElement;
   const montrer=ev=>{
     const r=svg.getBoundingClientRect(),sx=(ev.clientX-r.left)/r.width*geo.W;
@@ -263,7 +293,7 @@ function bulle(jours,geo){
     const debut=i?j.pas[i-1]:"00:00";
     tip.innerHTML=`<b>${fmtJ(j.date,{weekday:"long",day:"numeric",month:"long"})}</b><br><span class="note">${debut} – ${j.pas[i]}</span>`
       +ligne(j.etat==="real"?"Prévu la veille":"Prévu",j.prevu&&j.prevu[i],puiss)+ligne("Mesuré",j.mesure&&j.mesure[i],puiss)
-      +ligne("Conso totale",j.conso&&j.conso[i],puiss)+ligne("Prix",j.prix&&j.prix[i],v=>nf(v,2)+" €/MWh");
+      +ligne("Conso totale",j.conso&&j.conso[i],puiss)+(ps?ligne(ps.lib,j.pv&&j.pv[i],v=>nf(v,ps.dec)+" "+ps.unite):"");
     tip.style.display="block";
     const bx=box.getBoundingClientRect(),px=ev.clientX-bx.left+box.scrollLeft;
     tip.style.left=Math.min(px+14,box.scrollWidth-tip.offsetWidth-4)+"px";tip.style.top="8px";
@@ -303,13 +333,20 @@ async function rendre(){
   const jPrev=prevs.find(j=>j.date===demain)||prevs[prevs.length-1];
   const corr=jPrev&&jPrev.corr;
   const geoMin=dates[0],premier=[...INDEX.realise,...INDEX.previsions].sort()[0]||aujd,dernier=[...INDEX.previsions,...INDEX.realise].sort().slice(-1)[0]||aujd;
+  const ps=prixSite(site);
+  jours.forEach(j=>{j.pv=ps?prixJour(site,j):null});
+  // prix du jour dans le tableau : moyenne day-ahead (spot), sinon prix valorisé = CA / énergie
+  const prixTab=j=>{if(!ps)return"–";
+    if(ps.spot){const v=(j.prix||[]).filter(x=>x!=null);return v.length?nf(somme(v)/v.length,1):"–"}
+    const ca=j.etat==="real"?j.caReal:j.caPrev,e=j.etat==="real"?j.eMes:j.ePrev;
+    if(ca==null||!e)return"–";const kwh=ca/e;return ps.unite==="€/kWh"?nf(kwh,4):nf(kwh*1000,2)};
   const {svg,geo}=graphe(jours,site);
   const lignes=jours.map(j=>{
     const st=j.etat==="real"?(j.ePrev!=null?"Prévu / réalisé":"Réalisé"):j.etat==="prev"?(j.date===demain?"Prévision J+1":j.date===aujd?"Prévision du jour":"Prévision"):j.etat==="err"?"Erreur de calcul":j.date<=aujd?"Mesures non reçues":"—";
     return`<tr class="${j.etat==="vide"&&j.date>aujd?"futur":""}${j.date===demain?" dem":""}"><td>${fmtJ(j.date,{weekday:"short",day:"numeric",month:"short"})}</td><td>${st}${j.reconst?" · reconstituée":""}</td>
       <td>${energie(j.ePrev)}</td><td>${energie(j.eMes)}</td><td>${j.ecart==null?"–":`<span class="chip ${clEcart(j.ecart)}">${pct(j.ecart)}</span>`}</td>
       <td>${j.nmae==null?"–":nf(j.nmae,1)+" %"}</td><td>${euro(j.caPrev)}</td><td>${euro(j.caReal)}</td>
-      <td>${j.prix?nf(somme(j.prix.filter(v=>v!=null))/Math.max(1,j.prix.filter(v=>v!=null).length),1):"–"}</td></tr>`}).join("");
+      <td>${prixTab(j)}</td></tr>`}).join("");
   $("vue").innerHTML=`
   <div class="card">
     <div class="site-h"><h2>${esc(site.nom)}</h2><div class="chips"><span class="chip num">${site.pc_kwc>=1000?nf(site.pc_kwc/1000,2)+" MWc":nf(site.pc_kwc,2)+" kWc"}</span><span class="chip">${esc(MODES[site.mode]||site.mode||"")}</span>
@@ -332,14 +369,15 @@ async function rendre(){
     <div class="chart">${svg}<div class="tip" id="tip"></div></div>
     <div class="legend"><span><i style="background:var(--prod)"></i>Prévu (la veille pour les jours passés)</span><span><i style="background:var(--mes)"></i>Mesuré</span>
       ${jours.some(j=>j.conso)?`<span><i style="background:var(--conso)"></i>Consommation totale (pointillé : estimée)</span>`:""}
-      ${jours.some(j=>j.prix)?`<span><i style="background:var(--price)"></i>Prix day-ahead</span><span><i style="background:var(--neg);height:10px"></i>Prix négatif</span>`:""}
+      ${ps&&jours.some(j=>j.pv)?`<span><i style="background:var(--price)"></i>${ps.lib}${site.mode==="autoconso_surplus"?" (prix évité, ou moyenne pondérée avec le tarif de rachat quand la production dépasse la consommation)":""}</span>`:""}
+      ${ps&&ps.spot&&jours.some(j=>j.prix)?`<span><i style="background:var(--neg);height:10px"></i>Prix négatif</span>`:""}
       <span><i class="zone"></i>Jour en prévision</span></div>
   </div>
-  <div class="card tbl"><table><thead><tr><th>Jour</th><th>Statut</th><th>Prévu</th><th>Mesuré</th><th>Écart</th><th>nMAE</th><th>CA prévu</th><th>CA réalisé</th><th>Prix moy. €/MWh</th></tr></thead><tbody>${lignes}</tbody></table>
+  <div class="card tbl"><table><thead><tr><th>Jour</th><th>Statut</th><th>Prévu</th><th>Mesuré</th><th>Écart</th><th>nMAE</th><th>CA prévu</th><th>CA réalisé</th><th>${ps?(ps.spot?"Prix day-ahead moy. €/MWh":"Prix valorisé "+ps.unite):"Prix"}</th></tr></thead><tbody>${lignes}</tbody></table>
     <p class="note" style="margin-top:8px">Écart = mesuré / prévu − 1 : négatif quand la production est inférieure à la prévision. nMAE : erreur absolue moyenne au quart d'heure, en % de la puissance AC.</p></div>
   ${jPrev&&jPrev.valo?`<div class="card"><h3>Valorisation prévue · ${fmtJ(jPrev.date,{weekday:"long",day:"numeric",month:"long"})}</h3>${detailValo(jPrev.valo)||`<p class="note">${euro(jPrev.caPrev)} pour ${energie(jPrev.ePrev)}.</p>`}
     ${jPrev.genere?`<p class="note" style="margin-top:8px">Prévision calculée le ${new Date(jPrev.genere).toLocaleString("fr-FR",{dateStyle:"medium",timeStyle:"short"})}.</p>`:""}</div>`:""}`;
-  bulle(jours,geo);
+  bulle(jours,geo,ps);
   $("wPrev").onclick=()=>{SEM=plus(SEM,-7);rendre()};
   $("wNext").onclick=()=>{SEM=plus(SEM,7);rendre()};
   if($("wAuj"))$("wAuj").onclick=()=>{SEM=lundi(auj());rendre()};
