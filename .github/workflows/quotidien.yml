@@ -43,7 +43,27 @@ jobs:
           ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
           ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
           OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
-          SECRETS_JSON: ${{ toJSON(secrets) }}
+          # Jetons MyElectricalData : 20 emplacements, attribués aux PRM par la page des sites
+          ENEDIS_JETON_01: ${{ secrets.ENEDIS_JETON_01 }}
+          ENEDIS_JETON_02: ${{ secrets.ENEDIS_JETON_02 }}
+          ENEDIS_JETON_03: ${{ secrets.ENEDIS_JETON_03 }}
+          ENEDIS_JETON_04: ${{ secrets.ENEDIS_JETON_04 }}
+          ENEDIS_JETON_05: ${{ secrets.ENEDIS_JETON_05 }}
+          ENEDIS_JETON_06: ${{ secrets.ENEDIS_JETON_06 }}
+          ENEDIS_JETON_07: ${{ secrets.ENEDIS_JETON_07 }}
+          ENEDIS_JETON_08: ${{ secrets.ENEDIS_JETON_08 }}
+          ENEDIS_JETON_09: ${{ secrets.ENEDIS_JETON_09 }}
+          ENEDIS_JETON_10: ${{ secrets.ENEDIS_JETON_10 }}
+          ENEDIS_JETON_11: ${{ secrets.ENEDIS_JETON_11 }}
+          ENEDIS_JETON_12: ${{ secrets.ENEDIS_JETON_12 }}
+          ENEDIS_JETON_13: ${{ secrets.ENEDIS_JETON_13 }}
+          ENEDIS_JETON_14: ${{ secrets.ENEDIS_JETON_14 }}
+          ENEDIS_JETON_15: ${{ secrets.ENEDIS_JETON_15 }}
+          ENEDIS_JETON_16: ${{ secrets.ENEDIS_JETON_16 }}
+          ENEDIS_JETON_17: ${{ secrets.ENEDIS_JETON_17 }}
+          ENEDIS_JETON_18: ${{ secrets.ENEDIS_JETON_18 }}
+          ENEDIS_JETON_19: ${{ secrets.ENEDIS_JETON_19 }}
+          ENEDIS_JETON_20: ${{ secrets.ENEDIS_JETON_20 }}
         run: |
           set -o pipefail
           mkdir -p data

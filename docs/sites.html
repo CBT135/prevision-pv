@@ -237,7 +237,16 @@ async function ghLoad(){
 }
 /* Secret GitHub Actions : chiffré dans le navigateur avec la clé publique du dépôt (sealed box libsodium),
    jamais écrit dans sites.json. Le jeton GitHub doit avoir « Secrets : Read and write ». */
-const nomSecret=prm=>"ENEDIS_"+String(prm||"").replace(/[^0-9A-Za-z]/g,"");
+/* Emplacements fixes ENEDIS_JETON_01…20 : le workflow les déclare un par un (GitHub n'autorise pas
+   un workflow programmé à lire l'ensemble des secrets). L'emplacement attribué est noté dans la fiche. */
+const NB_JETONS=20;
+function secretPour(chemin){
+  const deja=get(chemin);if(deja)return deja;
+  const pris=new Set();
+  [...st.sites,st.ed].forEach(x=>{if(!x)return;[(x.mesures||{}).jeton_secret,((x.valorisation||{}).conso||{}).jeton_secret].forEach(n=>n&&pris.add(n))});
+  for(let i=1;i<=NB_JETONS;i++){const n="ENEDIS_JETON_"+String(i).padStart(2,"0");if(!pris.has(n))return n}
+  throw new Error(`Les ${NB_JETONS} emplacements de jetons Enedis sont utilisés : ajoutez des lignes ENEDIS_JETON_xx dans .github/workflows/quotidien.yml.`);
+}
 async function ghSecret(nom,valeur){
   if(!st.cfg.token)throw new Error("Renseignez d'abord le jeton GitHub dans « Dépôt GitHub » (liste des sites).");
   if(!window.nacl||!window.sealedBox)throw new Error("Bibliothèque de chiffrement non chargée : vérifiez la connexion et rechargez la page.");
@@ -369,8 +378,8 @@ function num(path,label,unit,opt={}){const v=get(path);const bad=Number.isNaN(v)
 function txt(path,label,opt={}){return`<label class="f">${label}<input data-txt="${path}" value="${esc(get(path))}" placeholder="${esc(opt.ph||"")}" ${opt.mono?'class="num" autocapitalize="off" spellcheck="false"':""}></label>`}
 function sel(path,label,opts){const v=get(path);return`<label class="f">${label}<select data-sel="${path}">${Object.entries(opts).map(([k,l])=>`<option value="${k}"${k===v?" selected":""}>${esc(l)}</option>`).join("")}</select></label>`}
 function limAngle(p){const b=p.inclinaison*Math.PI/180,r=p.pitch_m/p.largeur_m;return Math.atan(Math.sin(b)/(r-Math.cos(b)))*180/Math.PI}
-function jetonEnedis(chemin,prmPath){const prm=get(prmPath),le=get(chemin),id="jt-"+chemin.replace(/\./g,"-");
-  return`<div class="pan"><div class="grid"><label class="f">Jeton MyElectricalData${prm?` <span class="u">secret ${esc(nomSecret(prm))}</span>`:""}<input id="${id}" type="password" autocomplete="off" spellcheck="false" placeholder="${le?"enregistré le "+esc(le)+" · coller pour remplacer":"coller le jeton"}"></label></div>
+function jetonEnedis(chemin,prmPath){const le=get(chemin),nom=get(chemin.replace(/jeton_le$/,"jeton_secret")),id="jt-"+chemin.replace(/\./g,"-");
+  return`<div class="pan"><div class="grid"><label class="f">Jeton MyElectricalData${nom?` <span class="u">secret ${esc(nom)}</span>`:""}<input id="${id}" type="password" autocomplete="off" spellcheck="false" placeholder="${le?"enregistré le "+esc(le)+" · coller pour remplacer":"coller le jeton"}"></label></div>
   <div class="row"><button data-jeton="${chemin}|${prmPath}">${le?"Remplacer le jeton":"Enregistrer le jeton dans les secrets GitHub"}</button>${le?`<span class="chip ok">Jeton enregistré le ${esc(le)}</span>`:`<span class="chip warn">Aucun jeton</span>`}</div>
   <p class="hint">Jeton obtenu sur myelectricaldata.fr après consentement sur le compte Enedis du titulaire du PRM (compteur Linky ≤ 36 kVA ; activer aussi l'enregistrement de la courbe de charge dans l'espace client Enedis). Il est chiffré dans ce navigateur et envoyé directement dans les secrets du dépôt : il n'apparaît ni dans la base des sites ni dans le dépôt. Le jeton GitHub doit avoir la permission « Secrets : Read and write ».</p></div>`}
 function get(path){return path.split(".").reduce((o,k)=>o==null?o:o[k],st.ed)}
@@ -487,8 +496,8 @@ function bindEdit(){
     if(!prm){say("bad","Saisissez d'abord le PRM.");rerender();return}
     if(!val){say("bad","Collez le jeton MyElectricalData avant d'enregistrer.");rerender();return}
     b.disabled=true;b.textContent="Chiffrement et envoi…";
-    try{await ghSecret(nomSecret(prm),val);set(chemin,new Date().toISOString().slice(0,10));
-      say("ok",`Jeton enregistré dans les secrets GitHub sous ${nomSecret(prm)}. Validez le site puis enregistrez sur GitHub.`)}
+    try{const cs=chemin.replace(/jeton_le$/,"jeton_secret"),nom=secretPour(cs);await ghSecret(nom,val);set(cs,nom);set(chemin,new Date().toISOString().slice(0,10));
+      say("ok",`Jeton enregistré dans le secret GitHub ${nom}. Validez le site puis enregistrez sur GitHub.`)}
     catch(e){say("bad",e.message)}
     rerender()});
   on("eBack","click",closeEdit);on("eCancel","click",closeEdit);

@@ -1,7 +1,9 @@
 """Courbes de charge Enedis (compteurs Linky ≤ 36 kVA) via la passerelle MyElectricalData.
 
 Un jeton par PRM, obtenu sur myelectricaldata.fr après consentement sur le compte Enedis du titulaire,
-stocké dans les secrets du dépôt sous le nom ENEDIS_<PRM> (écrit par la page « Base de données des sites »).
+stocké dans un secret du dépôt ENEDIS_JETON_01 … ENEDIS_JETON_20, écrit par la page « Base de données des sites »
+qui attribue l'emplacement et le note dans la fiche du site (champ jeton_secret, le nom seulement).
+Les noms de secrets sont fixes pour que le workflow les déclare explicitement.
 
 - consommation : PRM valorisation.conso.prm (modes autoconsommation, source « enedis ») -> data/conso/<id>/
 - production   : PRM mesures.prm_production (source des mesures « enedis »)              -> data/mesures_depot/<id>/
@@ -81,10 +83,11 @@ def _ecrire(d: Path, s: pd.Series) -> None:
         df.to_csv(d / f"enedis_{mois}.csv", sep=";", index=False)
 
 
-def actualiser(site: dict, sens: str, prm: str) -> None:
-    jeton = secret(nom_secret(prm))
+def actualiser(site: dict, sens: str, prm: str, nom: str | None = None) -> None:
+    nom = nom or nom_secret(prm)
+    jeton = secret(nom)
     if not jeton:
-        journal(f"  {site.get('nom')} : pas de jeton {nom_secret(prm)} dans les secrets, courbe Enedis non récupérée")
+        journal(f"  {site.get('nom')} : secret {nom} vide ou absent, courbe Enedis non récupérée")
         return
     d = _dossier(sens, site["id"])
     existant = _lire_existant(d)
@@ -114,11 +117,11 @@ def actualiser_tous(sites: list[dict]) -> None:
         travaux = []
         if str((s.get("valorisation") or {}).get("mode", "")).startswith("autoconso") \
                 and conso.get("source") == "enedis" and conso.get("prm"):
-            travaux.append(("consumption", conso["prm"]))
+            travaux.append(("consumption", conso["prm"], conso.get("jeton_secret")))
         if mes.get("source") == "enedis" and mes.get("prm_production"):
-            travaux.append(("production", mes["prm_production"]))
-        for sens, prm in travaux:
+            travaux.append(("production", mes["prm_production"], mes.get("jeton_secret")))
+        for sens, prm, nom in travaux:
             try:
-                actualiser(s, sens, str(prm).strip())
+                actualiser(s, sens, str(prm).strip(), nom)
             except Exception as e:  # un PRM en échec ne bloque pas le calcul
                 journal(f"  ! {s.get('nom')} : courbe Enedis {sens} : {e}")
