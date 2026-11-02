@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-11-02T15:00:00.000Z",
+  "mis_a_jour": "2026-11-02T18:05:36.042Z",
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -86,7 +86,7 @@
           "suivi": "fixe",
           "rotation_max": null,
           "pitch_m": 5.8,
-          "largeur_m": 3.0,
+          "largeur_m": 3,
           "chaines_largeur": 3,
           "bande_inactive_m": 0.02
         }
@@ -104,6 +104,7 @@
         "rendement_pct": 98.2
       },
       "pertes_dc_pct": 15.3,
+      "pertes_ac_pct": 2,
       "albedo": 0.17,
       "limitation_kva": 9998,
       "masque": null,
@@ -129,8 +130,7 @@
           "prix_reference_eur_mwh": 78
         }
       },
-      "notes": "Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Pertes AC = auxiliaires, câbles, transfo HTA, ligne HTA. Pas d'horizon.",
-      "pertes_ac_pct": 2.0
+      "notes": "Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Pertes AC = auxiliaires, câbles, transfo HTA, ligne HTA. Pas d'horizon."
     },
     {
       "id": "site-hjl27et",
@@ -166,7 +166,8 @@
         "pac_kva": 2000,
         "rendement_pct": 97.9
       },
-      "pertes_dc_pct": 8.0,
+      "pertes_dc_pct": 8,
+      "pertes_ac_pct": 1.5,
       "albedo": 0.17,
       "limitation_kva": null,
       "masque": {
@@ -244,11 +245,11 @@
           ],
           [
             -15,
-            0.0
+            0
           ],
           [
             30,
-            0.0
+            0
           ],
           [
             38,
@@ -318,8 +319,7 @@
           "prix_reference_eur_mwh": null
         }
       },
-      "notes": "Paramètres du rapport PVsyst VC3 (28/08/26, variante « Avec vieillissement ») : 8 352 Suntech STP 275-24/Vd, 4 ABB PVS800-57-0500kW (600 kVA max ≤ 25 °C). Pertes DC = LID 6 % + mismatch 1,15 % + câblage 1,04 %. Pertes AC = auxiliaires, câbles, transfo HTA, ligne HTA.",
-      "pertes_ac_pct": 1.5
+      "notes": "Paramètres du rapport PVsyst VC3 (28/08/26, variante « Avec vieillissement ») : 8 352 Suntech STP 275-24/Vd, 4 ABB PVS800-57-0500kW (600 kVA max ≤ 25 °C). Pertes DC = LID 6 % + mismatch 1,15 % + câblage 1,04 %. Pertes AC = auxiliaires, câbles, transfo HTA, ligne HTA."
     }
   ]
 }
