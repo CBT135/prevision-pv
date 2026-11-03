@@ -6,10 +6,21 @@ on:
     # GitHub retarde souvent les calculs programmés de plusieurs heures : chaque créneau est doublé.
     # Les passages supplémentaires ne refont rien d'inutile (réalisé déjà calculé ignoré,
     # prévision J+1 simplement remplacée par une version plus récente).
-    - cron: "17 4 * * *"   # 5h17 : mesures de la veille + prévision J+1 du matin
-    - cron: "47 5 * * *"   # 6h47 : second essai du matin
-    - cron: "23 15 * * *"  # 16h23 : après le run AROME de 12 h UTC et les prix day-ahead
-    - cron: "53 16 * * *"  # 17h53 : second essai de l'après-midi
+    # Matin : mesures de la veille (Enphase, Enedis, dépôts) et prévision J+1, à rendre avant 7 h.
+    # Plusieurs passages entre 3 h et 6 h 30 (heure d'hiver de Paris ; 4 h - 7 h 30 en été) : Enedis
+    # publie la courbe de la veille au fil de la nuit, et GitHub décale souvent les passages.
+    # Un passage qui n'a plus rien à récupérer ne fait que remettre à jour la prévision.
+    - cron: "7 2 * * *"
+    - cron: "37 2 * * *"
+    - cron: "7 3 * * *"
+    - cron: "37 3 * * *"
+    - cron: "7 4 * * *"
+    - cron: "37 4 * * *"
+    - cron: "7 5 * * *"
+    - cron: "37 5 * * *"
+    # Après-midi : après le run AROME de 12 h UTC et les prix day-ahead
+    - cron: "23 15 * * *"
+    - cron: "53 16 * * *"
   workflow_dispatch:
   # Base des sites modifiée (nom, mode de valorisation, paramètres, nouveau site) : nouveau calcul
   push:

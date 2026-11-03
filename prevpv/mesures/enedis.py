@@ -61,6 +61,8 @@ def _appel(sens: str, prm: str, jeton: str, debut: date, fin: date, cache: bool)
                            "Enedis sur myelectricaldata.fr pour ce PRM, puis vérifier que le jeton saisi est bien celui de ce PRM")
     if r.status_code == 404:  # Enedis ne détient rien sur la période
         return pd.Series(dtype=float)
+    if r.status_code == 429:
+        raise RuntimeError("quota de requêtes MyElectricalData atteint, nouvel essai au prochain passage")
     if r.status_code in (401, 403):
         raise RuntimeError(f"jeton refusé ({r.status_code}) : consentement expiré ou jeton à renouveler sur myelectricaldata.fr")
     r.raise_for_status()
@@ -132,6 +134,8 @@ def actualiser(site: dict, sens: str, prm: str, nom: str | None = None) -> None:
     existant = _lire_existant(d)
     fin = aujourd_hui_paris()  # exclu : la veille est la dernière journée disponible
     debut = fin - timedelta(days=JOURS_REPRISE)
+    if len(existant) and existant.index.max() >= pd.Timestamp(fin, tz=TZ).tz_convert("UTC"):
+        return  # veille déjà complète : pas d'appel, pour ménager le quota de la passerelle
     if len(existant):
         derniere = existant.index.max().tz_convert(TZ).date()
         debut = max(debut, derniere - timedelta(days=2))  # Enedis complète parfois avec retard
