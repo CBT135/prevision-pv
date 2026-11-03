@@ -90,6 +90,12 @@ Dans la fiche du site, saisir le **PRM du point de livraison** (section « Site 
 
 À chaque calcul quotidien, les courbes sont récupérées (60 jours au premier passage, puis les derniers jours) et rangées dans `data/conso/<id_site>/enedis_AAAA-MM.csv` ou `data/mesures_depot/<id_site>/enedis_AAAA-MM.csv`.
 
+## Enedis SGE (compteurs > 36 kVA)
+
+Source des mesures « Enedis SGE » dans la fiche du site. Une fois le PRM saisi (et le site validé), la page propose l'environnement (homologation ou production), l'identifiant de connexion, le numéro de contrat et le certificat client avec sa clé privée (PEM), ou un fichier PKCS#12 et son mot de passe. Ils sont chiffrés dans le navigateur et enregistrés dans les secrets `ENEDIS_SGE_*`, communs à tous les sites ; `sites.json` ne garde que la date, l'environnement et le format (rubrique `acces`).
+
+L'interrogation du service de mesures détaillées sera branchée à réception de la documentation et des accès Enedis ; d'ici là, les fichiers déposés restent utilisés pour ces sites.
+
 ## Mesures déposées en CSV
 
 Pour un site sans API, déposer les fichiers dans `data/mesures_depot/<id_site>/` (production) ou `data/conso/<id_site>/` (consommation). L'identifiant du site figure dans `config/sites.json`.

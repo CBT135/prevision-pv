@@ -199,7 +199,7 @@ function issues(s){
   if(v.mode==="vente_totale"&&bad(v.tarif_vente_eur_mwh))out.push("tarif de vente");
   if(v.mode==="spot"&&v.spot.complement&&bad(v.spot.prix_reference_eur_mwh))out.push("tarif de référence");
   if(s.mesures.source==="enphase"&&!/^\d+$/.test(String(s.mesures.enphase_system_id||"").trim()))out.push("identifiant Enphase (chiffres uniquement)");
-  if(s.mesures.source==="enedis"&&!String(s.mesures.prm_production||s.prm||"").trim())out.push("PRM");
+  if((s.mesures.source==="enedis"||s.mesures.source==="enedis_sge")&&!String(s.mesures.prm_production||s.prm||"").trim())out.push("PRM");
   if(String(s.prm||"").trim()&&!/^\d{14}$/.test(String(s.prm).trim()))out.push("PRM (14 chiffres)");
   return out;
 }
@@ -245,6 +245,7 @@ async function lireDistant(){
   const r=await fetch(apiUrl()+"?ref="+encodeURIComponent(st.cfg.branch)+"&t="+Date.now(),{headers:ghHeaders(),cache:"no-store"});
   if(!r.ok)return{r};
   const j=await r.json();const data=JSON.parse(b64d(j.content));
+  if(!st.accesTouche)st.acces=data.acces||{};
   return{r,sites:Array.isArray(data.sites)?data.sites:[],sha:j.sha};
 }
 
@@ -263,7 +264,7 @@ function ghError(r,txt){
 async function lirePublic(){
   st.busy=true;render();
   try{const r=await fetch(`https://raw.githubusercontent.com/${encodeURIComponent(st.cfg.owner)}/${encodeURIComponent(st.cfg.repo)}/${encodeURIComponent(st.cfg.branch)}/${st.cfg.path}?t=${Date.now()}`,{cache:"no-store"});
-    if(!r.ok)throw 0;const data=await r.json();st.sites=Array.isArray(data.sites)?data.sites:[];
+    if(!r.ok)throw 0;const data=await r.json();st.sites=Array.isArray(data.sites)?data.sites:[];st.acces=data.acces||{};
     say("ok",`Consultation : ${st.sites.length} site${st.sites.length>1?"s":""} lu${st.sites.length>1?"s":""} sur GitHub. Déverrouillez pour modifier.`)}
   catch(e){say("warn","Lecture de la base sur GitHub impossible (dépôt privé ou réseau) : déverrouillez pour la charger.")}
   st.busy=false;render();
@@ -279,6 +280,7 @@ async function ghLoad(){
       else say("bad",ghError(rr,await rr.text()));
     }else if(!r.ok){say("bad",ghError(r,await r.text()))}
     else{const j=await r.json();const data=JSON.parse(b64d(j.content));const distants=Array.isArray(data.sites)?data.sites:[];
+      if(!st.accesTouche)st.acces=data.acces||{};
       if(st.dirty&&(st.touched.size||st.deleted.size||st.legacy)){st.sites=fusion(distants);st.sha=j.sha;persistDraft();
         say("warn","Modifications de ce navigateur pas encore enregistrées : elles ont été conservées. Cliquez sur « Enregistrer sur GitHub ».")}
       else{st.sites=distants;st.sha=j.sha;st.dirty=false;st.touched.clear();st.deleted.clear();st.legacy=false;persistDraft();
@@ -314,7 +316,7 @@ async function ghSecret(nom,valeur){
 async function ghSave(){
   if(!st.cfg.token){say("warn","Renseignez d'abord le jeton GitHub dans « Dépôt GitHub ».");return}
   st.busy=true;render();
-  const payload={version:1,mis_a_jour:new Date().toISOString(),conventions:{azimut:"PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",masque:"[azimut PVsyst °, hauteur °]"},sites:st.sites};
+  const payload={version:1,mis_a_jour:new Date().toISOString(),acces:st.acces||{},conventions:{azimut:"PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",masque:"[azimut PVsyst °, hauteur °]"},sites:st.sites};
   const body={message:`Sites PV : mise à jour (${st.sites.length} site${st.sites.length>1?"s":""})`,content:b64e(JSON.stringify(payload,null,2)+"\n"),branch:st.cfg.branch};
   if(st.sha)body.sha=st.sha;
   try{
@@ -328,7 +330,7 @@ async function ghSave(){
         r=await fetch(apiUrl(),{method:"PUT",headers:Object.assign({"Content-Type":"application/json"},ghHeaders()),body:JSON.stringify(body)})}
     }
     if(!r.ok)say("bad",ghError(r,await r.text()));
-    else{const j=await r.json();st.sha=j.content.sha;st.dirty=false;st.touched.clear();st.deleted.clear();st.legacy=false;persistDraft();say("ok","Enregistré sur GitHub.")}
+    else{const j=await r.json();st.sha=j.content.sha;st.dirty=false;st.accesTouche=false;st.touched.clear();st.deleted.clear();st.legacy=false;persistDraft();say("ok","Enregistré sur GitHub.")}
   }catch(e){say("bad","Connexion à GitHub impossible. Vos modifications restent dans ce navigateur.")}
   st.busy=false;render();
 }
@@ -423,7 +425,7 @@ function render(){
       <span class="meta"><span class="num">${fmtP(kwc(s))}</span><span>${esc(TYPES[s.type]||"")}</span><span>${esc(MODES[s.valorisation.mode].short)}</span>${s.masque?"<span>Masque importé</span>":""}${s.actif?"":"<span>Désactivé</span>"}</span>
     </button>`}).join("");
   app.innerHTML=`
-  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 3 nov., 9 h</span></p></div>${syncChip()}</header>
+  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 3 nov., 14 h 30</span></p></div>${syncChip()}</header>
   ${verrouHtml()}
   ${msgHtml()}
   <div class="list">${items||`<div class="empty">Aucun site. Ajoutez le premier avec « Nouveau site ».</div>`}</div>
@@ -460,7 +462,7 @@ function render(){
   if(document.getElementById("jImport"))document.getElementById("jImport").onclick=()=>{try{const d=JSON.parse(document.getElementById("jIn").value);const arr=Array.isArray(d)?d:d.sites;if(!Array.isArray(arr))throw 0;const avant=st.sites.map(x=>x.id);st.sites=arr.map(s=>Object.assign(newSite(),s));st.sites.forEach(x=>st.touched.add(x.id));avant.filter(id=>!st.sites.some(x=>x.id===id)).forEach(id=>st.deleted.add(id));st.dirty=true;persistDraft();say("ok",`${arr.length} site(s) importé(s). Enregistrez sur GitHub pour les conserver.`)}catch(e){say("bad","JSON illisible : il doit contenir une liste « sites ».")}render()};
 }
 
-function openEdit(i){st.jetonMsg=null;st.edIdx=i;st.ed=i<0?newSite():Object.assign(newSite(),clone(st.sites[i]));st.view="edit";st.msg=null;st.armDel=false;st.open=null;render();window.scrollTo(0,0)}
+function openEdit(i){st.jetonMsg=null;st.sgeOuvert=false;st.edIdx=i;st.ed=i<0?newSite():Object.assign(newSite(),clone(st.sites[i]));st.view="edit";st.msg=null;st.armDel=false;st.open=null;render();window.scrollTo(0,0)}
 
 /* champs */
 function num(path,label,unit,opt={}){const v=get(path);const bad=Number.isNaN(v);
@@ -468,6 +470,62 @@ function num(path,label,unit,opt={}){const v=get(path);const bad=Number.isNaN(v)
 function txt(path,label,opt={}){return`<label class="f">${label}<input data-txt="${path}" autocomplete="off" value="${esc(get(path))}" placeholder="${esc(opt.ph||"")}" ${opt.mono?'class="num" autocapitalize="off" spellcheck="false"':""}></label>`}
 function sel(path,label,opts){const v=get(path);return`<label class="f">${label}<select data-sel="${path}">${Object.entries(opts).map(([k,l])=>`<option value="${k}"${k===v?" selected":""}>${esc(l)}</option>`).join("")}</select></label>`}
 function limAngle(p){const b=p.inclinaison*Math.PI/180,r=p.pitch_m/p.largeur_m;return Math.atan(Math.sin(b)/(r-Math.cos(b)))*180/Math.PI}
+/* Accès tiers Enedis SGE : certificat client + clé privée (PEM), ou fichier PKCS#12 (.p12 / .pfx) et son mot de
+   passe, identifiant de connexion et numéro de contrat. Commun à tous les sites : secrets ENEDIS_SGE_*. Seules la
+   date d'enregistrement, l'environnement et le format sont notés dans sites.json (rubrique « acces »). */
+function sgeBloc(s){
+  const prm=String(s.mesures.prm_production||s.prm||"").trim();
+  if(!prm)return`<p class="msg warn">Saisissez d'abord le PRM du point de livraison (section « Site et localisation »).</p>`;
+  if(st.edIdx<0)return`<p class="msg warn">Validez d'abord le site, puis rouvrez-le pour enregistrer l'accès Enedis SGE.</p>`;
+  const a=(st.acces||{}).sge;
+  const msg=st.jetonMsg&&st.jetonMsg.chemin==="sge"?`<p class="msg ${st.jetonMsg.kind}" role="status">${esc(st.jetonMsg.text)}</p>`:"";
+  const etat=a?`<div class="row"><span class="chip ok">Accès SGE enregistré le ${esc(a.le)} · ${esc(a.env==="production"?"production":"homologation")} · ${a.format==="p12"?"PKCS#12":"PEM"}</span>${st.sgeOuvert?"":`<button id="sgeOuvrir">Remplacer</button>`}</div>
+    <p class="hint">Accès commun à tous les sites « Enedis SGE ». PRM interrogé pour ce site : <span class="num">${esc(prm)}</span> (courbe d'injection).</p>`:"";
+  if(a&&!st.sgeOuvert)return`<div class="pan">${msg}${etat}</div>`;
+  return`<div class="pan">${msg}${etat}
+    <div class="grid">
+      <label class="f">Environnement<select id="sgeEnv"><option value="homologation"${a&&a.env==="production"?"":" selected"}>Homologation (tests)</option><option value="production"${a&&a.env==="production"?" selected":""}>Production</option></select></label>
+      <label class="f">Identifiant de connexion SGE<input id="sgeLogin" class="num" autocomplete="off" spellcheck="false" data-1p-ignore data-lpignore="true"></label>
+      <label class="f">Numéro de contrat<input id="sgeContrat" class="num" autocomplete="off" spellcheck="false" data-1p-ignore data-lpignore="true"></label>
+    </div>
+    <div class="grid">
+      <label class="f">Certificat client (.pem, .crt, .cer)<input type="file" id="sgeCert" accept=".pem,.crt,.cer,.txt"></label>
+      <label class="f">Clé privée (.key, .pem)<input type="file" id="sgeKey" accept=".key,.pem,.txt"></label>
+    </div>
+    <p class="hint">Ou, si Enedis a fourni un seul fichier PKCS#12 :</p>
+    <div class="grid">
+      <label class="f">Fichier .p12 / .pfx<input type="file" id="sgeP12" accept=".p12,.pfx"></label>
+      <label class="f">Mot de passe du fichier<input id="sgeP12Mdp" class="secret" type="text" autocomplete="off" spellcheck="false" data-1p-ignore data-lpignore="true"></label>
+    </div>
+    <div class="row"><button id="sgeEnr">Enregistrer dans les secrets GitHub</button>${a?`<button class="ghost" id="sgeFermer">Annuler</button>`:""}</div>
+    <p class="hint">Les fichiers et identifiants sont chiffrés dans ce navigateur et envoyés directement dans les secrets du dépôt (ENEDIS_SGE_CERT, ENEDIS_SGE_KEY ou ENEDIS_SGE_P12 et ENEDIS_SGE_P12_MDP, ENEDIS_SGE_LOGIN, ENEDIS_SGE_CONTRAT) : ils n'apparaissent ni dans la base des sites ni dans le dépôt.</p></div>`;
+}
+async function enregistrerSge(){
+  const dire=(k,t)=>{st.jetonMsg={chemin:"sge",kind:k,text:t};rerender()};
+  const val=id=>(document.getElementById(id)||{}).value||"";
+  const fichier=id=>{const f=document.getElementById(id);return f&&f.files&&f.files[0]};
+  const texte=f=>f.text(),binaire=async f=>{const b=new Uint8Array(await f.arrayBuffer());let t="";b.forEach(x=>t+=String.fromCharCode(x));return btoa(t)};
+  const env=val("sgeEnv")||"homologation",login=val("sgeLogin").trim(),contrat=val("sgeContrat").trim();
+  const fc=fichier("sgeCert"),fk=fichier("sgeKey"),fp=fichier("sgeP12"),mdp=val("sgeP12Mdp");
+  if(!login||!contrat)return dire("bad","Saisissez l'identifiant de connexion et le numéro de contrat SGE.");
+  let envoi=[],format;
+  try{
+    if(fp){format="p12";envoi=[["ENEDIS_SGE_P12",await binaire(fp)],["ENEDIS_SGE_P12_MDP",mdp]]}
+    else if(fc&&fk){format="pem";const c=await texte(fc),k=await texte(fk);
+      if(!/-----BEGIN CERTIFICATE-----/.test(c))return dire("bad","Le fichier certificat n'est pas au format PEM (en-tête « BEGIN CERTIFICATE » absent). Utilisez le fichier .p12 si Enedis l'a fourni.");
+      if(!/-----BEGIN [A-Z ]*PRIVATE KEY-----/.test(k))return dire("bad","Le fichier de clé n'est pas une clé privée PEM (en-tête « PRIVATE KEY » absent).");
+      envoi=[["ENEDIS_SGE_CERT",c],["ENEDIS_SGE_KEY",k]]}
+    else return dire("bad","Choisissez le certificat et la clé privée, ou le fichier .p12 / .pfx.");
+    envoi.push(["ENEDIS_SGE_LOGIN",login],["ENEDIS_SGE_CONTRAT",contrat]);
+    const b=document.getElementById("sgeEnr");if(b){b.disabled=true;b.textContent="Chiffrement et envoi…"}
+    for(const [nom,v] of envoi)await ghSecret(nom,v);
+  }catch(e){console.error(e);return dire("bad","Échec : "+e.message)}
+  st.acces=Object.assign({},st.acces||{},{sge:{le:new Date().toISOString().slice(0,10),env,format}});st.accesTouche=true;st.sgeOuvert=false;
+  st.sites[st.edIdx]=st.ed;st.touched.add(st.ed.id);st.ed=clone(st.ed);st.dirty=true;persistDraft();
+  await ghSave();
+  dire(st.dirty?"warn":"ok",st.dirty?"Accès SGE enregistré dans les secrets, mais la base des sites n'a pas pu être enregistrée : cliquez sur « Enregistrer sur GitHub » depuis la liste."
+    :`Accès SGE (${env}) enregistré dans les secrets GitHub et base des sites enregistrée.`);
+}
 function jetonEnedis(chemin,prmPath){
   if(st.edIdx<0)return`<p class="msg warn">Validez d'abord le site (bouton « Valider le site » en bas de page) : il est alors enregistré dans la base. Rouvrez-le ensuite pour saisir le jeton MyElectricalData.</p>`;
   const le=get(chemin),nom=get(chemin.replace(/jeton_le$/,"jeton_secret")),id="jt-"+chemin.replace(/\./g,"-");
@@ -537,7 +595,7 @@ function renderEdit(){
     ${Number.isFinite(s.lat)&&Number.isFinite(s.lon)?`<p class="hint"><a href="https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lon}#map=17/${s.lat}/${s.lon}" target="_blank" rel="noopener">Vérifier l'emplacement sur la carte ↗</a></p>`:""}
     <div class="grid">${txt("prm","PRM du point de livraison",{ph:"14 chiffres · laisser vide si inconnu",mono:true})}</div>
     ${String(s.prm||"").trim()?(s.type==="residentiel"?jetonEnedis("jeton_le","prm")
-      :`<p class="hint">Compteur de plus de 36 kVA ou site professionnel : MyElectricalData ne s'applique pas ; les mesures viennent de la supervision ou d'un fichier déposé.</p>`)
+      :`<p class="hint">Compteur de plus de 36 kVA : choisissez la source « Enedis SGE » dans « Données mesurées » (accès tiers SGE). Sinon, mesures viennent de la supervision ou d'un fichier déposé.</p>`)
       :`<p class="hint">Si le PRM est connu, saisissez-le : pour une toiture résidentielle (Linky ≤ 36 kVA), la courbe Enedis pourra être récupérée chaque jour avec un jeton MyElectricalData.</p>`}
     <label class="chk"><input type="checkbox" id="eActif" ${s.actif?"checked":""}> Site actif (inclus dans le calcul quotidien)</label>`,openSet.has("loc"))}
   ${sec("pans","Champs PV",`<span class="chip plain num">${fmtP(kwc(s))}</span>`,`${pans}<div class="row"><button id="eAddPan">Ajouter un champ (autre orientation)</button></div>`,openSet.has("pans"))}
@@ -550,9 +608,10 @@ function renderEdit(){
     ${num("modules.rendement_pct","Rendement des modules (STC)","%",{ph:"ex. 15,5"})}</div>
     <p class="hint">Avec Uc et Uv, la température des cellules suit le modèle PVsyst ; sinon le mode de pose fixe un modèle thermique par défaut.</p>`,openSet.has("tech"))}
   ${sec("mask","Masque d'horizon",mOk?`<span class="chip ok">${m.source==="pvgis"?"PVGIS":"Importé"}</span>`:m?`<span class="chip warn">PVGIS en attente</span>`:`<span class="chip">Aucun</span>`,maskInner,openSet.has("mask"))}
-  ${sec("mes","Données mesurées","",`<div class="grid">${sel("mesures.source","Source des mesures J+1",{enphase:"API Enphase",enedis:"Compteur Enedis Linky (MyElectricalData)",csv:"Fichier compteur déposé (CSV)",supervision:"Supervision (API à définir)"})}
+  ${sec("mes","Données mesurées","",`<div class="grid">${sel("mesures.source","Source des mesures J+1",{enphase:"API Enphase",enedis:"Compteur Enedis Linky (MyElectricalData)",enedis_sge:"Enedis SGE (compteur > 36 kVA)",csv:"Fichier compteur déposé (CSV)",supervision:"Supervision (API à définir)"})}
     ${s.mesures.source==="enphase"?txt("mesures.enphase_system_id","Identifiant système Enphase",{mono:true}):""}
-    ${txt("mesures.prm_production","PRM de production",{ph:s.mesures.source==="enedis"?"14 chiffres":"facultatif",mono:true})}</div>
+    ${txt("mesures.prm_production","PRM de production",{ph:s.mesures.source==="enedis"?"14 chiffres":s.mesures.source==="enedis_sge"&&s.prm?"PRM du site par défaut":"facultatif",mono:true})}</div>
+    ${s.mesures.source==="enedis_sge"?sgeBloc(s):""}
     ${s.mesures.source==="enedis"&&String(s.mesures.prm_production||"").trim()&&String(s.mesures.prm_production).trim()!==String(s.prm||"").trim()?jetonEnedis("mesures.jeton_le","mesures.prm_production"):""}
     <p class="hint">Les identifiants d'accès (clés API, jetons) ne se saisissent pas ici : ils vont dans les secrets du dépôt GitHub.</p>`,openSet.has("mes"))}
   ${sec("valo","Valorisation de l'énergie","",`<div class="seg" role="radiogroup">${modeRadios}</div><p class="formula">${esc(MODES[v.mode].help)}</p>${valoFields}`,openSet.has("valo"))}
@@ -592,6 +651,9 @@ function bindEdit(){
       st.open.add("mask");rerender()}
     rd.readAsText(f,"utf-8")});
   on("mDel","click",()=>{s.masque=null;rerender()});
+  on("sgeOuvrir","click",()=>{st.sgeOuvert=true;rerender()});
+  on("sgeFermer","click",()=>{st.sgeOuvert=false;rerender()});
+  on("sgeEnr","click",enregistrerSge);
   on("mPvgis","click",()=>{s.masque={source:"pvgis",points:null};say("ok","Masque PVGIS demandé. Validez le site puis enregistrez sur GitHub : il sera importé au prochain calcul.");st.open.add("mask");rerender()});
   app.querySelectorAll("[data-jeton]").forEach(b=>b.onclick=async()=>{
     const [chemin,prmPath]=b.dataset.jeton.split("|");const inp=document.getElementById("jt-"+chemin.replace(/\./g,"-"));

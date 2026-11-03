@@ -58,6 +58,12 @@ jobs:
           ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
           ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
           OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
+          ENEDIS_SGE_CERT: ${{ secrets.ENEDIS_SGE_CERT }}
+          ENEDIS_SGE_KEY: ${{ secrets.ENEDIS_SGE_KEY }}
+          ENEDIS_SGE_P12: ${{ secrets.ENEDIS_SGE_P12 }}
+          ENEDIS_SGE_P12_MDP: ${{ secrets.ENEDIS_SGE_P12_MDP }}
+          ENEDIS_SGE_LOGIN: ${{ secrets.ENEDIS_SGE_LOGIN }}
+          ENEDIS_SGE_CONTRAT: ${{ secrets.ENEDIS_SGE_CONTRAT }}
           # Jetons MyElectricalData : 20 emplacements, attribués aux PRM par la page des sites
           ENEDIS_JETON_01: ${{ secrets.ENEDIS_JETON_01 }}
           ENEDIS_JETON_02: ${{ secrets.ENEDIS_JETON_02 }}

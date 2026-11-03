@@ -37,6 +37,12 @@ jobs:
           ENPHASE_REFRESH_TOKEN: ${{ secrets.ENPHASE_REFRESH_TOKEN }}
           ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
           OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
+          ENEDIS_SGE_CERT: ${{ secrets.ENEDIS_SGE_CERT }}
+          ENEDIS_SGE_KEY: ${{ secrets.ENEDIS_SGE_KEY }}
+          ENEDIS_SGE_P12: ${{ secrets.ENEDIS_SGE_P12 }}
+          ENEDIS_SGE_P12_MDP: ${{ secrets.ENEDIS_SGE_P12_MDP }}
+          ENEDIS_SGE_LOGIN: ${{ secrets.ENEDIS_SGE_LOGIN }}
+          ENEDIS_SGE_CONTRAT: ${{ secrets.ENEDIS_SGE_CONTRAT }}
         run: |
           set -o pipefail
           mkdir -p data

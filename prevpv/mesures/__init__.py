@@ -5,7 +5,7 @@ from datetime import date
 
 import pandas as pd
 
-from . import depot, enphase
+from . import depot, enphase, sge
 
 
 def production(site: dict, debut: date, fin: date) -> pd.Series | None:
@@ -13,6 +13,8 @@ def production(site: dict, debut: date, fin: date) -> pd.Series | None:
     source = (site.get("mesures") or {}).get("source", "csv")
     if source == "enphase":
         return enphase.production(site, debut, fin)
+    if source == "enedis_sge":
+        return sge.production(site, debut, fin)
     return depot.production(site, debut, fin)
 
 
