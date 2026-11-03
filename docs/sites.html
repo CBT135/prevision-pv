@@ -78,6 +78,10 @@ details.card[open]>summary::after{transform:rotate(-135deg)}
 .body{padding:2px 14px 16px;display:grid;gap:12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
 label.f{display:grid;gap:4px;font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.01em;min-width:0}
+.lock{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.lock.ok{border-color:var(--ok, #1f7a4d)}
+.lockform{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;align-items:end;width:100%}
+fieldset.lecture{border:0;margin:0;padding:0;min-width:0}
 input.secret{-webkit-text-security:disc;text-security:disc;font-family:var(--f-mono)}
 label.f .u{font-weight:400;font-family:var(--f-mono);font-size:.74rem}
 input,select,textarea{font:inherit;font-size:.95rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:9px 10px;width:100%;min-width:0}
@@ -205,6 +209,21 @@ const fmtP=k=>k>=1000?fmt(+(k/1000).toFixed(2))+" MWc":fmt(+k.toFixed(2))+" kWc"
 /* ---------- état ---------- */
 const st={sites:[],sha:null,dirty:false,view:"list",ed:null,edIdx:-1,cfg:Object.assign({owner:"cbt135",repo:"prevision-pv",branch:"main",path:"config/sites.json",token:""},lsGet(LS_CFG)||{}),msg:null,busy:false,armDel:false};
 if(!lsGet(LS_CFG)&&/\.github\.io$/.test(location.hostname)){st.cfg.owner=location.hostname.split(".")[0];const seg=location.pathname.split("/").filter(Boolean);if(seg.length&&!seg[0].endsWith(".html"))st.cfg.repo=seg[0]}
+/* Verrou : consultation libre ; toute modification demande le mot de passe, qui déchiffre le jeton GitHub
+   conservé chiffré dans ce navigateur (PBKDF2-SHA256 310 000 itérations, AES-GCM). Sans mot de passe, la page
+   n'a aucun moyen d'écrire dans le dépôt. Le jeton déchiffré reste en mémoire jusqu'à fermeture ou verrouillage. */
+st.plain=st.cfg.token||"";st.cfg.token="";   // ancien jeton en clair : à chiffrer au premier déverrouillage
+const saveCfg=()=>{const c=Object.assign({},st.cfg);delete c.token;if(st.plain)c.token=st.plain;lsSet(LS_CFG,c)};
+const u8=b=>new Uint8Array(b),b64=a=>btoa(String.fromCharCode(...u8(a))),unb64=t=>Uint8Array.from(atob(t),c=>c.charCodeAt(0));
+async function cle(mdp,sel){const k=await crypto.subtle.importKey("raw",new TextEncoder().encode(mdp),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey({name:"PBKDF2",salt:sel,iterations:310000,hash:"SHA-256"},k,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+async function chiffrerJeton(jeton,mdp){const sel=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+  const d=await crypto.subtle.encrypt({name:"AES-GCM",iv},await cle(mdp,sel),new TextEncoder().encode(jeton));
+  st.cfg.jetonChiffre={sel:b64(sel),iv:b64(iv),donnees:b64(d)};st.plain="";saveCfg()}
+async function dechiffrerJeton(mdp){const j=st.cfg.jetonChiffre;
+  const d=await crypto.subtle.decrypt({name:"AES-GCM",iv:unb64(j.iv)},await cle(mdp,unb64(j.sel)),unb64(j.donnees));
+  return new TextDecoder().decode(d)}
+const deverrouille=()=>!!st.cfg.token;
 const draft=lsGet(LS_DRAFT);
 /* touched / deleted : sites modifiés ou supprimés dans ce navigateur depuis le dernier enregistrement.
    Ils permettent de fusionner avec la version GitHub si elle a changé entre-temps (calcul automatique,
@@ -241,8 +260,16 @@ function ghError(r,txt){
   if(r.status===409||r.status===422)return"Le fichier a changé sur GitHub depuis le dernier chargement. Rechargez, puis refaites vos modifications.";
   return`Erreur GitHub ${r.status}. ${txt.slice(0,140)}`;
 }
+async function lirePublic(){
+  st.busy=true;render();
+  try{const r=await fetch(`https://raw.githubusercontent.com/${encodeURIComponent(st.cfg.owner)}/${encodeURIComponent(st.cfg.repo)}/${encodeURIComponent(st.cfg.branch)}/${st.cfg.path}?t=${Date.now()}`,{cache:"no-store"});
+    if(!r.ok)throw 0;const data=await r.json();st.sites=Array.isArray(data.sites)?data.sites:[];
+    say("ok",`Consultation : ${st.sites.length} site${st.sites.length>1?"s":""} lu${st.sites.length>1?"s":""} sur GitHub. Déverrouillez pour modifier.`)}
+  catch(e){say("warn","Lecture de la base sur GitHub impossible (dépôt privé ou réseau) : déverrouillez pour la charger.")}
+  st.busy=false;render();
+}
 async function ghLoad(){
-  if(!st.cfg.token){say("warn","Renseignez d'abord le jeton GitHub dans « Dépôt GitHub ».");return}
+  if(!st.cfg.token)return lirePublic();
   st.busy=true;render();
   try{
     const r=await fetch(apiUrl()+"?ref="+encodeURIComponent(st.cfg.branch),{headers:ghHeaders()});
@@ -350,8 +377,37 @@ function maskSvg(points){
 
 /* ---------- rendu ---------- */
 const app=document.getElementById("app"),bar=document.getElementById("bar"),barInner=document.getElementById("barInner");
+function verrouHtml(){
+  if(deverrouille())return`<div class="lock ok"><span>Modifications autorisées</span><button class="ghost" id="vLock">Verrouiller</button></div>`;
+  const aJeton=!!(st.cfg.jetonChiffre||st.plain);
+  if(!st.vOpen)return`<div class="lock"><span>Consultation seule</span><button class="primary" id="vOpen">Modifier les sites</button></div>`;
+  if(st.cfg.jetonChiffre)return`<div class="lock"><form id="vForm" class="lockform" autocomplete="off"><label class="f">Mot de passe<input id="vMdp" type="password" autocomplete="current-password" required></label>
+    <button class="primary" type="submit">Déverrouiller</button><button class="ghost" type="button" id="vCancel">Annuler</button></form></div>`;
+  return`<div class="lock"><form id="vForm" class="lockform" autocomplete="off">
+    <p class="hint" style="grid-column:1/-1">${aJeton?"Choisissez le mot de passe qui protégera désormais les modifications. Le jeton GitHub déjà enregistré dans ce navigateur sera chiffré avec lui.":"Première configuration : collez le jeton GitHub (fine-grained, ce dépôt seulement, Contents et Secrets : read and write) et choisissez un mot de passe."}</p>
+    ${aJeton?"":`<label class="f">Jeton GitHub<input id="vTok" class="secret" type="text" data-1p-ignore data-lpignore="true" autocomplete="off" spellcheck="false" required></label>`}
+    <label class="f">Nouveau mot de passe<input id="vMdp" type="password" autocomplete="new-password" minlength="8" required></label>
+    <label class="f">Confirmer<input id="vMdp2" type="password" autocomplete="new-password" minlength="8" required></label>
+    <button class="primary" type="submit">Enregistrer et déverrouiller</button><button class="ghost" type="button" id="vCancel">Annuler</button></form></div>`;
+}
+function bindVerrou(){
+  const on=(id,ev,fn)=>{const el=document.getElementById(id);if(el)el.addEventListener(ev,fn)};
+  on("vOpen","click",()=>{st.vOpen=true;render();const m=document.getElementById(st.cfg.jetonChiffre?"vMdp":(st.plain?"vMdp":"vTok"));if(m)m.focus()});
+  on("vCancel","click",()=>{st.vOpen=false;render()});
+  on("vLock","click",()=>{st.cfg.token="";st.vOpen=false;st.view="list";say("ok","Page verrouillée : consultation seule.");render()});
+  on("vForm","submit",async e=>{e.preventDefault();const mdp=document.getElementById("vMdp").value;
+    try{
+      if(st.cfg.jetonChiffre){st.cfg.token=await dechiffrerJeton(mdp)}
+      else{const m2=document.getElementById("vMdp2").value;if(mdp!==m2){say("bad","Les deux mots de passe diffèrent.");render();return}
+        const tok=st.plain||(document.getElementById("vTok").value||"").trim();if(!tok){say("bad","Collez le jeton GitHub.");render();return}
+        await chiffrerJeton(tok,mdp);st.cfg.token=tok}
+    }catch(err){st.cfg.token="";say("bad","Mot de passe incorrect.");render();return}
+    st.vOpen=false;
+    const d=lsGet(LS_DRAFT);if(d&&d.dirty&&Array.isArray(d.sites)){st.sites=d.sites;st.touched=new Set(d.touched||[]);st.deleted=new Set(d.deleted||[]);st.dirty=true}
+    say("ok","Modifications autorisées jusqu'à la fermeture de la page ou au verrouillage.");await ghLoad()});
+}
 function syncChip(){
-  if(!st.cfg.token)return`<span class="chip warn">Mode local</span>`;
+  if(!st.cfg.token)return`<span class="chip">Consultation</span>`;
   if(st.dirty)return`<span class="chip warn">Non enregistré sur GitHub</span>`;
   if(st.sha)return`<span class="chip ok">À jour sur GitHub</span>`;
   return`<span class="chip">Non chargé</span>`;
@@ -367,7 +423,8 @@ function render(){
       <span class="meta"><span class="num">${fmtP(kwc(s))}</span><span>${esc(TYPES[s.type]||"")}</span><span>${esc(MODES[s.valorisation.mode].short)}</span>${s.masque?"<span>Masque importé</span>":""}${s.actif?"":"<span>Désactivé</span>"}</span>
     </button>`}).join("");
   app.innerHTML=`
-  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 2 nov., 21 h 20</span></p></div>${syncChip()}</header>
+  <header class="top"><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 3 nov., 9 h</span></p></div>${syncChip()}</header>
+  ${verrouHtml()}
   ${msgHtml()}
   <div class="list">${items||`<div class="empty">Aucun site. Ajoutez le premier avec « Nouveau site ».</div>`}</div>
   <details class="tools" id="tGit"><summary>Dépôt GitHub</summary><div class="body">
@@ -378,28 +435,29 @@ function render(){
       <label class="f">Branche<input id="cBranch" value="${esc(st.cfg.branch)}" autocapitalize="off" spellcheck="false"></label>
       <label class="f">Fichier<input id="cPath" value="${esc(st.cfg.path)}" autocapitalize="off" spellcheck="false"></label>
     </div>
-    <label class="f">Jeton d'accès (fine-grained, ce dépôt seulement, Contents et Secrets : read and write)<input id="cToken" class="secret" type="text" data-1p-ignore data-lpignore="true" value="${esc(st.cfg.token)}" autocomplete="off" spellcheck="false"></label>
-    <div class="row"><button id="cSave">Enregistrer les réglages et charger</button><button class="ghost" id="cForget">Effacer le jeton</button></div>
+    <p class="hint">Le jeton GitHub est conservé chiffré par votre mot de passe (jamais en clair). Pour le changer : « Effacer le jeton et le mot de passe », puis « Modifier les sites ».</p>
+    <div class="row"><button id="cSave">Enregistrer les réglages et charger</button>${st.cfg.jetonChiffre||st.plain?`<button class="ghost" id="cForget">Effacer le jeton et le mot de passe</button>`:""}</div>
   </div></details>
   <details class="tools" id="tJson"><summary>Exporter / importer en JSON</summary><div class="body">
     <label class="f">Contenu actuel (copiez-le pour une sauvegarde)<textarea id="jOut" readonly>${esc(JSON.stringify({version:1,sites:st.sites},null,2))}</textarea></label>
     <div class="row"><button id="jCopy">Copier</button></div>
     <label class="f">Coller un JSON à importer<textarea id="jIn" placeholder='{"version":1,"sites":[…]}'></textarea></label>
-    <div class="row"><button id="jImport">Remplacer les sites par ce JSON</button></div>
+    ${deverrouille()?`<div class="row"><button id="jImport">Remplacer les sites par ce JSON</button></div>`:`<p class="hint">Import réservé au mode modification.</p>`}
   </div></details>`;
   bar.hidden=false;
+  const ok=deverrouille();
   barInner.innerHTML=`<span class="grow">${st.sites.length} site${st.sites.length>1?"s":""} · ${fmtP(st.sites.filter(s=>s.actif).reduce((t,s)=>t+kwc(s),0))} actifs</span>
-    <button id="bNew">Nouveau site</button>
+    ${ok?`<button id="bNew">Nouveau site</button>`:""}
     <button id="bLoad" ${st.busy?"disabled":""}>Recharger</button>
-    <button class="primary" id="bPush" ${st.busy?"disabled":""}>Enregistrer sur GitHub</button>`;
+    ${ok?`<button class="primary" id="bPush" ${st.busy?"disabled":""}>Enregistrer sur GitHub</button>`:""}`;
   app.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openEdit(+b.dataset.open));
-  document.getElementById("bNew").onclick=()=>openEdit(-1);
+  if(ok){document.getElementById("bNew").onclick=()=>openEdit(-1);document.getElementById("bPush").onclick=ghSave}
   document.getElementById("bLoad").onclick=ghLoad;
-  document.getElementById("bPush").onclick=ghSave;
-  document.getElementById("cSave").onclick=()=>{["Owner","Repo","Branch","Path","Token"].forEach(k=>st.cfg[k.toLowerCase()]=document.getElementById("c"+k).value.trim());lsSet(LS_CFG,st.cfg);ghLoad()};
-  document.getElementById("cForget").onclick=()=>{st.cfg.token="";lsSet(LS_CFG,st.cfg);say("ok","Jeton effacé de ce navigateur.");render()};
+  document.getElementById("cSave").onclick=()=>{["Owner","Repo","Branch","Path"].forEach(k=>st.cfg[k.toLowerCase()]=document.getElementById("c"+k).value.trim());saveCfg();ghLoad()};
+  const cf=document.getElementById("cForget");if(cf)cf.onclick=()=>{st.cfg.token="";st.plain="";delete st.cfg.jetonChiffre;saveCfg();say("ok","Jeton et mot de passe effacés de ce navigateur. La page est en consultation seule.");render()};
+  bindVerrou();
   document.getElementById("jCopy").onclick=()=>{const t=document.getElementById("jOut");navigator.clipboard.writeText(t.value).then(()=>{say("ok","JSON copié.");render()},()=>{t.focus();t.select()})};
-  document.getElementById("jImport").onclick=()=>{try{const d=JSON.parse(document.getElementById("jIn").value);const arr=Array.isArray(d)?d:d.sites;if(!Array.isArray(arr))throw 0;const avant=st.sites.map(x=>x.id);st.sites=arr.map(s=>Object.assign(newSite(),s));st.sites.forEach(x=>st.touched.add(x.id));avant.filter(id=>!st.sites.some(x=>x.id===id)).forEach(id=>st.deleted.add(id));st.dirty=true;persistDraft();say("ok",`${arr.length} site(s) importé(s). Enregistrez sur GitHub pour les conserver.`)}catch(e){say("bad","JSON illisible : il doit contenir une liste « sites ».")}render()};
+  if(document.getElementById("jImport"))document.getElementById("jImport").onclick=()=>{try{const d=JSON.parse(document.getElementById("jIn").value);const arr=Array.isArray(d)?d:d.sites;if(!Array.isArray(arr))throw 0;const avant=st.sites.map(x=>x.id);st.sites=arr.map(s=>Object.assign(newSite(),s));st.sites.forEach(x=>st.touched.add(x.id));avant.filter(id=>!st.sites.some(x=>x.id===id)).forEach(id=>st.deleted.add(id));st.dirty=true;persistDraft();say("ok",`${arr.length} site(s) importé(s). Enregistrez sur GitHub pour les conserver.`)}catch(e){say("bad","JSON illisible : il doit contenir une liste « sites ».")}render()};
 }
 
 function openEdit(i){st.jetonMsg=null;st.edIdx=i;st.ed=i<0?newSite():Object.assign(newSite(),clone(st.sites[i]));st.view="edit";st.msg=null;st.armDel=false;st.open=null;render();window.scrollTo(0,0)}
@@ -471,6 +529,8 @@ function renderEdit(){
   <h1>${esc(s.nom||"Nouveau site")}</h1>
   ${iss.length?`<p class="msg warn">À compléter : ${esc(iss.join(", "))}.</p>`:`<p class="msg ok">Paramètres complets : le site peut être calculé.</p>`}
   ${msgHtml()}
+  ${deverrouille()?"":`<p class="msg">Consultation seule : déverrouillez depuis la liste des sites (« Modifier les sites ») pour changer ces paramètres.</p>`}
+  <fieldset class="lecture" ${deverrouille()?"":"disabled"}>
   ${sec("loc","Site et localisation","",`<div class="grid">${txt("nom","Nom du site",{ph:"ex. Centrale de Saint-Priest"})}${sel("type","Type",TYPES)}</div>
     <label class="f">Coordonnées GPS (coller « lat, lon » remplit les deux champs)<input id="eCoord" class="num" inputmode="decimal" placeholder="45.7640, 4.8357" autocapitalize="off"></label>
     <div class="grid">${num("lat","Latitude","°",{ph:"ex. 45,764"})}${num("lon","Longitude","°",{ph:"ex. 4,836"})}${num("altitude","Altitude","m",{ph:"facultatif"})}</div>
@@ -496,11 +556,13 @@ function renderEdit(){
     ${s.mesures.source==="enedis"&&String(s.mesures.prm_production||"").trim()&&String(s.mesures.prm_production).trim()!==String(s.prm||"").trim()?jetonEnedis("mesures.jeton_le","mesures.prm_production"):""}
     <p class="hint">Les identifiants d'accès (clés API, jetons) ne se saisissent pas ici : ils vont dans les secrets du dépôt GitHub.</p>`,openSet.has("mes"))}
   ${sec("valo","Valorisation de l'énergie","",`<div class="seg" role="radiogroup">${modeRadios}</div><p class="formula">${esc(MODES[v.mode].help)}</p>${valoFields}`,openSet.has("valo"))}
-  ${sec("notes","Notes","",`<label class="f">Notes internes<textarea id="eNotes" style="font-family:var(--f-body);font-size:.92rem;min-height:80px">${esc(s.notes)}</textarea></label>`,openSet.has("notes"))}`;
+  ${sec("notes","Notes","",`<label class="f">Notes internes<textarea id="eNotes" style="font-family:var(--f-body);font-size:.92rem;min-height:80px">${esc(s.notes)}</textarea></label>`,openSet.has("notes"))}
+  </fieldset>`;
 
   bar.hidden=false;
   barInner.innerHTML=`${st.edIdx>=0?`<button class="danger${st.armDel?" armed":""}" id="eDel">${st.armDel?"Confirmer la suppression":"Supprimer"}</button>`:""}
     <span class="grow"></span><button id="eCancel">Annuler</button><button class="primary" id="eOk">Valider le site</button>`;
+  if(!deverrouille())barInner.innerHTML=`<span class="grow">Consultation seule</span><button class="primary" id="eCancel">← Retour aux sites</button>`;
   bindEdit();
 }
 
@@ -568,7 +630,7 @@ function rerender(){const y=window.scrollY,a=document.activeElement,id=a&&a.id,v
 function closeEdit(){st.view="list";st.msg=null;render();window.scrollTo(0,0)}
 
 render();
-if(st.cfg.token)ghLoad();  // toujours relire GitHub ; les modifications locales en attente sont fusionnées
+ghLoad();  // toujours relire GitHub ; verrouillée : lecture publique ; déverrouillée : modifications locales en attente fusionnées
 })();
 </script>
 
