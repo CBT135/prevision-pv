@@ -1,7 +1,7 @@
-[09:58:16]   ! CB - Installation personnelle en auto-consommation : courbe Enedis consumption : quota de requêtes MyElectricalData atteint ('{"detail":"{\\"code\\":\\"900804\\",\\"message\\":\\"Message throttled out\\",\\"description\\":\\"You have exceeded your quota .You can access API after 2026-Nov-04 09:00'), nouvel essai à la prochaine tentative autorisée
-[09:58:16] Prévision du 2026-11-05
-[09:58:17]   prix du 2026-11-05 pas encore publiés
-[09:58:17]   CB - Installation personnelle en auto-consommation : 3.9 kWh, CA 0.64 €
-[09:58:18]   Vouzance : 21657.7 kWh, CA 1953.96 €
-[09:58:18]   LM11 : 2238.4 kWh, CA 922.29 €
-[09:58:18]   CB - Installation personnelle en vente totale : 3.5 kWh, CA 2.21 €
+[10:50:31]   CB - Installation personnelle en auto-consommation : courbe Enedis consumption de la veille en attente (déjà interrogé ce matin, seconde tentative à partir de 14 h)
+[10:50:31] Prévision du 2026-11-05
+[10:50:39]   prix du 2026-11-05 pas encore publiés
+[10:50:39]   CB - Installation personnelle en auto-consommation : 3.9 kWh, CA 0.64 €
+[10:50:40]   Vouzance : 21657.7 kWh, CA 1953.96 €
+[10:50:40]   LM11 : 2238.4 kWh, CA 922.29 €
+[10:50:40]   CB - Installation personnelle en vente totale : 3.5 kWh, CA 2.21 €
