@@ -18,6 +18,10 @@ on:
     - cron: "37 4 * * *"
     - cron: "7 5 * * *"
     - cron: "37 5 * * *"
+    # Compteurs Linky (MyElectricalData) : une seule interrogation par jour, au premier passage après 7 h
+    # (heure de Paris) ; ces deux créneaux la portent en hiver, ceux de 5 h UTC en été.
+    - cron: "7 6 * * *"
+    - cron: "37 6 * * *"
     # Après-midi : après le run AROME de 12 h UTC et les prix day-ahead
     - cron: "23 15 * * *"
     - cron: "53 16 * * *"
