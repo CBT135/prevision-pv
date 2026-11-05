@@ -344,6 +344,276 @@
       "jeton_le": null
     },
     {
+      "id": "site-vzspot0",
+      "actif": true,
+      "nom": "Vouzance-Spot",
+      "type": "sol",
+      "lat": 46.412275,
+      "lon": 3.918978,
+      "altitude": 280,
+      "pans": [
+        {
+          "nom": "Sheds fixes",
+          "pc_kwc": 11981,
+          "inclinaison": 25,
+          "azimut": 0,
+          "suivi": "fixe",
+          "rotation_max": null,
+          "pitch_m": 5.8,
+          "largeur_m": 3,
+          "chaines_largeur": 3,
+          "bande_inactive_m": 0.02
+        }
+      ],
+      "modules": {
+        "gamma_pct": -0.41,
+        "pose": "sol",
+        "uc": 29,
+        "uv": 0,
+        "rendement_pct": 15.5
+      },
+      "onduleur": {
+        "type": "string",
+        "pac_kva": 10560,
+        "rendement_pct": 98.2
+      },
+      "pertes_dc_pct": 15.3,
+      "pertes_ac_pct": 2,
+      "albedo": 0.17,
+      "limitation_kva": 9998,
+      "masque": {
+        "source": "pvgis",
+        "fichier": "PVGIS (relief, JRC)",
+        "convention": "pvsyst_sud0",
+        "importe_le": "2026-11-02",
+        "points": [
+          [
+            -180,
+            0.4
+          ],
+          [
+            -172.5,
+            0
+          ],
+          [
+            -165,
+            0.4
+          ],
+          [
+            -157.5,
+            0
+          ],
+          [
+            -150,
+            0
+          ],
+          [
+            -142.5,
+            0
+          ],
+          [
+            -135,
+            0
+          ],
+          [
+            -127.5,
+            0
+          ],
+          [
+            -120,
+            0
+          ],
+          [
+            -112.5,
+            0
+          ],
+          [
+            -105,
+            0
+          ],
+          [
+            -97.5,
+            0
+          ],
+          [
+            -90,
+            0.4
+          ],
+          [
+            -82.5,
+            0.4
+          ],
+          [
+            -75,
+            0.4
+          ],
+          [
+            -67.5,
+            0.4
+          ],
+          [
+            -60,
+            0.4
+          ],
+          [
+            -52.5,
+            0.4
+          ],
+          [
+            -45,
+            0.4
+          ],
+          [
+            -37.5,
+            0.4
+          ],
+          [
+            -30,
+            0.4
+          ],
+          [
+            -22.5,
+            0
+          ],
+          [
+            -15,
+            0.4
+          ],
+          [
+            -7.5,
+            0.4
+          ],
+          [
+            0,
+            0.4
+          ],
+          [
+            7.5,
+            0.8
+          ],
+          [
+            15,
+            1.1
+          ],
+          [
+            22.5,
+            0.8
+          ],
+          [
+            30,
+            0.8
+          ],
+          [
+            37.5,
+            0.8
+          ],
+          [
+            45,
+            0.8
+          ],
+          [
+            52.5,
+            0.8
+          ],
+          [
+            60,
+            0.8
+          ],
+          [
+            67.5,
+            0.8
+          ],
+          [
+            75,
+            0.8
+          ],
+          [
+            82.5,
+            0.8
+          ],
+          [
+            90,
+            0.8
+          ],
+          [
+            97.5,
+            0.8
+          ],
+          [
+            105,
+            0.4
+          ],
+          [
+            112.5,
+            0.8
+          ],
+          [
+            120,
+            0.4
+          ],
+          [
+            127.5,
+            0.4
+          ],
+          [
+            135,
+            0.4
+          ],
+          [
+            142.5,
+            0.4
+          ],
+          [
+            150,
+            0.4
+          ],
+          [
+            157.5,
+            0.4
+          ],
+          [
+            165,
+            0.4
+          ],
+          [
+            172.5,
+            0.4
+          ],
+          [
+            180,
+            0.4
+          ]
+        ]
+      },
+      "mesures": {
+        "source": "csv",
+        "enphase_system_id": "",
+        "prm_production": "",
+        "copie_de": "site-d513nkp"
+      },
+      "valorisation": {
+        "mode": "spot",
+        "prix_achat_eur_kwh": null,
+        "tarif_surplus_eur_kwh": null,
+        "tarif_vente_eur_mwh": 90.22,
+        "conso": {
+          "source": "enedis",
+          "prm": "",
+          "annuelle_kwh": null
+        },
+        "spot": {
+          "decote_eur_mwh": 0,
+          "prix_negatif": "injection",
+          "complement": false,
+          "prix_reference_eur_mwh": null
+        }
+      },
+      "notes": "Jumeau de Vouzance (mêmes caractéristiques, historique et mesures déposées), valorisé au prix day-ahead ENTSO-E sans décote, injection maintenue aux prix négatifs. Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Mesures GridVis au point de livraison : pertes AC 2 % (auxiliaires 0,04 + câbles AC 0,69 + transfo HTA 1,00 + ligne HTA 0,24). Masque d'horizon PVGIS.",
+      "prm": "",
+      "jeton_secret": null,
+      "jeton_le": null
+    },
+    {
       "id": "site-hjl27et",
       "actif": true,
       "nom": "LM11",

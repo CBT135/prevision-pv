@@ -10,6 +10,10 @@ on:
         description: "Nombre de jours à reprendre (365 max conseillé)"
         default: "90"
         required: true
+      copie:
+        description: "Facultatif : créer un site jumeau, sous la forme id_source:id_cible (remplace la reprise)"
+        default: ""
+        required: false
 
 permissions:
   contents: write
@@ -37,6 +41,7 @@ jobs:
           ENPHASE_REFRESH_TOKEN: ${{ secrets.ENPHASE_REFRESH_TOKEN }}
           ENPHASE_REFRESH_TOKEN_SORTIE: ${{ runner.temp }}/enphase_refresh_token
           OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
+          ENTSOE_TOKEN: ${{ secrets.ENTSOE_TOKEN }}
           ENEDIS_SGE_CERT: ${{ secrets.ENEDIS_SGE_CERT }}
           ENEDIS_SGE_KEY: ${{ secrets.ENEDIS_SGE_KEY }}
           ENEDIS_SGE_P12: ${{ secrets.ENEDIS_SGE_P12 }}
@@ -46,7 +51,12 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p data
-          python -m prevpv.run historique --jours "${{ inputs.jours }}" 2>&1 | tee data/journal_reprise_historique.log
+          if [ -n "${{ inputs.copie }}" ]; then
+            c="${{ inputs.copie }}"
+            python -m prevpv.run copie --source "${c%%:*}" --cible "${c##*:}" 2>&1 | tee data/journal_reprise_historique.log
+          else
+            python -m prevpv.run historique --jours "${{ inputs.jours }}" 2>&1 | tee data/journal_reprise_historique.log
+          fi
       - name: Réenregistrer le jeton Enphase s'il a changé
         if: always()
         env:

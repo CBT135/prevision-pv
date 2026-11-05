@@ -249,6 +249,51 @@ def reconstituer(sites: list[dict], jours: int) -> None:
         realise(sites, d, fournis=fournis_par_jour[d])
 
 
+# ---------------------------------------------------------------- site jumeau
+def copier_site(source: str, cible: str) -> None:
+    """Site jumeau (même centrale, autre valorisation) : reprend l'historique du modèle, la correction et les
+    journées passées de `source` ; prévisions et réalisés sont revalorisés selon le mode de `cible`
+    (prix day-ahead ENTSO-E récupérés pour les journées qui n'en ont pas)."""
+    import copy as _copy
+    import shutil
+    tous = {s["id"]: s for s in charger_sites(actifs_seulement=False)}
+    cs = tous[cible]
+    if correction.chemin_histo(source).exists():
+        shutil.copyfile(correction.chemin_histo(source), correction.chemin_histo(cible))
+    corr = lire_json(correction.FICHIER_CORRECTION, {}) or {}
+    if source in corr:
+        corr[cible] = _copy.deepcopy(corr[source])
+        ecrire_json(correction.FICHIER_CORRECTION, corr)
+    spot = (cs.get("valorisation") or {}).get("mode") == "spot"
+    for dossier in (DOSSIER_PREV, DOSSIER_REAL):
+        for f in sorted(dossier.glob("*.json")):
+            data = lire_json(f)
+            src = (data or {}).get("sites", {}).get(source)
+            if not src or "erreur" in src:
+                continue
+            d = date.fromisoformat(f.stem)
+            idx = index_journee(d)
+            if spot and not data.get("prix_eur_mwh"):
+                px = prix.day_ahead(d)
+                if px is not None:
+                    data["prix_eur_mwh"] = serie_vers_liste(px.reindex(idx), 2)
+            px = pd.Series(data["prix_eur_mwh"], index=idx, dtype=float) if data.get("prix_eur_mwh") else None
+            e = _copy.deepcopy(src)
+            e.update(_infos(cs))
+            if "p_prevue_kw" in e:
+                val_p = valorisation.calculer(cs, pd.Series(e["p_prevue_kw"], index=idx, dtype=float), px, None)
+                if dossier == DOSSIER_PREV:
+                    e["valorisation"] = val_p
+                else:
+                    e["ca_prevu_eur"] = val_p["ca_eur"]
+            if "p_mesure_kw" in e:
+                e["valorisation_realisee"] = valorisation.calculer(cs, pd.Series(e["p_mesure_kw"], index=idx, dtype=float), px, None)
+            data["sites"][cible] = e
+            ecrire_json(f, data)
+    journal(f"Site {cs.get('nom')} créé à partir de {tous[source].get('nom')} : historique, correction et journées passées repris")
+    index_web()
+
+
 # ---------------------------------------------------------------- index web
 def index_web() -> None:
     prevs = sorted(p.stem for p in DOSSIER_PREV.glob("*.json"))
@@ -286,6 +331,9 @@ def main(argv=None) -> int:
     sub.add_parser("quotidien")
     p = sub.add_parser("prevision")
     p.add_argument("--date", help="journée à prévoir (défaut : demain)")
+    c = sub.add_parser("copie")
+    c.add_argument("--source", required=True)
+    c.add_argument("--cible", required=True)
     h = sub.add_parser("historique")
     h.add_argument("--jours", type=int, default=60)
     r = sub.add_parser("reconstitution")
@@ -297,6 +345,8 @@ def main(argv=None) -> int:
         d = date.fromisoformat(a.date) if a.date else aujourd_hui_paris() + timedelta(days=1)
         prevision(charger_sites(), d)
         index_web()
+    elif a.cmd == "copie":
+        copier_site(a.source, a.cible)
     elif a.cmd == "historique":
         from . import horizon
         horizon.completer()

@@ -436,7 +436,7 @@ function render(){
       <span class="meta"><span class="num">${fmtP(kwc(s))}</span><span>${esc(TYPES[s.type]||"")}</span><span>${esc(MODES[s.valorisation.mode].short)}</span>${s.masque?"<span>Masque importé</span>":""}${s.actif?"":"<span>Désactivé</span>"}</span>
     </button>`}).join("");
   app.innerHTML=`
-  <header class="top"><div class="marque"><a href="index.html" title="Prévision PV"><img class="logo" src="icons/icon.svg" alt="Prévision PV" width="44" height="44"></a><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 3 nov., 14 h 30</span></p></div></div>${syncChip()}</header>
+  <header class="top"><div class="marque"><a href="index.html" title="Prévision PV"><img class="logo" src="icons/icon.svg" alt="Prévision PV" width="44" height="44"></a><div><h1>Base de données des sites PV</h1><p class="sub">Paramètres des centrales pour la prévision J+1 au pas 15 min · <a href="index.html">Voir les prévisions</a> · <span class="num">version du 5 nov., 22 h 30</span></p></div></div>${syncChip()}</header>
   ${verrouHtml()}
   ${msgHtml()}
   <div class="list">${items||`<div class="empty">Aucun site. Ajoutez le premier avec « Nouveau site ».</div>`}</div>
@@ -621,9 +621,11 @@ function renderEdit(){
   ${sec("mask","Masque d'horizon",mOk?`<span class="chip ok">${m.source==="pvgis"?"PVGIS":"Importé"}</span>`:m?`<span class="chip warn">PVGIS en attente</span>`:`<span class="chip">Aucun</span>`,maskInner,openSet.has("mask"))}
   ${sec("mes","Données mesurées","",`<div class="grid">${sel("mesures.source","Source des mesures J+1",{enphase:"API Enphase",enedis:"Compteur Enedis Linky (MyElectricalData)",enedis_sge:"Enedis SGE (compteur > 36 kVA)",csv:"Fichier compteur déposé (CSV)",supervision:"Supervision (API à définir)"})}
     ${s.mesures.source==="enphase"?txt("mesures.enphase_system_id","Identifiant système Enphase",{mono:true}):""}
+    ${sel("mesures.copie_de","Mesures partagées avec",Object.assign({"":"Aucun (mesures propres)"},Object.fromEntries(st.sites.filter(x=>x.id!==s.id&&!(x.mesures||{}).copie_de).map(x=>[x.id,x.nom||x.id]))))}
     ${txt("mesures.prm_production","PRM de production",{ph:s.mesures.source==="enedis"?"14 chiffres":s.mesures.source==="enedis_sge"&&s.prm?"PRM du site par défaut":"facultatif",mono:true})}</div>
     ${s.mesures.source==="enedis_sge"?sgeBloc(s):""}
     ${s.mesures.source==="enedis"&&String(s.mesures.prm_production||"").trim()&&String(s.mesures.prm_production).trim()!==String(s.prm||"").trim()?jetonEnedis("mesures.jeton_le","mesures.prm_production"):""}
+    ${(s.mesures||{}).copie_de?`<p class="hint">Site jumeau : il lit les fichiers de comptage déposés pour « ${esc((st.sites.find(x=>x.id===s.mesures.copie_de)||{}).nom||s.mesures.copie_de)} ». Un fichier ajouté sur ce site sert aussi à celui-ci.</p>`:""}
     <p class="hint">Les identifiants d'accès (clés API, jetons) ne se saisissent pas ici : ils vont dans les secrets du dépôt GitHub.</p>`,openSet.has("mes"))}
   ${sec("valo","Valorisation de l'énergie","",`<div class="seg" role="radiogroup">${modeRadios}</div><p class="formula">${esc(MODES[v.mode].help)}</p>${valoFields}`,openSet.has("valo"))}
   ${sec("notes","Notes","",`<label class="f">Notes internes<textarea id="eNotes" style="font-family:var(--f-body);font-size:.92rem;min-height:80px">${esc(s.notes)}</textarea></label>`,openSet.has("notes"))}

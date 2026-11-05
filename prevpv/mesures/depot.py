@@ -156,7 +156,8 @@ def _dossier(base: Path, site_id: str) -> pd.Series | None:
 
 
 def production(site: dict, debut: date, fin: date) -> pd.Series | None:
-    s = _dossier(DOSSIER_DEPOT, site["id"])
+    # « copie_de » : site jumeau (même centrale, autre valorisation) qui lit les fichiers déposés de l'original
+    s = _dossier(DOSSIER_DEPOT, (site.get("mesures") or {}).get("copie_de") or site["id"])
     if s is None:
         return None
     a = pd.Timestamp(debut, tz=TZ).tz_convert("UTC")
