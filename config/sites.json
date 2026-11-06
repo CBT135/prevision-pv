@@ -1,6 +1,7 @@
 {
   "version": 1,
-  "mis_a_jour": "2026-11-02T21:16:14.097Z",
+  "mis_a_jour": "2026-11-06T10:53:01.189Z",
+  "acces": {},
   "conventions": {
     "azimut": "PVsyst : 0 = Sud, -90 = Est, +90 = Ouest",
     "masque": "[azimut PVsyst °, hauteur °]"
@@ -346,8 +347,11 @@
     {
       "id": "site-vzspot0",
       "actif": true,
-      "nom": "Vouzance-Spot",
+      "nom": "Vouzance-Spot (test)",
       "type": "sol",
+      "prm": "",
+      "jeton_secret": null,
+      "jeton_le": null,
       "lat": 46.412275,
       "lon": 3.918978,
       "altitude": 280,
@@ -602,16 +606,13 @@
           "annuelle_kwh": null
         },
         "spot": {
-          "decote_eur_mwh": 0,
-          "prix_negatif": "injection",
+          "decote_eur_mwh": 3,
+          "prix_negatif": "arret",
           "complement": false,
           "prix_reference_eur_mwh": null
         }
       },
-      "notes": "Jumeau de Vouzance (mêmes caractéristiques, historique et mesures déposées), valorisé au prix day-ahead ENTSO-E sans décote, injection maintenue aux prix négatifs. Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Mesures GridVis au point de livraison : pertes AC 2 % (auxiliaires 0,04 + câbles AC 0,69 + transfo HTA 1,00 + ligne HTA 0,24). Masque d'horizon PVGIS.",
-      "prm": "",
-      "jeton_secret": null,
-      "jeton_le": null
+      "notes": "Jumeau de Vouzance (mêmes caractéristiques, historique et mesures déposées), valorisé au prix day-ahead ENTSO-E sans décote, injection maintenue aux prix négatifs. Paramètres du rapport PVsyst VC2 (28/08/26, variante « Actuelle avec dégradation ») : 46 080 SolarWorld SW 260 poly, 384 Huawei SUN2000-28KTL. Pertes DC = LID 14 % + mismatch 0,55 % + câblage 0,92 %. Mesures GridVis au point de livraison : pertes AC 2 % (auxiliaires 0,04 + câbles AC 0,69 + transfo HTA 1,00 + ligne HTA 0,24). Masque d'horizon PVGIS."
     },
     {
       "id": "site-hjl27et",
