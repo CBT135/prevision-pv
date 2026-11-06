@@ -1,6 +1,6 @@
 {
  "date": "2026-11-07",
- "genere_le": "2026-11-06T11:43+01:00",
+ "genere_le": "2026-11-06T11:53+01:00",
  "pas_fin": [
   "00:15",
   "00:30",
@@ -2325,7 +2325,7 @@
   },
   "site-vzspot0": {
    "id": "site-vzspot0",
-   "nom": "Vouzance-Spot",
+   "nom": "Vouzance-Spot (test)",
    "type": "sol",
    "pc_kwc": 11981.0,
    "pac_kva": 10560.0,
