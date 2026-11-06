@@ -121,6 +121,14 @@ details.cfg summary{cursor:pointer;color:var(--muted);font-size:.86rem;font-weig
 .cfg .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
 .cfg label{display:grid;gap:4px;font-size:.78rem;color:var(--muted);font-weight:600}
 .cfg input{width:100%;min-width:0;font:inherit;font-size:.9rem;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.loupe{position:fixed;inset:0;z-index:50;background:rgba(10,14,20,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.loupe[hidden]{display:none}
+.lfen{background:var(--bg);border:1px solid var(--line);border-radius:12px;width:min(1240px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:14px;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.lhead{display:flex;align-items:center;gap:10px}
+.lhead h3{flex:1;min-width:0;text-align:center;font-size:1.1rem;text-transform:capitalize}
+.lhead .fermer{font-size:1.4rem;line-height:1;min-width:44px;margin-left:8px}
+.lfen .chart svg{min-width:640px}
+@media (max-width:600px){.loupe{padding:6px}.lfen{padding:10px;max-height:calc(100vh - 12px)}.lhead h3{font-size:.95rem}}
 footer{margin-top:26px;font-size:.8rem;color:var(--muted)}
 input.secret{-webkit-text-security:disc;text-security:disc}
 </style>
@@ -146,6 +154,17 @@ input.secret{-webkit-text-security:disc;text-security:disc}
     <p><button class="b" id="cSave">Enregistrer et recharger</button></p>
   </details>
   <footer>Météo : Open-Meteo (modèles Météo-France AROME / ARPEGE). Prix : ENTSO-E, enchère day-ahead France. Jours passés : prévision émise la veille et mesure ; jours à venir : dernière prévision publiée. Le complément de rémunération affiché est une estimation journalière.</footer>
+</div>
+<div class="loupe" id="loupe" hidden role="dialog" aria-modal="true" aria-labelledby="lTitre">
+  <div class="lfen">
+    <div class="lhead">
+      <button class="b arrow" id="lPrev" aria-label="Jour précédent">←</button>
+      <h3 id="lTitre"></h3>
+      <button class="b arrow" id="lNext" aria-label="Jour suivant">→</button>
+      <button class="b fermer" id="lFermer" aria-label="Fermer">×</button>
+    </div>
+    <div id="lCorps"></div>
+  </div>
 </div>
 <script>
 (function(){
@@ -239,8 +258,8 @@ function prixJour(site,j){
 }
 
 /* ---------- graphique de la semaine ---------- */
-function graphe(jours,site){
-  const W=1180,H=320,L=52,R=56,T=22,B=44,PW=W-L-R,DW=PW/7,PH=H-T-B;
+function graphe(jours,site,o={}){
+  const pre=o.pre||"",N=jours.length,W=1180,H=o.H||320,L=52,R=56,T=22,B=44,PW=W-L-R,DW=PW/N,PH=H-T-B;
   const X=(k,i,n)=>L+(k+(i+.5)/n)*DW;
   let ymax=0;
   jours.forEach(j=>[j.prevu,j.mesure,j.conso].forEach(a=>a&&a.forEach(v=>{if(v!=null&&v>ymax)ymax=v})));
@@ -265,9 +284,9 @@ function graphe(jours,site){
   jours.forEach((j,k)=>{
     const x0=L+k*DW;
     if(k)g+=`<line x1="${x0}" x2="${x0}" y1="${T}" y2="${H-B+30}" stroke="var(--line)" stroke-width="1"/>`;
-    [6,12,18].forEach(h=>{const x=x0+h/24*DW;g+=`<line x1="${x}" x2="${x}" y1="${H-B}" y2="${H-B+4}" stroke="var(--muted)"/><text x="${x}" y="${H-B+14}" text-anchor="middle">${h}h</text>`});
+    (N===1?[0,2,4,6,8,10,12,14,16,18,20,22,24]:[6,12,18]).forEach(h=>{const x=x0+h/24*DW;g+=`<line x1="${x}" x2="${x}" y1="${H-B}" y2="${H-B+4}" stroke="var(--muted)"/><text x="${x}" y="${H-B+14}" text-anchor="middle">${h}h</text>`});
     const today=j.date===aujd;
-    g+=`<text class="day" x="${x0+DW/2}" y="${H-B+32}" text-anchor="middle"${today?' style="fill:var(--accent)"':""}>${fmtJ(j.date,{weekday:"short",day:"numeric",month:"short"})}${today?" · aujourd'hui":""}</text>`;
+    g+=`<text class="day" x="${x0+DW/2}" y="${H-B+32}" text-anchor="middle"${today?' style="fill:var(--accent)"':""}>${fmtJ(j.date,N===1?{weekday:"long",day:"numeric",month:"long",year:"numeric"}:{weekday:"short",day:"numeric",month:"short"})}${today?" · aujourd'hui":""}</text>`;
   });
   const trace=(get,c,o={})=>{
     jours.forEach((j,k)=>{const a=get(j);if(!a)return;const n=a.length;
@@ -285,18 +304,18 @@ function graphe(jours,site){
     g+=`<text x="${W-R+6}" y="${T-8}" style="fill:var(--price)">${ps.unite}</text>`;
   }
   g+=`<text x="${L-6}" y="${T-8}" text-anchor="end">${ymax>=1000?"MW":"kW"}</text>`;
-  g+=`<line id="curseur" x1="0" x2="0" y1="${T}" y2="${H-B}" stroke="var(--fg)" stroke-width=".8" opacity="0"/>`;
-  return{svg:`<svg id="gsem" viewBox="0 0 ${W} ${H}" role="img" aria-label="Production de la semaine au pas 15 minutes">${g}</svg>`,geo:{W,H,L,R,T,B,DW}};
+  g+=`<line id="${pre}curseur" x1="0" x2="0" y1="${T}" y2="${H-B}" stroke="var(--fg)" stroke-width=".8" opacity="0"/>`;
+  return{svg:`<svg id="${pre}gsem" viewBox="0 0 ${W} ${H}" role="img" aria-label="Production ${N===1?"de la journée":"de la semaine"} au pas 15 minutes">${g}</svg>`,geo:{W,H,L,R,T,B,DW,N}};
   function fmtAxe(v){const u=ymax>=1000?v/1000:v,s=(ymax>=1000?ymax/1000:ymax)/nd;return nf(u,s>=1?0:s>=.1?1:2)}
 }
 function nice(v){const p=Math.pow(10,Math.floor(Math.log10(v)));const m=v/p;return(m<=1?1:m<=2?2:m<=2.5?2.5:m<=4?4:m<=5?5:10)*p}
 
-function bulle(jours,geo,ps){
-  const svg=$("gsem"),tip=$("tip"),cur=$("curseur"),box=svg.parentElement;
+function bulle(jours,geo,ps,pre=""){
+  const svg=$(pre+"gsem"),tip=$(pre+"tip"),cur=$(pre+"curseur"),box=svg.parentElement;
   const montrer=ev=>{
     const r=svg.getBoundingClientRect(),sx=(ev.clientX-r.left)/r.width*geo.W;
     const k=Math.floor((sx-geo.L)/geo.DW);
-    if(k<0||k>6||sx>geo.W-geo.R){tip.style.display="none";cur.setAttribute("opacity","0");return}
+    if(k<0||k>geo.N-1||sx>geo.W-geo.R){tip.style.display="none";cur.setAttribute("opacity","0");return}
     const j=jours[k];const n=(j.pas||[]).length;if(!n){tip.style.display="none";return}
     const i=Math.max(0,Math.min(n-1,Math.floor(((sx-geo.L)/geo.DW-k)*n)));
     const x=geo.L+(k+(i+.5)/n)*geo.DW;cur.setAttribute("x1",x);cur.setAttribute("x2",x);cur.setAttribute("opacity",".35");
@@ -312,6 +331,33 @@ function bulle(jours,geo,ps){
   svg.addEventListener("pointermove",montrer);
   svg.addEventListener("pointerleave",()=>{tip.style.display="none";cur.setAttribute("opacity","0")});
 }
+
+/* ---------- loupe : une journée en grand ---------- */
+let LOUPE=null;
+const bornesJours=()=>{const t=[...INDEX.realise,...INDEX.previsions].sort();return[t[0]||auj(),t[t.length-1]||auj()]};
+async function ouvrirJour(date){
+  const site=INDEX.sites.find(s=>s.id===SITE);if(!site)return;
+  LOUPE=date;const ov=$("loupe");ov.hidden=false;document.body.style.overflow="hidden";
+  $("lTitre").textContent=fmtJ(date,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  const [d0,d1]=bornesJours();$("lPrev").disabled=date<=d0;$("lNext").disabled=date>=d1;
+  $("lCorps").innerHTML=`<p class="note">Chargement…</p>`;
+  const j=await journee(date,site.id);if(LOUPE!==date)return;
+  const ps=prixSite(site);j.pv=ps?prixJour(site,j):null;
+  const etat=j.etat==="real"?(j.ePrev!=null?"Prévu la veille / réalisé":"Réalisé"):j.etat==="prev"?"Prévision":j.etat==="err"?"Erreur de calcul":"Pas de données";
+  const {svg,geo}=graphe([j],site,{pre:"l",H:440});
+  $("lCorps").innerHTML=`<div class="tiles">
+      ${tile("Statut",`<span style="font-size:1rem;font-family:var(--f-body)">${etat}</span>`,j.reconst?"prévision reconstituée":"")}
+      ${tile("Prévu",energie(j.ePrev),j.caPrev!=null?"CA "+euro(j.caPrev):"")}
+      ${tile("Mesuré",energie(j.eMes),j.caReal!=null?"CA "+euro(j.caReal):"")}
+      ${tile("Écart mesuré / prévu",j.ecart==null?"–":pct(j.ecart),j.nmae!=null?"nMAE "+nf(j.nmae,1)+" %":"",clEcart(j.ecart))}
+    </div>
+    <div class="chart">${svg}<div class="tip" id="ltip"></div></div>
+    <div class="legend"><span><i style="background:var(--prod)"></i>Prévu</span><span><i style="background:var(--mes)"></i>Mesuré</span>
+      ${j.conso?`<span><i style="background:var(--conso)"></i>Consommation totale</span>`:""}${ps&&j.pv?`<span><i style="background:var(--price)"></i>${ps.lib}</span>`:""}</div>`;
+  bulle([j],geo,ps,"l");
+}
+function fermerJour(){LOUPE=null;$("loupe").hidden=true;document.body.style.overflow=""}
+function changerJour(n){if(!LOUPE)return;const d=plus(LOUPE,n);const [d0,d1]=bornesJours();if(d<d0||d>d1)return;ouvrirJour(d)}
 
 /* ---------- vue ---------- */
 function tile(k,v,s,cl){return`<div class="tile"><div class="k">${k}</div><div class="v${cl?" "+cl:""}">${v}</div>${s?`<div class="s">${s}</div>`:""}</div>`}
@@ -398,6 +444,9 @@ async function rendre(){
   ${jPrev&&jPrev.valo?`<div class="card"><h3>Valorisation prévue · ${fmtJ(jPrev.date,{weekday:"long",day:"numeric",month:"long"})}</h3>${detailValo(jPrev.valo)||`<p class="note">${euro(jPrev.caPrev)} pour ${energie(jPrev.ePrev)}.</p>`}
     ${jPrev.genere?`<p class="note" style="margin-top:8px">Prévision calculée le ${new Date(jPrev.genere).toLocaleString("fr-FR",{dateStyle:"medium",timeStyle:"short"})}.</p>`:""}</div>`:""}`;
   bulle(jours,geo,ps);
+  $("gsem").style.cursor="zoom-in";
+  $("gsem").addEventListener("click",ev=>{const r=$("gsem").getBoundingClientRect(),sx=(ev.clientX-r.left)/r.width*geo.W;
+    const k=Math.floor((sx-geo.L)/geo.DW);if(k>=0&&k<7)ouvrirJour(jours[k].date)});
   $("wPrev").onclick=()=>{SEM=plus(SEM,-7);rendre()};
   $("wNext").onclick=()=>{SEM=plus(SEM,7);rendre()};
   if($("wAuj"))$("wAuj").onclick=()=>{SEM=lundi(auj());rendre()};
@@ -441,8 +490,11 @@ async function demarrer(){
   rendre();
 }
 document.addEventListener("keydown",e=>{if(e.target.closest("input,select,textarea"))return;
+  if(LOUPE){if(e.key==="Escape")fermerJour();if(e.key==="ArrowLeft")changerJour(-1);if(e.key==="ArrowRight")changerJour(1);return}
   if(e.key==="ArrowLeft"&&$("wPrev")&&!$("wPrev").disabled)$("wPrev").click();
   if(e.key==="ArrowRight"&&$("wNext")&&!$("wNext").disabled)$("wNext").click()});
+$("lPrev").onclick=()=>changerJour(-1);$("lNext").onclick=()=>changerJour(1);$("lFermer").onclick=fermerJour;
+$("loupe").addEventListener("click",e=>{if(e.target.id==="loupe")fermerJour()});
 $("cSave").onclick=()=>{["Owner","Repo","Branch","Token"].forEach(k=>cfg[k.toLowerCase()]=$("c"+k).value.trim());try{localStorage.setItem(LS,JSON.stringify(cfg))}catch(e){};demarrer()};
 demarrer();
 })();
