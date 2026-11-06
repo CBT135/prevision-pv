@@ -1,8 +1,12 @@
-[13:53:38]   CB - Installation personnelle en auto-consommation : courbe Enedis consumption de la veille en attente (déjà interrogé ce matin, seconde tentative à partir de 14 h)
-[13:53:39] Prévision du 2026-11-07
-[13:53:52]   prix du 2026-11-07 pas encore publiés
-[13:53:53]   CB - Installation personnelle en auto-consommation : 1.5 kWh, CA 0.25 €
-[13:53:53]   Vouzance : 18206.2 kWh, CA 1642.57 €
-[13:53:53]   Vouzance-Spot (test) : 18206.2 kWh, CA None €
-[13:53:54]   LM11 : 6855.6 kWh, CA 2824.79 €
-[13:53:54]   CB - Installation personnelle en vente totale : 1.6 kWh, CA 1.01 €
+[14:13:01]   CB - Installation personnelle en auto-consommation : courbe Enedis consommation à jour jusqu'au 06/11 00:00 (144 pas récupérés)
+[14:13:01] Réalisé du 2026-11-05
+[14:13:02]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
+[14:13:02]   CB - Installation personnelle en auto-consommation : mesuré 4.3 kWh, prévu 3.8 kWh
+[14:13:02] Prévision du 2026-11-07
+[14:13:27]   prix du 2026-11-07 pas encore publiés
+[14:13:28]   CB - Installation personnelle en auto-consommation : 1.5 kWh, CA 0.24 €
+[14:13:29]   Vouzance : 18150.4 kWh, CA 1637.53 €
+[14:13:29]   Vouzance-Spot (test) : 18206.2 kWh, CA None €
+[14:13:29]   LM11 : 6852.3 kWh, CA 2823.41 €
+[14:13:30]   CB - Installation personnelle en vente totale : 1.6 kWh, CA 1.01 €
+Jeton Enphase : renouvelé et réenregistré.
