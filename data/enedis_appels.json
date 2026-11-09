@@ -1,14 +1,14 @@
 {
  "19462518050078_consumption": {
-  "jour": "2026-11-08",
-  "tentatives": 2,
-  "derniere": "2026-11-08T14:13+01:00",
+  "jour": "2026-11-09",
+  "tentatives": 1,
+  "derniere": "2026-11-09T08:18+01:00",
   "statut": "veille complète"
  },
  "19425180815654_production": {
-  "jour": "2026-11-08",
+  "jour": "2026-11-09",
   "tentatives": 1,
-  "derniere": "2026-11-08T09:53+01:00",
+  "derniere": "2026-11-09T08:18+01:00",
   "statut": "veille complète"
  }
 }
