@@ -7,7 +7,7 @@ Formats acceptés (CSV : séparateur ; ou , — virgule décimale acceptée) :
 1. Format du projet : colonnes « horodatage » (fin d'intervalle, heure de Paris ou ISO avec fuseau)
    et « puissance_kw » (puissance moyenne sur l'intervalle).
 2. Export de courbe de charge Enedis : colonnes « Horodate » (fin d'intervalle) et « Valeur » en W.
-3. Export CSV de GridVis (analyseur Janitza) : ligne « Period: jj/mm/aaaa … », colonne « Date » (h:mm,
+3. Export CSV de GridVis (analyseur Janitza), en anglais ou en français : ligne « Period: » ou « Période: jj/mm/aaaa … », colonne « Date » (h:mm,
    début de l'intervalle, heure de Paris) et colonne de puissance totale « Power (…) [W] », ou à défaut
    somme de toutes les colonnes en W (une par onduleur) ; pas de 5 ou 15 min.
    Puissance positive = injection.
@@ -82,7 +82,10 @@ def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
     sep = "\t" if "\t" in lignes[1] else (";" if ";" in lignes[1] else ",")
     lect = list(csv.reader(lignes[1:], delimiter=sep))
     entete = lect[0]
-    total = [i for i, c in enumerate(entete) if c.lower().startswith("power (") and "[w]" in c.lower()]
+    # colonne de puissance totale du point de mesure : « Power (…) » (export anglais) ou « Puissance (…) »
+    # (export français) ; pas les colonnes par phase ni « Puissance de courant alternatif (onduleur) »
+    total = [i for i, c in enumerate(entete)
+             if c.lower().startswith(("power (", "puissance (")) and "[w]" in c.lower()]
     # Puissance totale du point de mesure si elle existe, sinon somme des colonnes en W (onduleurs).
     cols = total[:1] or [i for i, c in enumerate(entete) if i > 0 and "[w]" in c.lower()]
     debuts, vals, jour, prec = [], [], jour0, None
@@ -112,7 +115,7 @@ def _lire(chemin: Path) -> pd.Series:
         return _lire_xlsx(chemin)
     octets = chemin.read_bytes()
     tete = octets.decode("utf-16") if octets[:2] in (b"\xff\xfe", b"\xfe\xff") else octets.decode("utf-8-sig", errors="replace")
-    if tete.lstrip('"').startswith("Period:"):
+    if tete.lstrip('\ufeff"').startswith(("Period:", "Période:", "Periode:")):
         return _lire_gridvis(tete, chemin)
     brut = chemin.read_text(encoding="utf-8-sig", errors="replace")
     sep = ";" if brut.count(";") >= brut.count(",") else ","
