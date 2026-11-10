@@ -1,7 +1,7 @@
-[11:21:41] Prévision du 2026-11-11
-[11:21:46]   prix du 2026-11-11 pas encore publiés
-[11:21:47]   CB - Installation personnelle en auto-consommation : 2.0 kWh, CA 0.33 €
-[11:21:47]   Vouzance : 15487.1 kWh, CA 1397.25 €
-[11:21:47]   Vouzance-Spot (test) : 15487.1 kWh, CA None €
-[11:21:48]   LM11 : 2931.0 kWh, CA 1207.67 €
-[11:21:48]   CB - Installation personnelle en vente totale : 2.5 kWh, CA 1.59 €
+[12:00:27] Prévision du 2026-11-11
+[12:00:32]   prix : erreur ENTSO-E 599 {"uuAppErrorMap":{"uu-gateway-router/connectTimeout":{"id":"abb7c4c8afe3efc9aebcf292f1193586","timestamp":"2026-11-10T11:00:32.290Z","type":"error","message":"Unable to access service within time limi
+[12:00:32]   CB - Installation personnelle en auto-consommation : 2.0 kWh, CA 0.33 €
+[12:00:33]   Vouzance : 15487.1 kWh, CA 1397.25 €
+[12:00:33]   Vouzance-Spot (test) : 15487.1 kWh, CA None €
+[12:00:33]   LM11 : 2931.0 kWh, CA 1207.67 €
+[12:00:34]   CB - Installation personnelle en vente totale : 2.5 kWh, CA 1.59 €
