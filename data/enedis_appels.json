@@ -1,14 +1,14 @@
 {
  "19462518050078_consumption": {
-  "jour": "2026-11-15",
-  "tentatives": 2,
-  "derniere": "2026-11-15T14:51+01:00",
-  "statut": "échec : quota de requêtes MyElectricalData atteint ('{\"detail\":\"{\\\\\"code\\\\\":\\\\\"900804\\\\\",\\\\\"message\\\\\":\\\\\"Message throttled out\\\\\",\\\\\"description\\\\\":\\\\\"You have exceeded your quota .You can access API"
+  "jour": "2026-11-16",
+  "tentatives": 1,
+  "derniere": "2026-11-16T08:20+01:00",
+  "statut": "veille complète"
  },
  "19425180815654_production": {
-  "jour": "2026-11-15",
-  "tentatives": 2,
-  "derniere": "2026-11-15T14:51+01:00",
-  "statut": "échec : 500 Server Error: Internal Server Error for url: https://www.myelectricaldata.fr/production_load_curve/19425180815654/start/2026-11-11/end/2026-11-15/cache"
+  "jour": "2026-11-16",
+  "tentatives": 1,
+  "derniere": "2026-11-16T08:20+01:00",
+  "statut": "veille complète"
  }
 }
