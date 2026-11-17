@@ -1,394 +1,444 @@
-[00:46:48]   CB - Installation personnelle en auto-consommation : courbe Enedis consumption de la veille en attente (première interrogation du jour à partir de 7 h)
-[00:46:48]   CB - Installation personnelle en vente totale : courbe Enedis production de la veille en attente (première interrogation du jour à partir de 7 h)
-[00:46:48] Réalisé du 2026-11-14
-[00:46:48]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   Vouzance : mesures incomplètes (0%), nouvel essai demain
-[00:46:48]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   Vouzance-Spot (test) : mesures incomplètes (0%), nouvel essai demain
-[00:46:48]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
-[00:46:48]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
-[00:46:48]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
-[00:46:48]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-11-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-11-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-11-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-11-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-11-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-11-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-11-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   gridvis_2026-11-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:48]   LM11 : mesures incomplètes (0%), nouvel essai demain
-[00:46:48] Réalisé du 2026-11-15
-[00:46:48]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:48]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   Vouzance : mesures incomplètes (0%), nouvel essai demain
-[00:46:49]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:49]   Vouzance-Spot (test) : mesures incomplètes (0%), nouvel essai demain
-[00:46:49]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
-[00:46:49]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
-[00:46:49]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
-[00:46:49]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-11-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-11-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-11-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-11-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-11-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-11-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-11-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   gridvis_2026-11-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:49]   LM11 : mesures incomplètes (0%), nouvel essai demain
-[00:46:49] Réalisé du 2026-11-16
-[00:46:49]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
-[00:46:50]   CB - Installation personnelle en auto-consommation : mesures incomplètes (70%), nouvel essai demain
-[00:46:50]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   Vouzance : mesures incomplètes (0%), nouvel essai demain
-[00:46:50]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
-[00:46:50]   Vouzance-Spot (test) : mesures incomplètes (0%), nouvel essai demain
-[00:46:50]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
-[00:46:50]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
-[00:46:50]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
-[00:46:50]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-11-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-11-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-11-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-11-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-11-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-11-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-11-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   gridvis_2026-11-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
-[00:46:50]   LM11 : mesures incomplètes (0%), nouvel essai demain
-[00:46:50]   CB - Installation personnelle en vente totale : mesures incomplètes (0%), nouvel essai demain
-[00:46:50] Prévision du 2026-11-18
-[00:46:56]   prix du 2026-11-18 pas encore publiés
-[00:46:57]   CB - Installation personnelle en auto-consommation : 1.8 kWh, CA 0.3 €
-[00:46:57]   Vouzance : 16341.4 kWh, CA 1474.32 €
-[00:46:57]   Vouzance-Spot (test) : 16341.4 kWh, CA None €
-[00:46:57]   LM11 : 1159.7 kWh, CA 477.84 €
-[00:46:58]   CB - Installation personnelle en vente totale : 2.0 kWh, CA 1.25 €
+[01:31:27]   CB - Installation personnelle en auto-consommation : courbe Enedis consumption de la veille en attente (première interrogation du jour à partir de 7 h)
+[01:31:27]   CB - Installation personnelle en vente totale : courbe Enedis production de la veille en attente (première interrogation du jour à partir de 7 h)
+[01:31:27] Réalisé du 2026-11-14
+[01:31:27]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   Vouzance : mesures incomplètes (0%), nouvel essai demain
+[01:31:27]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   Vouzance-Spot (test) : mesures incomplètes (0%), nouvel essai demain
+[01:31:27]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
+[01:31:27]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
+[01:31:27]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
+[01:31:27]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-11-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-11-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-11-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-11-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-11-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-11-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-11-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   gridvis_2026-11-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:27]   LM11 : mesures incomplètes (0%), nouvel essai demain
+[01:31:27] Réalisé du 2026-11-15
+[01:31:27]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:27]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   Vouzance : mesures incomplètes (0%), nouvel essai demain
+[01:31:28]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:28]   Vouzance-Spot (test) : mesures incomplètes (0%), nouvel essai demain
+[01:31:28]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
+[01:31:28]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
+[01:31:28]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
+[01:31:28]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-11-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-11-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-11-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-11-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-11-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-11-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-11-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   gridvis_2026-11-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:28]   LM11 : mesures incomplètes (0%), nouvel essai demain
+[01:31:28] Réalisé du 2026-11-16
+[01:31:28]   nouveau jeton de rafraîchissement Enphase reçu (sera réenregistré)
+[01:31:29]   CB - Installation personnelle en auto-consommation : mesures incomplètes (70%), nouvel essai demain
+[01:31:29]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   Vouzance : mesures incomplètes (0%), nouvel essai demain
+[01:31:29]   gridvis_2026-10-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-10.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-11.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-12.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-13.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-14.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-15.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-16.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-17.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-18.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-19.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-20.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-21.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-22.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-23.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-24.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-25.csv : export GridVis, 276 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-26.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-27.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-28.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-29.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-30.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-10-31.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-01.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-02.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-03.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-04.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-05.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-06.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-07.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-08.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   gridvis_2026-11-09.csv : export GridVis, 288 valeurs au pas de 5 min
+[01:31:29]   Vouzance-Spot (test) : mesures incomplètes (0%), nouvel essai demain
+[01:31:29]   gridvis_2026-10-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-10.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-11.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-12.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-13.csv : 16 valeurs absentes (« x »), non comptées
+[01:31:29]   gridvis_2026-10-13.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-14.csv : 50 valeurs absentes (« x »), non comptées
+[01:31:29]   gridvis_2026-10-14.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-15.csv : 62 valeurs absentes (« x »), non comptées
+[01:31:29]   gridvis_2026-10-15.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-16.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-17.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-18.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-19.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-20.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-21.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-22.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-23.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-24.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-25.csv : export GridVis, 92 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-26.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-27.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-28.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-29.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-30.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-10-31.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-11-01.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-11-02.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-11-03.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-11-04.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-11-05.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-11-06.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-11-07.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-11-08.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   gridvis_2026-11-09.csv : export GridVis, 96 valeurs au pas de 15 min, somme de 4 colonnes
+[01:31:29]   LM11 : mesures incomplètes (0%), nouvel essai demain
+[01:31:29]   CB - Installation personnelle en vente totale : mesures incomplètes (0%), nouvel essai demain
+[01:31:29] Prévision du 2026-11-18
+[01:31:38]   prix du 2026-11-18 pas encore publiés
+[01:32:38]   ! CB - Installation personnelle en auto-consommation : Open-Meteo 429 : {"error":true,"reason":"Hourly API request limit exceeded. Please try again in the next hour."}
+Traceback (most recent call last):
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/run.py", line 49, in prevision
+    m = meteo.previsions(s, d - timedelta(days=1), d + timedelta(days=1)).reindex(idx)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 84, in previsions
+    j = _get(_base(historique), params)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 64, in _get
+    raise RuntimeError(f"Open-Meteo {r.status_code} : {r.text[:300]}")
+RuntimeError: Open-Meteo 429 : {"error":true,"reason":"Hourly API request limit exceeded. Please try again in the next hour."}
+[01:33:38]   ! Vouzance : Open-Meteo 429 : {"error":true,"reason":"Hourly API request limit exceeded. Please try again in the next hour."}
+Traceback (most recent call last):
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/run.py", line 49, in prevision
+    m = meteo.previsions(s, d - timedelta(days=1), d + timedelta(days=1)).reindex(idx)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 84, in previsions
+    j = _get(_base(historique), params)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 64, in _get
+    raise RuntimeError(f"Open-Meteo {r.status_code} : {r.text[:300]}")
+RuntimeError: Open-Meteo 429 : {"error":true,"reason":"Hourly API request limit exceeded. Please try again in the next hour."}
+[01:34:39]   ! Vouzance-Spot (test) : Open-Meteo 429 : {"reason":"Hourly API request limit exceeded. Please try again in the next hour.","error":true}
+Traceback (most recent call last):
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/run.py", line 49, in prevision
+    m = meteo.previsions(s, d - timedelta(days=1), d + timedelta(days=1)).reindex(idx)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 84, in previsions
+    j = _get(_base(historique), params)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 64, in _get
+    raise RuntimeError(f"Open-Meteo {r.status_code} : {r.text[:300]}")
+RuntimeError: Open-Meteo 429 : {"reason":"Hourly API request limit exceeded. Please try again in the next hour.","error":true}
+[01:35:39]   ! LM11 : Open-Meteo 429 : {"reason":"Hourly API request limit exceeded. Please try again in the next hour.","error":true}
+Traceback (most recent call last):
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/run.py", line 49, in prevision
+    m = meteo.previsions(s, d - timedelta(days=1), d + timedelta(days=1)).reindex(idx)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 84, in previsions
+    j = _get(_base(historique), params)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 64, in _get
+    raise RuntimeError(f"Open-Meteo {r.status_code} : {r.text[:300]}")
+RuntimeError: Open-Meteo 429 : {"reason":"Hourly API request limit exceeded. Please try again in the next hour.","error":true}
+[01:36:39]   ! CB - Installation personnelle en vente totale : Open-Meteo 429 : {"error":true,"reason":"Hourly API request limit exceeded. Please try again in the next hour."}
+Traceback (most recent call last):
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/run.py", line 49, in prevision
+    m = meteo.previsions(s, d - timedelta(days=1), d + timedelta(days=1)).reindex(idx)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 84, in previsions
+    j = _get(_base(historique), params)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/prevision-pv/prevision-pv/prevpv/meteo.py", line 64, in _get
+    raise RuntimeError(f"Open-Meteo {r.status_code} : {r.text[:300]}")
+RuntimeError: Open-Meteo 429 : {"error":true,"reason":"Hourly API request limit exceeded. Please try again in the next hour."}
 Jeton Enphase : renouvelé et réenregistré.
