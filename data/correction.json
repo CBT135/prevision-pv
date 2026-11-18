@@ -1,10 +1,10 @@
 {
  "site-3o1hxnm": {
-  "jours": 28,
-  "global": 0.7259,
+  "jours": 29,
+  "global": 0.7382,
   "tranches": [
-   0.9364,
-   0.7317,
+   1.0586,
+   0.741,
    0.7071
   ],
   "actif": true,
@@ -217,11 +217,11 @@
   ]
  },
  "site-bhl4p7u": {
-  "jours": 23,
-  "global": 0.6592,
+  "jours": 24,
+  "global": 0.6747,
   "tranches": [
-   0.6823,
-   0.6564,
+   0.8217,
+   0.6756,
    0.6603
   ],
   "actif": true,
