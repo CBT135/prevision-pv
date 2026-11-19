@@ -1,9 +1,7 @@
-[13:47:57] Prévision du 2026-11-20
-[13:49:37]   Open-Meteo injoignable (ReadTimeout), nouvel essai
-[13:51:22]   Open-Meteo injoignable (ReadTimeout), nouvel essai
-[13:53:22]   Open-Meteo injoignable (ReadTimeout), nouvel essai
-[13:54:07]   CB - Installation personnelle en auto-consommation : 1.4 kWh, CA 0.24 €
-[13:54:08]   Vouzance : 15993.5 kWh, CA 1442.93 €
-[13:54:08]   Vouzance-Spot (test) : 15993.5 kWh, CA 1374.33 €
-[13:54:08]   LM11 : 3006.4 kWh, CA 1238.77 €
-[13:54:08]   CB - Installation personnelle en vente totale : 1.5 kWh, CA 0.95 €
+[14:50:53] Prévision du 2026-11-20
+[14:52:46]   Open-Meteo injoignable (ReadTimeout), nouvel essai
+[14:53:02]   CB - Installation personnelle en auto-consommation : 1.4 kWh, CA 0.23 €
+[14:53:02]   Vouzance : 16286.5 kWh, CA 1469.37 €
+[14:53:02]   Vouzance-Spot (test) : 16286.5 kWh, CA 1403.06 €
+[14:53:02]   LM11 : 3189.5 kWh, CA 1314.2 €
+[14:53:02]   CB - Installation personnelle en vente totale : 1.5 kWh, CA 0.93 €
