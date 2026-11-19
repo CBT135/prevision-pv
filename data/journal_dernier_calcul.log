@@ -1,7 +1,8 @@
-[14:50:53] Prévision du 2026-11-20
-[14:52:46]   Open-Meteo injoignable (ReadTimeout), nouvel essai
-[14:53:02]   CB - Installation personnelle en auto-consommation : 1.4 kWh, CA 0.23 €
-[14:53:02]   Vouzance : 16286.5 kWh, CA 1469.37 €
-[14:53:02]   Vouzance-Spot (test) : 16286.5 kWh, CA 1403.06 €
-[14:53:02]   LM11 : 3189.5 kWh, CA 1314.2 €
-[14:53:02]   CB - Installation personnelle en vente totale : 1.5 kWh, CA 0.93 €
+[15:21:11] Prévision du 2026-11-20
+[15:21:17]   prix : erreur ENTSO-E 599 {"uuAppErrorMap":{"uu-gateway-router/connectTimeout":{"id":"622af13c915c091d363f32b3432467fa","timestamp":"2026-11-19T14:21:17.193Z","type":"error","message":"Unable to access service within time limi
+[15:22:47]   Open-Meteo injoignable (ReadTimeout), nouvel essai
+[15:23:02]   CB - Installation personnelle en auto-consommation : 1.4 kWh, CA 0.23 €
+[15:23:02]   Vouzance : 16286.5 kWh, CA 1469.37 €
+[15:23:02]   Vouzance-Spot (test) : 16286.5 kWh, CA None €
+[15:23:03]   LM11 : 3189.5 kWh, CA 1314.2 €
+[15:23:03]   CB - Installation personnelle en vente totale : 1.5 kWh, CA 0.93 €
