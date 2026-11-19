@@ -18,6 +18,17 @@ def production(site: dict, debut: date, fin: date) -> pd.Series | None:
     return depot.production(site, debut, fin)
 
 
+def defauts(site: dict) -> pd.Series:
+    """Quarts d'heure (fin, UTC) où un onduleur était en défaut ; vide si la source ne le permet pas."""
+    source = (site.get("mesures") or {}).get("source", "csv")
+    if source in ("csv", "supervision", "enedis_sge"):
+        try:
+            return depot.defauts(site)
+        except Exception:
+            pass
+    return pd.Series(dtype=bool)
+
+
 def consommation(site: dict) -> pd.Series | None:
     """Courbe du compteur de consommation (soutirage réseau) déposée, en kW."""
     return depot.consommation(site)

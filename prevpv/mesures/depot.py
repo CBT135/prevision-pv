@@ -10,6 +10,9 @@ Formats acceptés (CSV : séparateur ; ou , — virgule décimale acceptée) :
 3. Export CSV de GridVis (analyseur Janitza), en anglais ou en français : ligne « Period: » ou « Période: jj/mm/aaaa … », colonne « Date » (h:mm,
    début de l'intervalle, heure de Paris) et colonne de puissance totale « Power (…) [W] », ou à défaut
    somme de toutes les colonnes en W (une par onduleur) ; pas de 5 ou 15 min.
+   Avec une colonne par onduleur, les quarts d'heure où un onduleur est en défaut (moins de la moitié
+   de son voisin de poste, ou poste entier à l'arrêt) sont repérés et exclus de l'apprentissage de la
+   correction (defauts()).
    Puissance positive = injection.
 4. Export Excel de l'espace client Enedis (.xlsx, onglet « Puissance moyenne soutirée » ou
    « injectée ») : colonnes « Début », « Fin », « Valeur (en kW) », heure de Paris.
@@ -73,7 +76,8 @@ def _somme_w(r: list, cols: list) -> float:
     return total
 
 
-def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
+def _tableau_gridvis(brut: str) -> tuple[pd.DatetimeIndex, list[str], list[list[float]], bool]:
+    """Export GridVis → (fins d'intervalle UTC, noms de colonnes, valeurs en W par ligne, colonne totale ?)."""
     import csv
     import re
     lignes = [l for l in brut.splitlines() if l.strip()]
@@ -86,7 +90,7 @@ def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
     # (export français) ; pas les colonnes par phase ni « Puissance de courant alternatif (onduleur) »
     total = [i for i, c in enumerate(entete)
              if c.lower().startswith(("power (", "puissance (")) and "[w]" in c.lower()]
-    # Puissance totale du point de mesure si elle existe, sinon somme des colonnes en W (onduleurs).
+    # Puissance totale du point de mesure si elle existe, sinon une colonne en W par onduleur.
     cols = total[:1] or [i for i, c in enumerate(entete) if i > 0 and "[w]" in c.lower()]
     debuts, vals, jour, prec = [], [], jour0, None
     for r in lect[1:]:
@@ -98,24 +102,89 @@ def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
             jour = jour + pd.Timedelta(days=1)
         prec = h
         debuts.append(jour + h)
-        vals.append(_somme_w(r, cols) / 1000.0)
+        ligne = []
+        for c in cols:
+            try:
+                ligne.append(float(r[c].strip().replace(",", ".")))
+            except ValueError:
+                ligne.append(float("nan"))
+        vals.append(ligne)
     debut = pd.Series(pd.DatetimeIndex(debuts))
     pas = debut.diff().median()
-    s = pd.Series(vals, index=_localiser(debut + pas))
+    return _localiser(debut + pas), [entete[c] for c in cols], vals, bool(total)
+
+
+def _lire_gridvis(brut: str, chemin: Path) -> pd.Series:
+    idx, noms, vals, _ = _tableau_gridvis(brut)
+    # une valeur absente (« x », vide) rend le total inconnu (NaN)
+    s = pd.Series([sum(l) / 1000.0 for l in vals], index=idx)
     s = s[s.index.notna()].sort_index()
     if s.isna().any():
         journal(f"  {chemin.name} : {int(s.isna().sum())} valeurs absentes (« x »), non comptées")
+    pas = s.index.to_series().diff().median()
     journal(f"  {chemin.name} : export GridVis, {len(s)} valeurs au pas de {int(pas.total_seconds() // 60)} min"
-            + (f", somme de {len(cols)} colonnes" if len(cols) > 1 else ""))
+            + (f", somme de {len(noms)} colonnes" if len(noms) > 1 else ""))
     return _au_quart_d_heure(s)
+
+
+# Défaut d'onduleur (déclenchement sur défaut d'isolement par pluie ou humidité matinale, etc.).
+# Les onduleurs d'un même poste (« 1.1 » et « 1.2 ») voient le même ciel et les mêmes ombrages :
+# un onduleur est en défaut s'il produit moins de la moitié de son voisin de poste, ou moins de 15 %
+# du meilleur des autres onduleurs (poste entier à l'arrêt), quand la référence dépasse 5 % de la plus
+# forte puissance d'onduleur de la journée.
+SEUIL_VOISIN = 0.5
+SEUIL_GLOBAL = 0.15
+SEUIL_ACTIVITE = 0.05
+
+
+def _poste(nom: str) -> str:
+    import re
+    m = re.search(r"(\d+)[.\-_](\d+)\D*$", nom.split("[")[0].strip(' ")'))
+    return m.group(1) if m else nom
+
+
+def _defauts_gridvis(brut: str) -> pd.Series:
+    """Quarts d'heure où au moins un onduleur est en défaut (True), export GridVis par onduleur."""
+    import numpy as np
+    idx, noms, vals, total = _tableau_gridvis(brut)
+    if total or len(noms) < 2:
+        return pd.Series(dtype=bool)
+    a = np.nan_to_num(np.array(vals, dtype=float), nan=0.0)
+    pmax = a.max() if a.size else 0.0
+    actif = SEUIL_ACTIVITE * pmax
+    postes = [_poste(n) for n in noms]
+    defaut = np.zeros(len(a), dtype=bool)
+    for j in range(a.shape[1]):
+        autres = [k for k in range(a.shape[1]) if k != j]
+        voisins = [k for k in autres if postes[k] == postes[j]]
+        if voisins:
+            ref = a[:, voisins].max(axis=1)
+            defaut |= (ref > actif) & (a[:, j] < SEUIL_VOISIN * ref)
+        ref = a[:, autres].max(axis=1)
+        defaut |= (ref > actif) & (a[:, j] < SEUIL_GLOBAL * ref)
+    s = pd.Series(defaut, index=idx)
+    s = s[s.index.notna()].sort_index()
+    s = s[~s.index.duplicated()]
+    pas = s.index.to_series().diff().median()
+    if pd.notna(pas) and pas < pd.Timedelta(minutes=15):  # pas de 5 min : quart d'heure en défaut si l'un l'est
+        s = s.resample("15min", closed="right", label="right").max().astype(bool)
+    return s
+
+
+def _texte(chemin: Path) -> str:
+    octets = chemin.read_bytes()
+    return octets.decode("utf-16") if octets[:2] in (b"\xff\xfe", b"\xfe\xff") else octets.decode("utf-8-sig", errors="replace")
+
+
+def _est_gridvis(tete: str) -> bool:
+    return tete.lstrip('\ufeff"').startswith(("Period:", "Période:", "Periode:"))
 
 
 def _lire(chemin: Path) -> pd.Series:
     if chemin.suffix.lower() == ".xlsx":
         return _lire_xlsx(chemin)
-    octets = chemin.read_bytes()
-    tete = octets.decode("utf-16") if octets[:2] in (b"\xff\xfe", b"\xfe\xff") else octets.decode("utf-8-sig", errors="replace")
-    if tete.lstrip('\ufeff"').startswith(("Period:", "Période:", "Periode:")):
+    tete = _texte(chemin)
+    if _est_gridvis(tete):
         return _lire_gridvis(tete, chemin)
     brut = chemin.read_text(encoding="utf-8-sig", errors="replace")
     sep = ";" if brut.count(";") >= brut.count(",") else ","
@@ -166,6 +235,23 @@ def production(site: dict, debut: date, fin: date) -> pd.Series | None:
     a = pd.Timestamp(debut, tz=TZ).tz_convert("UTC")
     b = (pd.Timestamp(fin, tz=TZ) + pd.Timedelta(days=1)).tz_convert("UTC")
     return s[(s.index > a) & (s.index <= b)]
+
+
+def defauts(site: dict) -> pd.Series:
+    """Quarts d'heure (fin, UTC) où un onduleur était en défaut, d'après les exports GridVis par onduleur."""
+    d = DOSSIER_DEPOT / ((site.get("mesures") or {}).get("copie_de") or site["id"])
+    morceaux = []
+    for f in sorted(d.glob("*.csv")) if d.exists() else []:
+        try:
+            t = _texte(f)
+            if _est_gridvis(t):
+                morceaux.append(_defauts_gridvis(t))
+        except Exception as e:
+            journal(f"  ! {f.name} : détection des défauts onduleur impossible ({e})")
+    if not morceaux:
+        return pd.Series(dtype=bool)
+    s = pd.concat(morceaux)
+    return s[~s.index.duplicated(keep="last")].sort_index()
 
 
 def consommation(site: dict) -> pd.Series | None:

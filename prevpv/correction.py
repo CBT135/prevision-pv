@@ -10,6 +10,7 @@ sur les 30 derniers jours disponibles de data/historique/<site>.csv
 
 Filtres : quarts d'heure où le modèle dépasse 2 % de la puissance AC ;
 quarts d'heure d'arrêt ou de bridage exclus (mesure < 5 % du modèle alors que le modèle dépasse 10 % de Pac) ;
+quarts d'heure où un onduleur est en défaut exclus (exports GridVis par onduleur, voir mesures/depot.py) ;
 journées exclues si la production mesurée est < 25 % du modèle (panne, arrêt, données absentes).
 Facteurs bornés entre 0,3 et 1,3. Il faut au moins 10 jours de données.
 
@@ -102,6 +103,10 @@ def apprendre(site: dict) -> dict:
     arret = (df["p_mesure_kw"] < 0.05 * df["p_modele_kw"]) & (df["p_modele_kw"] > 0.10 * pac)
     res["quarts_arret_exclus"] = int(arret.sum())
     df = df[~arret]
+    from . import mesures
+    defaut = mesures.defauts(site).reindex(df.index).fillna(False).astype(bool)
+    res["quarts_defaut_onduleur_exclus"] = int(defaut.sum())
+    df = df[~defaut]
     res["jours"] = len(jours_ok)
     if len(jours_ok) < MIN_JOURS or df.empty:
         return res

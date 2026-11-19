@@ -28,7 +28,7 @@ Chaque jour, à 6 h 40 et 16 h 20 (heure d'hiver ; 7 h 40 et 17 h 20 en été), 
 | Optique | Pertes angulaires ASHRAE (b0 = 0,05) sur le direct. |
 | Thermique | Modèle PVsyst si Uc / Uv sont saisis ; sinon Faiman ; coefficients de départ selon la pose (sol 25 / 6,84 ; surimposé 20 / 4 ; intégré 15 / 2). |
 | Électrique | Pc × G/1000 × (1 + γ(Tc − 25)) × (1 − pertes DC), rendement onduleur, écrêtage à Pac puis à la limitation d'injection, pertes AC jusqu'au compteur. |
-| Correction | Σ mesuré / Σ modèle sur 30 jours, par tranche d'élévation (< 15°, 15–35°, > 35°), bornée 0,6–1,3, active à partir de 10 jours valides. |
+| Correction | Σ mesuré / Σ modèle sur 30 jours, par état du ciel prévu (kt) et par position du soleil (ombrages proches), bornée 0,3–1,3, active à partir de 10 jours valides. Quarts d'heure exclus : arrêts, bridages et défauts d'onduleur (exports GridVis par onduleur : un onduleur à moins de la moitié de son voisin de poste, ou un poste entier à l'arrêt — déclenchements sur défaut d'isolement par pluie ou humidité). |
 
 ### Valorisation
 
