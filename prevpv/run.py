@@ -91,6 +91,12 @@ def _conso_arrivee(site: dict, res: dict, idx: pd.DatetimeIndex) -> bool:
     return c is not None and c.reindex(idx).notna().mean() > 0.9
 
 
+def _prix_manquant(e: dict) -> bool:
+    """Journée valorisée au spot alors que les prix day-ahead n'étaient pas disponibles : à refaire."""
+    v = e.get("valorisation_realisee") or {}
+    return v.get("mode") == "spot" and v.get("ca_eur") is None
+
+
 def realise(sites: list[dict], d: date, fournis: dict | None = None) -> None:
     """Réalisé de la journée D. `fournis` (reconstitution) : {id_site: {mes, p_prev, p_mod, elev}}
     pour les journées sans prévision archivée ; la prévision y est reconstituée à partir des archives météo."""
@@ -98,7 +104,8 @@ def realise(sites: list[dict], d: date, fournis: dict | None = None) -> None:
     deja = lire_json(DOSSIER_REAL / f"{d.isoformat()}.json", {"sites": {}})
     idx = index_journee(d)
     if fournis is None:
-        a_faire = [s for s in sites if s["id"] not in deja.get("sites", {}) or _conso_arrivee(s, deja["sites"][s["id"]], idx)]
+        a_faire = [s for s in sites if s["id"] not in deja.get("sites", {}) or _conso_arrivee(s, deja["sites"][s["id"]], idx)
+                   or _prix_manquant(deja["sites"][s["id"]])]
     else:  # ne remplace jamais un réalisé comparé à une vraie prévision de la veille
         a_faire = [s for s in sites if s["id"] in fournis and (
             "p_prevue_kw" not in deja.get("sites", {}).get(s["id"], {})
