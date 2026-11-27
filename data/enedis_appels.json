@@ -1,14 +1,14 @@
 {
  "19462518050078_consumption": {
-  "jour": "2026-11-26",
+  "jour": "2026-11-27",
   "tentatives": 1,
-  "derniere": "2026-11-26T08:14+01:00",
-  "statut": "veille complète"
+  "derniere": "2026-11-27T08:14+01:00",
+  "statut": "échec : quota de requêtes MyElectricalData atteint ('{\"detail\":\"{\\\\\"code\\\\\":\\\\\"900804\\\\\",\\\\\"message\\\\\":\\\\\"Message throttled out\\\\\",\\\\\"description\\\\\":\\\\\"You have exceeded your quota .You can access API"
  },
  "19425180815654_production": {
-  "jour": "2026-11-26",
+  "jour": "2026-11-27",
   "tentatives": 1,
-  "derniere": "2026-11-26T08:14+01:00",
-  "statut": "veille complète"
+  "derniere": "2026-11-27T08:14+01:00",
+  "statut": "rien reçu"
  }
 }
